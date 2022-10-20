@@ -4,6 +4,12 @@ import { Global, css } from '@emotion/react';
 
 import App from './App';
 
+declare global {
+  interface Window {
+    naver_id_login: any;
+  }
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
