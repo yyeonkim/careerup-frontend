@@ -28,7 +28,7 @@ export const LoginGoogle: FC<Props> = ({ setUserInfo, setIsLogin }) => {
   return (
     <GoogleLogin
       clientId="193044166708-p0v57508c4ng0br35sksc7ac8efj3ihr.apps.googleusercontent.com"
-      buttonText="Login"
+      buttonText="구글 계정으로 로그인"
       onSuccess={googleLogin}
       onFailure={(res) => console.log(res)}
       cookiePolicy={'single_host_origin'}

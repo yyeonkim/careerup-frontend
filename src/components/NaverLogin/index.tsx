@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import './style.css';
 
 export default function NaverLogin() {
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
