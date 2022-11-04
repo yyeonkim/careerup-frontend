@@ -10,7 +10,7 @@ export default function NaverLoginBtn({ refObject }: NaverLoginBtnProps) {
   const logoImg = process.env.PUBLIC_URL + '/images/naver-logo.png';
 
   const onClick = () => {
-    console.log(refObject.current?.children[0].click());
+    refObject.current?.children[0].click();
   };
 
   return (
