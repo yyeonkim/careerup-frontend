@@ -9,6 +9,7 @@ export const StyledButton = styled.button`
   padding: 1.5rem 0;
   border-radius: 50rem;
   background-color: #ffffff;
+  margin-bottom: 1rem;
 `;
 
 export const Text = styled.span`

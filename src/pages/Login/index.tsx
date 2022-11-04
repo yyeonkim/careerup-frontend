@@ -11,7 +11,7 @@ export default function Login() {
   return (
     <Container>
       <LoginWrapper>
-        <Title>Sign in</Title>
+        <Title>로그인</Title>
         {!isLogin ? <LoginGoogle setUserInfo={setUserInfo} setIsLogin={setIsLogin} /> : <Profile userInfo={userInfo} />}
         <NaverLogin />
       </LoginWrapper>
