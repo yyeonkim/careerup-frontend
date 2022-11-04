@@ -1,23 +1,14 @@
 import styled from '@emotion/styled';
 
-export const StyledButton = styled.button`
-  display: flex;
-  align-items: center;
-  border: none;
-  cursor: pointer;
-  width: 25rem;
-  padding: 1.5rem 0;
-  border-radius: 50rem;
+import { LoginButton, Logo, Text } from '../NaverLoginBtn/style';
+
+export const StyledButton = styled(LoginButton)`
   background-color: #ffffff;
   margin-bottom: 1rem;
 `;
 
-export const Text = styled.span`
-  font-size: 1.4rem;
+export const StyledText = styled(Text)`
   color: black;
 `;
 
-export const Logo = styled.img`
-  width: 1.8rem;
-  margin: 0 2.4rem;
-`;
+export const GoogleLogo = styled(Logo)``;

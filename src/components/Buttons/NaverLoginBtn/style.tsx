@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const StyledButton = styled.button`
+export const LoginButton = styled.button`
   display: flex;
   align-items: center;
   border: none;

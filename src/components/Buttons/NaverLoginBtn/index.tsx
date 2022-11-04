@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 
-import { Logo, StyledButton, Text } from './style';
+import { Logo, LoginButton, Text } from './style';
 
 interface NaverLoginBtnProps {
   refObject: RefObject<any>;
@@ -14,9 +14,9 @@ export default function NaverLoginBtn({ refObject }: NaverLoginBtnProps) {
   };
 
   return (
-    <StyledButton onClick={onClick}>
+    <LoginButton onClick={onClick}>
       <Logo src={logoImg} />
       <Text> 네이버 계정으로 시작하기</Text>
-    </StyledButton>
+    </LoginButton>
   );
 }
