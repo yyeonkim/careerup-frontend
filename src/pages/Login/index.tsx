@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import GoogleLoginBtn from '../../components/Buttons/GoogleLoginBtn';
 import NaverLoginBtn from '../../components/Buttons/NaverLoginBtn';
 
 import LoginGoogle, { Profile } from '../../components/LoginGoogle';
@@ -16,6 +17,7 @@ export default function Login() {
         {!isLogin ? <LoginGoogle setUserInfo={setUserInfo} setIsLogin={setIsLogin} /> : <Profile userInfo={userInfo} />}
         <NaverLogin />
         <NaverLoginBtn />
+        <GoogleLoginBtn />
       </LoginWrapper>
     </Container>
   );
