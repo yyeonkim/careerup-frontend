@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
+import NaverLoginBtn from '../Buttons/NaverLoginBtn';
 import './style.css';
 
 export default function NaverLogin() {
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
   const NAVER_CALLBACK_URL = 'http://localhost:3000/login/naver';
+
+  const ref = useRef<any>(null);
 
   useEffect(() => {
     initNaverLogin();
@@ -39,5 +43,10 @@ export default function NaverLogin() {
     naver_id_login.get_naver_userprofile(getProfileDataCallback());
   };
 
-  return <div id="naver_id_login"></div>;
+  return (
+    <>
+      <div ref={ref} id="naver_id_login"></div>
+      <NaverLoginBtn refObject={ref} />
+    </>
+  );
 }

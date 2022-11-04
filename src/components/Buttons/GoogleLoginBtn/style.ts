@@ -11,7 +11,7 @@ export const StyledButton = styled.button`
   background-color: #ffffff;
 `;
 
-export const Text = styled.text`
+export const Text = styled.span`
   font-size: 1.4rem;
   color: black;
 `;

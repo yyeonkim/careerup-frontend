@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import GoogleLoginBtn from '../../components/Buttons/GoogleLoginBtn';
-import NaverLoginBtn from '../../components/Buttons/NaverLoginBtn';
 
+import { Container, LoginWrapper, Title } from './style';
 import LoginGoogle, { Profile } from '../../components/LoginGoogle';
 import NaverLogin from '../../components/NaverLogin';
-import { Container, LoginWrapper, Title } from './style';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
@@ -16,8 +14,6 @@ export default function Login() {
         <Title>Sign in</Title>
         {!isLogin ? <LoginGoogle setUserInfo={setUserInfo} setIsLogin={setIsLogin} /> : <Profile userInfo={userInfo} />}
         <NaverLogin />
-        <NaverLoginBtn />
-        <GoogleLoginBtn />
       </LoginWrapper>
     </Container>
   );
