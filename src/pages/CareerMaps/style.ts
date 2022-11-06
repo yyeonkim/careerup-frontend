@@ -9,15 +9,35 @@ export const Menu = styled.div`
   background-color: gray;
 `;
 
+// Profile
 export const ProfileContainer = styled.div`
   padding-bottom: 4rem;
+
+  display: flex;
+  justify-content: space-between;
 `;
+
+export const ButtonContainer = styled.div``;
 
 export const ProfileImg = styled.img`
   width: 14rem;
   border-radius: 50%;
 `;
 
+export const SaveButton = styled.button`
+  margin-left: 1rem;
+  width: 5rem;
+  height: 2.5rem;
+
+  border: none;
+  border-radius: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+export const CancelButton = styled(SaveButton)``;
+
+// My career maps
 export const CareerMapList = styled.div`
   padding: 2rem;
   padding-bottom: 0;
