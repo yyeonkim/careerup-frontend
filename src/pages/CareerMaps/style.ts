@@ -5,7 +5,7 @@ export const Menu = styled.div`
   padding-top: 4rem;
 
   width: 32rem;
-  height: 100vh;
+  min-height: 100vh;
   background-color: gray;
 `;
 
@@ -46,4 +46,11 @@ export const Map = styled.div`
   height: 15rem;
   border-radius: 2rem;
   background-color: gray;
+`;
+
+export const AddButton = styled(Map)`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
