@@ -1,11 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Wrapper } from './styles';
 import { ReactSortable } from 'react-sortablejs';
-
-interface ItemType {
-  id: number;
-  name: string;
-}
 
 export default function RoadMap() {
   let count = 0;
@@ -70,11 +65,6 @@ export default function RoadMap() {
         })}
       </ReactSortable>
       <Button onClick={AddMap}>추가 버튼</Button>
-
-      {/*<div style={{ marginTop: '100rem', display: 'flex', position: 'relative' }}>*/}
-      {/*  <div>1</div>*/}
-      {/*  <div>2</div>*/}
-      {/*</div>*/}
     </Wrapper>
   );
 }
