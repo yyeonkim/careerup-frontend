@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { CloseButton, HomeLogo, Overlay } from './style';
 
-import LoginGoogle, { Profile } from '../../components/LoginGoogle';
+import { CloseButton, HomeLogo, Overlay } from './style';
+import { LoginGoogle } from '../../components/LoginGoogle';
 import NaverLogin from '../../components/NaverLogin';
 
 export default function Home() {
@@ -10,10 +10,6 @@ export default function Home() {
 
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-
-  useEffect(() => {
-    console.log(location.hash);
-  }, [location]);
 
   return (
     <>
@@ -33,11 +29,7 @@ export default function Home() {
 
           <div className="login">
             <div className="container">
-              {!isLogin ? (
-                <LoginGoogle setUserInfo={setUserInfo} setIsLogin={setIsLogin} />
-              ) : (
-                <Profile userInfo={userInfo} />
-              )}
+              <LoginGoogle />
               <NaverLogin />
             </div>
 
