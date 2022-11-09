@@ -4,7 +4,7 @@ import { LoginButton, Logo, Text } from '../NaverLoginBtn/style';
 
 export const StyledButton = styled(LoginButton)`
   background-color: #ffffff;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export const StyledText = styled(Text)`
