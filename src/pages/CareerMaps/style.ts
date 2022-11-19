@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
 
+export const CareerMapsWrapper = styled.div`
+  display: flex;
+`;
+
 export const Menu = styled.div`
   padding: 2rem;
   padding-top: 4rem;
 
-  width: 32rem;
+  min-width: 34rem;
   min-height: 100vh;
   background-color: gray;
 `;
@@ -62,7 +66,7 @@ export const MapsContainer = styled.div`
 export const Map = styled.div`
   margin-bottom: 2rem;
 
-  width: 13rem;
+  width: 12rem;
   height: 15rem;
   border-radius: 2rem;
   background-color: gray;
