@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   font-size: 2rem;
   border: 1px solid;
   height: 100vh;
+  width: 100vw;
 
   position: relative;
 
@@ -12,11 +13,10 @@ export const Wrapper = styled.div`
     height: 200px;
     padding: 1rem;
 
-    margin-right: auto;
-
     border: 1px solid;
 
-    & > span {
+    & > span,
+    .addBtn {
       width: 100%;
       height: 100%;
 
@@ -33,17 +33,7 @@ export const Wrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 
-    position: relative;
-
     width: 100%;
-
     border: none;
   }
-`;
-
-export const Button = styled.button`
-  position: absolute;
-
-  bottom: 0;
-  padding: 2rem;
 `;

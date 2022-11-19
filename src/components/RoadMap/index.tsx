@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { Button, Wrapper } from './styles';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { Wrapper } from './styles';
 import { ReactSortable } from 'react-sortablejs';
 
 export default function RoadMap() {
@@ -7,64 +7,84 @@ export default function RoadMap() {
   let isRight = true;
   let height = 10;
 
-  const [state, setState] = useState([
+  const [list, setList] = useState([
+    { id: 0, name: '0입니다.' },
     { id: 1, name: '1입니다.' },
     { id: 2, name: '2입니다.' },
-    { id: 3, name: '3입니다.' },
+    { id: 9999, name: '+' },
   ]);
 
-  const AddMap = useCallback(() => {
-    const temp = {
-      id: state.length + 1,
-      name: `${state.length + 1}입니다.`,
-    };
+  const AddMap = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.currentTarget.id === '9999') {
+        setList(list.splice(list.length - 1));
 
-    setState([...state, temp]);
-  }, [state]);
+        const temp = {
+          id: list.length,
+          name: `${list.length}입니다.`,
+        };
+
+        setList([...list, temp, { id: 9999, name: '+' }]);
+      }
+    },
+    [list]
+  );
+
+  let test: ReactNode;
 
   return (
     <Wrapper>
-      <ReactSortable list={state} setList={setState} className={'table'}>
-        {state.map((item) => {
+      <ReactSortable
+        list={list}
+        setList={setList}
+        className={'table'}
+        onChoose={(x) => {
+          console.log(x);
+        }}
+      >
+        {list.map((item) => {
           if (count === 4) {
             isRight = !isRight;
-            height += 300;
+            height += 350;
 
             count = 0;
           }
           count++;
 
-          console.log(count, isRight);
-
-          return !isRight ? (
+          test = !isRight ? (
             <div
+              id={`${item.id}`}
               key={item.id}
               style={{
                 position: 'absolute',
                 top: `${height + count * 30}px`,
-                //이게 위
                 right: isRight ? 0 : `${count * 250}px`,
               }}
+              onClick={AddMap}
             >
               <span>{item.name}</span>
             </div>
           ) : (
             <div
+              id={`${item.id}`}
               key={item.id}
               style={{
                 position: 'absolute',
                 top: `${height + count * 30}px`,
-
-                // 이게 밑
                 left: isRight ? `${count * 250}px` : 0,
               }}
+              onClick={AddMap}
             >
               <span>{item.name}</span>
             </div>
           );
+
+          if (item.id === 9999) return <div style={{ display: 'none' }}></div>;
+
+          return test;
         })}
       </ReactSortable>
-      <Button onClick={AddMap}>추가 버튼</Button>
+      {test}
     </Wrapper>
   );
 }
