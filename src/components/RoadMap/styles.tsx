@@ -29,8 +29,8 @@ export const Map = styled.div`
 
   padding: 6rem 0;
 
-  & > img {
-    width: 80%;
+  .green {
+    position: absolute;
   }
 `;
 
@@ -46,35 +46,35 @@ export const FirstRoad = styled.div`
     text-align: center;
 
     & img {
-      width: 80%;
+      width: 95%;
       height: 95%;
     }
   }
 
   .second {
-    margin-top: -8.21%;
-    margin-left: 6.1%;
+    margin-top: -9.8%;
+    margin-left: 9%;
 
     img {
-      width: 78%;
+      width: 94%;
     }
   }
 
   .second2 {
-    margin-top: -7.6%;
-    margin-left: 6.1%;
+    margin-top: -8.8%;
+    margin-left: 9%;
 
     img {
-      width: 78%;
+      width: 94%;
     }
   }
 
   .third {
-    margin-top: -7.5%;
-    margin-right: 6%;
+    margin-top: -8.8%;
+    margin-right: 8.6%;
 
     img {
-      width: 78%;
+      width: 94%;
     }
   }
 `;
@@ -99,7 +99,7 @@ export const AddRoadBtn = styled.button`
   font-weight: bold;
 `;
 
-export const AddRound = styled.div`
+export const AddCircle = styled.div`
   border: 8px solid #85cca3;
   border-radius: 50%;
 
@@ -107,14 +107,10 @@ export const AddRound = styled.div`
   justify-content: center;
   align-items: center;
 
-  font-size: 4rem;
   color: #c4c4c4;
   background-color: #ffffff;
 
-  width: 10%;
-  height: 10%;
-
   position: absolute;
   z-index: 999;
-  top: 43px;
+  top: 5rem;
 `;
