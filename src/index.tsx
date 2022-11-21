@@ -20,10 +20,16 @@ root.render(
         styles={css`
           html {
             font-size: 10px;
+            font-family: 'Noto Sans KR', sans-serif;
           }
           a {
             text-decoration: none;
             color: inherit;
+          }
+
+          @font-face {
+            font-family: 'Noto Sans KR';
+            src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
           }
         `}
       />
