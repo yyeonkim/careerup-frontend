@@ -21,6 +21,10 @@ root.render(
           html {
             font-size: 10px;
           }
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
         `}
       />
       <App />
