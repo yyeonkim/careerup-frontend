@@ -11,6 +11,7 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
+  margin-bottom: 8rem;
 `;
 
 export const HomeLogo = styled.div`
@@ -27,48 +28,48 @@ export const LoginButton = styled.div`
   background-color: white;
   padding: 1rem 2rem;
   width: 8rem;
-  border-radius: 2rem;
+  border-radius: 5rem;
 `;
 
-export const Overlay = styled.div`
+export const Main = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
   display: flex;
-  width: 90%;
-  height: 50rem;
-  max-width: 100rem;
+  flex-direction: column;
+  align-items: flex-end;
 
-  /* 가운데 배치 */
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  .content {
+    width: 100%;
+    margin-bottom: 8rem;
+    display: flex;
+    justify-content: space-between;
 
-  .welcome {
-    background-color: lightgray;
-    width: 50%;
-    height: 100%;
-  }
-
-  .login {
-    position: relative;
-    background-color: gray;
-    width: 50%;
-    height: 100%;
-
-    .container {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-
-      /* 가운데 배치 */
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .info {
+      font-weight: bold;
+      div:first-child {
+        font-size: 4rem;
+        color: white;
+        line-height: 1.5;
+        margin-bottom: 2rem;
+      }
+      div:nth-child(2) {
+        font-size: 8rem;
+      }
+    }
+    .logo {
+      background-color: lightgray;
+      width: 45rem;
+      height: 45rem;
     }
   }
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  right: 0;
+export const MapButton = styled.div`
+  font-size: 2.4rem;
+  font-weight: bold;
+  background-color: white;
+  width: 40rem;
+  border-radius: 50rem;
+  text-align: center;
+  padding: 1.5rem 0;
 `;
