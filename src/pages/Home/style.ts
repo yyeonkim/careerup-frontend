@@ -11,14 +11,12 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  margin-bottom: 8rem;
+  margin-bottom: 5rem;
 `;
 
-export const HomeLogo = styled.div`
+export const HomeLogo = styled.img`
   width: 9rem;
   height: 9rem;
-  background-color: lightgray;
-  font-size: 1.6rem;
 `;
 
 export const LoginButton = styled.div`
@@ -45,6 +43,7 @@ export const Main = styled.div`
     justify-content: space-between;
 
     .info {
+      margin-top: 6rem;
       font-weight: bold;
       div:first-child {
         font-size: 4rem;
@@ -57,7 +56,6 @@ export const Main = styled.div`
       }
     }
     .logo {
-      background-color: lightgray;
       width: 45rem;
       height: 45rem;
     }
@@ -72,4 +70,5 @@ export const MapButton = styled.div`
   border-radius: 50rem;
   text-align: center;
   padding: 1.5rem 0;
+  margin-right: 2rem;
 `;
