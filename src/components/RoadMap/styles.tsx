@@ -52,7 +52,7 @@ export const FirstRoad = styled.div`
   }
 
   .second {
-    margin-top: -9.8%;
+    margin-top: -9.7%;
     margin-left: 9%;
 
     img {
@@ -112,5 +112,4 @@ export const AddCircle = styled.div`
 
   position: absolute;
   z-index: 999;
-  top: 5rem;
 `;
