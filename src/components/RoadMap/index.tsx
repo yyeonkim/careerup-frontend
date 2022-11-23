@@ -11,18 +11,27 @@ interface Size {
 
 interface Props {
   width: number | undefined;
+  height: number | undefined;
 }
 
-const Circle: FC<Props> = ({ width }) => {
-  let len, left, fontSize;
-  if (width) {
+const dummyCircle = [
+  { id: 1, content: '1번' },
+  { id: 2, content: '2번' },
+];
+
+const Circle: FC<Props> = ({ width, height }) => {
+  let len, top, left, fontSize;
+  if (width && height) {
     len = width / 13;
-    left = width / 9;
+    top = height*0.3;
+    // left = width / 9;
+    left = width / 2.2;
+    // left = width / 1.4;
     fontSize = width / 20;
   }
 
   return (
-    <AddCircle style={{ width: len, height: len, left: left, fontSize: fontSize }}>
+    <AddCircle style={{ width: len, height: len, top: top, left: left, fontSize: fontSize }}>
       <FontAwesomeIcon icon={faPlus} />
     </AddCircle>
   );
@@ -31,6 +40,7 @@ const Circle: FC<Props> = ({ width }) => {
 export default function RoadMap() {
   const [lenRoad, setLenRoad] = useState(0);
   const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const onClickAddRoad = useCallback(() => {
     setLenRoad((prev) => prev + 1);
@@ -42,7 +52,10 @@ export default function RoadMap() {
 
   useEffect(() => {
     const { current } = ref;
-    if (current) setWidth(current.clientWidth);
+    if (current) {
+      setWidth(current.clientWidth);
+      setHeight(current.clientHeight);
+    }
   }, [size]);
 
   let greenWidth, greenLeft;
@@ -73,7 +86,7 @@ export default function RoadMap() {
                 </div>
               );
             })}
-            <Circle width={width} />
+            <Circle width={width} height={height} />
           </FirstRoad>
         </Map>
       </MapWrapper>
