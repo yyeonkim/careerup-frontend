@@ -20,6 +20,9 @@ root.render(
       <ThemeProvider theme={theme}>
         <Global
           styles={css`
+            * {
+              box-sizing: border-box;
+            }
             html {
               font-size: 10px;
               font-family: 'Noto Sans KR', sans-serif;
