@@ -5,7 +5,8 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem;
+  padding: 0 2rem;
+  height: 8rem;
 `;
 
 export const Logo = styled.div`
