@@ -10,7 +10,7 @@ export default function Home() {
     <Container>
       <Header>
         <Link to="/">
-          <HomeLogo src={process.env.PUBLIC_URL + '/images/careerup_logo_small.png'} />
+          <HomeLogo src={process.env.PUBLIC_URL + '/images/careerup_logo_no_bg.png'} />
         </Link>
         <Link to={{ hash: '#login' }}>
           <LoginButton>Sign in</LoginButton>
@@ -27,7 +27,7 @@ export default function Home() {
             </div>
             <div>Career:up</div>
           </div>
-          <img className="logo" src={process.env.PUBLIC_URL + '/images/careerup_logo_big.png'} />
+          <img className="logo" src={process.env.PUBLIC_URL + '/images/careerup_logo_no_bg_big.png'} />
         </div>
         <Link to="/career-maps">
           <MapButton>내 커리어 맵 만들러가기</MapButton>
