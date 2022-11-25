@@ -7,7 +7,7 @@ export default function Header() {
         <img className="logo__image" src={`${process.env.PUBLIC_URL}/images/careerup_logo_small.png`} />
         <div className="logo__text">Career:up</div>
       </Logo>
-      <ProfileImg src={`${process.env.PUBLIC_URL}/images/profile.jpg`} />
+      <ProfileImg src={require('../../../assets/profile.jpg')} />
     </Container>
   );
 }
