@@ -11,6 +11,7 @@ export const Container = styled.div`
 
 export const Logo = styled.div`
   display: flex;
+  align-items: center;
 
   .logo__image {
     width: 4rem;
@@ -18,7 +19,8 @@ export const Logo = styled.div`
   }
 
   .logo__text {
-    font-size: 3.2rem;
+    font-size: 2rem;
+    font-weight: bold;
   }
 `;
 
