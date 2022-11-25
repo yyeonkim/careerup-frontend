@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 
-import { Container, HomeLogo, LoginButton, Header, Main, MapButton } from './style';
+import { Container, LoginButton, Header, Main, MapButton } from './style';
 import LoginModal from '../../components/Modal/Login';
 
 export default function Home() {
@@ -9,9 +10,6 @@ export default function Home() {
   return (
     <Container>
       <Header>
-        <Link to="/">
-          <HomeLogo src={process.env.PUBLIC_URL + '/images/careerup_logo_no_bg.png'} />
-        </Link>
         <Link to={{ hash: '#login' }}>
           <LoginButton>Sign in</LoginButton>
         </Link>
@@ -25,12 +23,16 @@ export default function Home() {
               <br />
               커리어 성장 플랫폼
             </div>
-            <div>Career:up</div>
+            <img src={process.env.PUBLIC_URL + '/images/careerup_text_logo.png'} />
           </div>
           <img className="logo" src={process.env.PUBLIC_URL + '/images/careerup_logo_no_bg_big.png'} />
         </div>
+
         <Link to="/career-maps">
-          <MapButton>내 커리어 맵 만들러가기</MapButton>
+          <MapButton>
+            <span>내 커리어 맵 만들러가기</span>
+            <AiOutlineArrowRight size="3.2rem" />
+          </MapButton>
         </Link>
       </Main>
 

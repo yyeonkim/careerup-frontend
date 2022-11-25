@@ -8,33 +8,28 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
+  justify-content: flex-end;
+  padding: 1.6rem;
   margin-bottom: 5rem;
 `;
 
-export const HomeLogo = styled.img`
-  width: 9rem;
-  height: 9rem;
-`;
-
 export const LoginButton = styled.div`
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
   background-color: white;
   padding: 1rem 2rem;
-  width: 8rem;
   border-radius: 5rem;
+  width: 11rem;
+  padding: 1rem;
 `;
 
 export const Main = styled.div`
-  max-width: 1280px;
+  max-width: 128rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
 
   .content {
     width: 100%;
@@ -45,14 +40,12 @@ export const Main = styled.div`
     .info {
       margin-top: 6rem;
       font-weight: bold;
-      div:first-child {
-        font-size: 4rem;
+      font-size: 5.4rem;
+
+      div {
         color: white;
         line-height: 1.5;
         margin-bottom: 2rem;
-      }
-      div:nth-child(2) {
-        font-size: 8rem;
       }
     }
     .logo {
@@ -68,7 +61,14 @@ export const MapButton = styled.div`
   background-color: white;
   width: 40rem;
   border-radius: 50rem;
-  text-align: center;
   padding: 1.5rem 0;
   margin-right: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    margin-right: 1rem;
+  }
 `;
