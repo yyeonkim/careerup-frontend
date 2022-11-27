@@ -3,6 +3,9 @@ import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, FirstRoad, AddC
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useWindowSize } from '../../hooks/useWindowSize';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { resetValue, testCount } from '../../reducers/TestSlice';
+import { addValue } from '../../actions/TestAPI';
 
 interface Size {
   width: number | undefined;
@@ -23,9 +26,9 @@ const Circle: FC<Props> = ({ width, height }) => {
   let len, top, left, fontSize;
   if (width && height) {
     len = width / 13;
-    top = height*0.3;
+    top = height * 0.07;
     // left = width / 9;
-    left = width / 2.2;
+    left = width / 9;
     // left = width / 1.4;
     fontSize = width / 20;
   }
@@ -64,6 +67,13 @@ export default function RoadMap() {
     greenLeft = width / 20;
   }
 
+  const value = useAppSelector(testCount);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(value);
+  }, [value]);
+
   return (
     <RoadMapContainer>
       <MapWrapper>
@@ -95,6 +105,9 @@ export default function RoadMap() {
           길<br />
           <br /> 추<br />가<br />하<br />기
         </AddRoadBtn>
+
+        <AddRoadBtn onClick={() => dispatch(addValue())}>테스트</AddRoadBtn>
+        <AddRoadBtn onClick={() => dispatch(resetValue())}>리셋</AddRoadBtn>
       </SideBar>
     </RoadMapContainer>
   );
