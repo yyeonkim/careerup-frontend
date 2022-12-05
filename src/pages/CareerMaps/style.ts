@@ -6,75 +6,143 @@ export const CareerMapsWrapper = styled.div`
 
 export const Menu = styled.div`
   padding: 2rem;
-  padding-top: 4rem;
 
-  min-width: 34rem;
+  min-width: 41.7rem;
   min-height: 100vh;
-  background-color: gray;
+  background-color: #f3fcf7;
 `;
 
-// Profile
-export const ProfileContainer = styled.div`
-  padding-bottom: 4rem;
+export const Profile = styled.div`
+  width: 36.8rem;
+  height: 24.8rem;
+  background-color: #29cc6a;
+  border-radius: 4rem;
+  margin-bottom: 3rem;
 
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const ButtonContainer = styled.div``;
-
-export const ProfileImg = styled.img`
-  width: 14rem;
-  border-radius: 50%;
-`;
-
-export const SaveButton = styled.button`
-  margin-left: 1rem;
-  width: 5rem;
-  height: 2.5rem;
-
-  border: none;
-  border-radius: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-`;
-
-export const CancelButton = styled(SaveButton)``;
-
-// My career maps
-export const CareerMapList = styled.div`
-  padding: 2rem;
-  padding-bottom: 0;
-
-  border-radius: 2rem;
-  background-color: lightgray;
-`;
-
-export const Title = styled.div`
-  margin-bottom: 2rem;
-
-  font-size: 1.6rem;
-  font-weight: bold;
-`;
-
-export const MapsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`;
-
-export const Map = styled.div`
-  margin-bottom: 2rem;
-
-  width: 12rem;
-  height: 15rem;
-  border-radius: 2rem;
-  background-color: gray;
-`;
-
-export const AddButton = styled(Map)`
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const InfoWrapper = styled.div`
+  width: 90%;
+  height: 80%;
+`;
+
+export const ProfileTop = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  & > img {
+    width: 12.8rem;
+    height: 12.8rem;
+    border-radius: 50%;
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffffff;
+
+    height: 12.8rem;
+    border-radius: 2rem;
+  }
+
+  & > div:first-of-type {
+    width: 6.4rem;
+    font-size: 2rem;
+  }
+
+  & > div:last-of-type {
+    width: 8rem;
+    font-size: 1.8rem;
+  }
+`;
+
+export const ProfileBottom = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  margin-top: 2rem;
+
+  & > div {
+    height: 4rem;
+    border-radius: 1rem;
+    background-color: #ffffff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & > div:first-of-type {
+    width: 12.8rem;
+    font-size: 2rem;
+  }
+
+  & > div:last-of-type {
+    width: 16rem;
+    font-size: 1.8rem;
+  }
+`;
+
+export const Activity = styled.div`
+  width: 36.8rem;
+  height: 50.8rem;
+  border-radius: 4rem;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(105, 105, 105, 0.1);
+
+  padding: 3rem;
+
+  & > div:first-of-type {
+    font-weight: 700;
+    font-size: 2.4rem;
+
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+
+    border-bottom: 1px solid #f6f6f6;
+  }
+`;
+
+export const ActivityContent = styled.div`
+  width: 32.4rem;
+  height: 34rem;
+
+  overflow-y: auto;
+
+  & > div {
+    width: 30.4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+
+    padding-left: 1rem;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 1.6rem;
+
+    color: #696969;
+    background-color: #f2f2f2;
+    border-radius: 1rem;
+  }
+`;
+
+export const EditBtn = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  & > button {
+    width: 8.8rem;
+    height: 3rem;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+    color: #696969;
+    margin-top: 3rem;
+  }
 `;
