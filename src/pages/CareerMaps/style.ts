@@ -89,11 +89,12 @@ export const ProfileBottom = styled.div`
   }
 `;
 
-export const Activity = styled.div`
+export const Activity = styled.div<{ orderEdit: boolean }>`
   width: 36.8rem;
   height: 50.8rem;
   border-radius: 4rem;
-  background-color: #ffffff;
+  //background-color: #ffffff;
+  background-color: ${(props) => (props.orderEdit ? '#A8A8A8' : '#ffffff')};
   box-shadow: 0px 4px 10px rgba(105, 105, 105, 0.1);
 
   padding: 3rem;
@@ -105,11 +106,11 @@ export const Activity = styled.div`
     margin-bottom: 1rem;
     padding-bottom: 1rem;
 
-    border-bottom: 1px solid #f6f6f6;
+    border-bottom: ${(props) => (props.orderEdit ? '1px solid #C9C9C9' : '1px solid #f6f6f6')};
   }
 `;
 
-export const ActivityContent = styled.div`
+export const ActivityContent = styled.div<{ orderEdit: boolean }>`
   width: 32.4rem;
   height: 34rem;
 
@@ -120,15 +121,21 @@ export const ActivityContent = styled.div`
     height: 4rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    padding-left: 1rem;
+    padding: 0 1.5rem;
     font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 1.6rem;
 
     color: #696969;
-    background-color: #f2f2f2;
+    background-color: ${(props) => (props.orderEdit ? '#FFFFFF' : '#f2f2f2')};
     border-radius: 1rem;
+
+    & > span {
+      font-size: 2.3rem;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -144,5 +151,16 @@ export const EditBtn = styled.div`
     cursor: pointer;
     color: #696969;
     margin-top: 3rem;
+  }
+
+  .save,
+  .cancel {
+    width: 6.2rem;
+    margin-left: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .save {
+    background-color: #ffffff;
   }
 `;
