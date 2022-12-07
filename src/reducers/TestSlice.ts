@@ -26,6 +26,6 @@ export const testSlice = createSlice({
 });
 
 export const { resetValue } = testSlice.actions;
-export const testCount = (state: RootState) => state.counter.value;
+export const testCount = (state: RootState) => state;
 
 export default testSlice.reducer;
