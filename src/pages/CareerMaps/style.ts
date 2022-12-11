@@ -6,6 +6,7 @@ export const CareerMapsWrapper = styled.div`
 
 export const Menu = styled.div`
   padding: 2rem;
+  padding-top: 3rem;
 
   min-width: 41.7rem;
   min-height: 100vh;
