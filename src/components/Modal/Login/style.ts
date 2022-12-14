@@ -1,12 +1,20 @@
 import styled from '@emotion/styled';
 
+export const Background = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+`;
+
 export const Modal = styled.div`
-  background-color: gray;
   display: flex;
   width: 90%;
-  height: 50rem;
-  max-width: 100rem;
-  border-radius: 1rem;
+  height: 62rem;
+  max-width: 1038px;
+  border-radius: 4rem;
 
   /* 가운데 배치 */
   position: fixed;
@@ -16,10 +24,10 @@ export const Modal = styled.div`
 
   .field--welcome {
     position: relative;
-    background-color: #ededed;
+    background-color: white;
     width: 50%;
     height: 100%;
-    border-radius: 1rem 0 0 1rem;
+    border-radius: 4rem 0 0 4rem;
 
     /* 가운데 배치 */
     display: flex;
@@ -37,7 +45,7 @@ export const Modal = styled.div`
       text-align: center;
 
       .logo__image {
-        width: 13.5rem;
+        width: 21rem;
         margin-bottom: 2rem;
       }
 
@@ -50,10 +58,10 @@ export const Modal = styled.div`
 
   .field--login {
     position: relative;
-    background-color: #d4d4d4;
+    background-color: ${(props) => props.theme.colors.primary};
     width: 50%;
     height: 100%;
-    border-radius: 0 1rem 1rem 0;
+    border-radius: 0 4rem 4rem 0;
 
     div {
       display: flex;

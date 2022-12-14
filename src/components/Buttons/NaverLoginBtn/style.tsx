@@ -8,12 +8,12 @@ export const LoginButton = styled.button`
   width: 25rem;
   padding: 1.5rem 0;
   border-radius: 50rem;
-  background-color: #03c759;
+  background-color: white;
 `;
 
 export const Text = styled.span`
   font-size: 1.4rem;
-  color: white;
+  color: black;
 `;
 
 export const Logo = styled.img`

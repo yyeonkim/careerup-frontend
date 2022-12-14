@@ -16,7 +16,7 @@ export default function NaverLoginBtn({ refObject }: NaverLoginBtnProps) {
   return (
     <LoginButton onClick={onClick}>
       <Logo src={logoImg} />
-      <Text> 네이버 계정으로 시작하기</Text>
+      <Text> 네이버 계정으로 로그인</Text>
     </LoginButton>
   );
 }

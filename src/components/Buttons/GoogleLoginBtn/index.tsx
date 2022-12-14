@@ -10,7 +10,7 @@ export default function GoogleLoginBtn({ onClick }: Props) {
   return (
     <StyledButton onClick={onClick}>
       <GoogleLogo src={logoImg} />
-      <StyledText> 구글 계정으로 시작하기</StyledText>
+      <StyledText> 구글 계정으로 로그인</StyledText>
     </StyledButton>
   );
 }
