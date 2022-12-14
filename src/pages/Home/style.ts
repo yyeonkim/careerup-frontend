@@ -1,4 +1,26 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+
+// Animation
+const fade1 = keyframes`
+ 0%, 100% {
+    opacity: 1
+  }
+
+  10%, 90% {
+    opacity: 0
+  }
+`;
+
+const fade2 = keyframes`
+ 0%, 100% {
+    opacity: 0
+  }
+
+  10%, 90% {
+    opacity: 1
+  }
+`;
 
 export const Container = styled.div`
   width: 100vw;
@@ -34,11 +56,11 @@ export const Main = styled.div`
   .content {
     width: 100%;
     margin-bottom: 8rem;
+    margin-top: 6rem;
     display: flex;
     justify-content: space-between;
 
     .info {
-      margin-top: 6rem;
       font-weight: bold;
       font-size: 5.4rem;
 
@@ -48,10 +70,31 @@ export const Main = styled.div`
         margin-bottom: 2rem;
       }
     }
-    .logo {
-      width: 45rem;
-      height: 45rem;
-    }
+  }
+`;
+
+export const Slider = styled.div`
+  position: relative;
+
+  img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    transition: all 0.5s ease-out;
+  }
+
+  .logo {
+    width: 45rem;
+    height: 45rem;
+  }
+
+  .proto {
+    width: 60rem;
+  }
+
+  .active {
+    opacity: 1;
   }
 `;
 
