@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { IoCloseSharp } from 'react-icons/io5';
 
 import { Background, Modal } from './style';
-import { LoginGoogle } from '../../../components/LoginGoogle';
+import LoginGoogle from '../../../components/LoginGoogle';
 import NaverLogin from '../../../components/NaverLogin';
 
 export default function LoginModal() {

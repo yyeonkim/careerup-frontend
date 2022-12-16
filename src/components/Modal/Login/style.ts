@@ -1,4 +1,15 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+
+const moveIn = keyframes`
+  from {
+    transform: translate(-50%, 10%);
+  }
+
+  to {
+    transform: translate(-50%, -50%);
+  }
+`;
 
 export const Background = styled.div`
   position: fixed;
@@ -20,7 +31,8 @@ export const Modal = styled.div`
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+
+  animation: ${moveIn} 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 
   .field--welcome {
     position: relative;
