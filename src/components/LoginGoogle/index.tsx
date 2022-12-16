@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 import GoogleLogin from 'react-google-login';
-import { gapi } from 'gapi-script';
 
 import GoogleLoginBtn from '../Buttons/GoogleLoginBtn';
 
@@ -12,7 +11,7 @@ interface IUserProfile {
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-export const LoginGoogle = () => {
+const LoginGoogle = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState<IUserProfile>({});
 
@@ -27,13 +26,6 @@ export const LoginGoogle = () => {
     setIsLogin(true);
   }, []);
 
-  gapi.load('client:auth2', () => {
-    gapi.client.init({
-      clientId: CLIENT_ID,
-      plugin_name: 'chat',
-    });
-  });
-
   return (
     <GoogleLogin
       clientId={CLIENT_ID as string}
@@ -46,24 +38,3 @@ export const LoginGoogle = () => {
 };
 
 export default LoginGoogle;
-
-// interface Props2 {
-//   userInfo: IUserProfile;
-// }
-
-// export const Profile: FC<Props2> = ({ userInfo }) => {
-//   return (
-//     <>
-//       <div
-//         style={{
-//           width: '32px',
-//           height: '32px',
-//           borderRadius: '32px',
-//           background: `url(${userInfo.profileImg.replace('96', '32')})`,
-//         }}
-//       />
-//       <h3>이름: {userInfo.name}</h3>
-//       <h3>이메일: {userInfo.email}</h3>
-//     </>
-//   );
-// };
