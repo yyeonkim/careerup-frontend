@@ -2,11 +2,11 @@ import React, { useCallback } from 'react';
 import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle } from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import ActivityInput from '../Modal/ActivityInput';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { addRoad, roadMap, toggleIsModal } from '../../reducers/RoadMapSlice';
 import RoadMapModal from '../RoadMapModal';
+import ActivityInput from '../Modal/ActivityInput';
 
 export default function RoadMap() {
   const dispatch = useAppDispatch();
@@ -56,11 +56,11 @@ export default function RoadMap() {
               const check = activity % 3;
 
               if (activity != 0 && check === 0) {
-                top = activity > 7 ? top + 21.5 : top + 19.7;
+                top = activity > 7 ? top + 21.45 : top + 19.6;
                 isLeft = !isLeft;
               }
 
-              if ((!isLeft && check === 0) || (isLeft && check === 2)) left = 9;
+              if ((!isLeft && check === 0) || (isLeft && check === 2)) left = 8;
               else if ((!isLeft && check === 1) || (isLeft && check === 1)) left = 40;
               else left = 70;
 
