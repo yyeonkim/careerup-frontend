@@ -39,10 +39,13 @@ export const Modal = styled.div`
       top: 5rem;
       left: 5rem;
       font-size: 2.5rem;
+      font-weight: bold;
     }
 
     .logo {
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       .logo__image {
         width: 21rem;
@@ -50,8 +53,7 @@ export const Modal = styled.div`
       }
 
       .logo__text {
-        font-size: 3.2rem;
-        font-weight: 500;
+        width: 21rem;
       }
     }
   }
@@ -80,6 +82,8 @@ export const Modal = styled.div`
       top: 5rem;
       left: 8rem;
       font-size: 2.4rem;
+      color: white;
+      font-weight: bold;
     }
   }
 `;
