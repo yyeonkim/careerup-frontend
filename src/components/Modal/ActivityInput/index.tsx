@@ -13,6 +13,7 @@ import {
   UseTools,
   Tool,
   Review,
+  ToolPlus,
 } from './styles';
 import useInput from '../../../hooks/useInput';
 import autosize from 'autosize';
@@ -20,6 +21,9 @@ import { FiChevronDown } from 'react-icons/fi';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
+import { BiPlus } from 'react-icons/bi';
+import { useAppDispatch } from '../../../redux/hooks';
+import { toggleIsModal } from '../../../reducers/RoadMapSlice';
 
 const ActivityInput = () => {
   const [projectName, onChangeProjectName, setProjectName] = useInput('');
@@ -29,12 +33,24 @@ const ActivityInput = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
+  const [dummyTool, setDummyTool] = useState(['Figma', 'React', 'TS']);
+
+  const dispatch = useAppDispatch();
+
   const onChangeContent = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   }, []);
 
   const onChangeReview = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setReview(e.target.value);
+  }, []);
+
+  const onClickBackGround = useCallback(() => {
+    dispatch(toggleIsModal());
+  }, []);
+
+  const stopPropagation = useCallback((e: any) => {
+    e.stopPropagation();
   }, []);
 
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -53,8 +69,8 @@ const ActivityInput = () => {
   }, []);
 
   return (
-    <Wrapper>
-      <Form>
+    <Wrapper onClick={onClickBackGround}>
+      <Form onClick={stopPropagation}>
         <Header>
           <img src="/images/plusBtn.png" alt="plus버튼" />
           <span>잇타(It's Time)</span>
@@ -82,10 +98,11 @@ const ActivityInput = () => {
             <DatePicker
               className={'calendar'}
               locale={ko}
-              dateFormat="yyyy년 MM월    ~"
+              dateFormat="yyyy년 MM월"
               selected={startDate}
               onChange={(date: Date) => setStartDate(date)}
               showMonthYearPicker
+              calendarClassName={'example-custom-input'}
             />
             <DatePicker
               className={'calendar'}
@@ -125,15 +142,16 @@ const ActivityInput = () => {
               <FiChevronDown />
             </span>
           </ProjectImage>
+
           <UseTools>
             <SubTitle>사용한 도구</SubTitle>
             <div>
-              <Tool>Figma</Tool>
-              <Tool>Figma</Tool>
-              <Tool>Figma</Tool>
-              <Tool>Figma</Tool>
-              <Tool>Figma</Tool>
-              <Tool>Figma</Tool>
+              {dummyTool.map((tool) => (
+                <Tool>{tool}</Tool>
+              ))}
+              <ToolPlus>
+                <BiPlus />
+              </ToolPlus>
             </div>
           </UseTools>
         </Content>

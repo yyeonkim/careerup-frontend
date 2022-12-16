@@ -92,6 +92,25 @@ export const Info = styled.div`
       outline: none;
     }
   }
+
+  .example-custom-input {
+    background-color: #282c34;
+    color: white;
+    cursor: pointer;
+    width: 240px;
+    padding: 10px;
+    margin-bottom: 5px;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .react-datepicker__header,
+  .react-datepicker-year-header {
+    color: red;
+    background-color: blue;
+    border-bottom: 1px solid yellow;
+  }
 `;
 
 export const Content = styled.div`
@@ -154,6 +173,7 @@ export const UseTools = styled.div`
 
   & > div {
     display: flex;
+    align-items: center;
 
     margin-top: 1rem;
     padding-bottom: 1rem;
@@ -176,6 +196,26 @@ export const Tool = styled.div`
 
   width: 6.9rem;
   height: 2.4rem;
+`;
+
+export const ToolPlus = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 5.7rem;
+  height: 2.4rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 1.75rem;
+
+  color: #d9d9d9;
+  cursor: pointer;
+  margin-bottom: 1rem;
+
+  &:hover {
+    color: #4e4e4e;
+    border: 1px solid #4e4e4e;
+  }
 `;
 
 export const Review = styled.div`
