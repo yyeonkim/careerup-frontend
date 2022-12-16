@@ -1,26 +1,4 @@
-import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-
-// Animation
-const fade1 = keyframes`
- 0%, 100% {
-    opacity: 1
-  }
-
-  10%, 90% {
-    opacity: 0
-  }
-`;
-
-const fade2 = keyframes`
- 0%, 100% {
-    opacity: 0
-  }
-
-  10%, 90% {
-    opacity: 1
-  }
-`;
 
 export const Container = styled.div`
   width: 100vw;
@@ -62,7 +40,7 @@ export const Main = styled.div`
 
     .info {
       font-weight: bold;
-      font-size: 5.4rem;
+      font-size: 4.8rem;
 
       div {
         color: white;

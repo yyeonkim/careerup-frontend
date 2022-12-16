@@ -5,6 +5,7 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Container, LoginButton, Header, Main, MapButton, Slider } from './style';
 import LoginModal from '../../components/Modal/Login';
 
+// 슬라이드에 들어갈 이미지
 const images = [
   { className: 'proto', path: '/images/prototype.png' },
   { className: 'logo', path: '/images/careerup_logo_no_bg_big.png' },
@@ -12,8 +13,9 @@ const images = [
 
 export default function Home() {
   const location = useLocation();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
 
+  // 5초마다 다음 슬라이드 이미지로 이동
   useEffect(() => {
     const id = setInterval(() => {
       setActiveIndex((current) => (current + 1) % images.length);
@@ -40,6 +42,7 @@ export default function Home() {
             </div>
             <img src={process.env.PUBLIC_URL + '/images/careerup_text_logo.png'} />
           </div>
+
           <Slider>
             {images.map((item, index) => {
               if (index === activeIndex) {
