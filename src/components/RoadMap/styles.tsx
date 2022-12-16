@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import RoadMapModal from '../RoadMapModal';
 
 export const RoadMapContainer = styled.div`
   font-size: 2rem;
@@ -117,10 +118,8 @@ export const AddCircle = styled.div`
   background-color: #ffffff;
 
   position: absolute;
-  top: 38rem;
-  //top: 64rem;
-  left: 8.7rem;
-  z-index: 999;
+
+  margin-top: -1rem;
 
   width: 9rem;
   height: 9rem;
@@ -129,5 +128,9 @@ export const AddCircle = styled.div`
   & > img {
     width: 4.5rem;
     height: 4.5rem;
+  }
+
+  .plusBtn {
+    cursor: pointer;
   }
 `;

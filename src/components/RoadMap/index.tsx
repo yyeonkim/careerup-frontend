@@ -1,28 +1,26 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback } from 'react';
 import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle } from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import BaseModal from '../BaseModal';
 import ActivityInput from '../Modal/ActivityInput';
 import { useWindowSize } from '../../hooks/useWindowSize';
-
-interface Props {
-  num: number;
-}
-
-const Circle: FC<Props> = ({ num }) => {
-  return (
-    <AddCircle style={{ left: num === 1 ? '18rem' : '8.7rem' }}>
-      {num === 1 ? <img src="/images/green.png" alt="" /> : <FontAwesomeIcon icon={faPlus} />}
-    </AddCircle>
-  );
-};
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { addRoad, roadMap, toggleIsModal } from '../../reducers/RoadMapSlice';
+import RoadMapModal from '../RoadMapModal';
 
 export default function RoadMap() {
-  const [lenRoad, setLenRoad] = useState(0);
+  const dispatch = useAppDispatch();
+
+  const roadLen = useAppSelector(roadMap).roadLen;
+  const activity = useAppSelector(roadMap).activity;
+  const isModal = useAppSelector(roadMap).isModal;
 
   const onClickAddRoad = useCallback(() => {
-    setLenRoad((prev) => prev + 1);
+    dispatch(addRoad());
+  }, []);
+
+  const onClickIsModal = useCallback(() => {
+    dispatch(toggleIsModal());
   }, []);
 
   const width = useWindowSize().width;
@@ -32,6 +30,10 @@ export default function RoadMap() {
     leftWidth = width - 418;
   }
 
+  let isLeft = false,
+    top = 0,
+    left;
+
   return (
     <RoadMapContainer>
       <MapWrapper>
@@ -40,7 +42,7 @@ export default function RoadMap() {
             <div className={'first'}>
               <img src="/images/firstMap.png" alt="firstMap" />
             </div>
-            {[...Array(lenRoad)].map((v, road) => {
+            {[...Array(roadLen)].map((v, road) => {
               const roadImg = road % 2 === 0 ? '/images/SecondMap.png' : '/images/ThirdMap.png';
 
               return (
@@ -49,8 +51,29 @@ export default function RoadMap() {
                 </div>
               );
             })}
-            <Circle num={1} />
-            <Circle num={2} />
+
+            {[...Array(activity)].map((v, activity) => {
+              const check = activity % 3;
+
+              if (activity != 0 && check === 0) {
+                top = activity > 7 ? top + 21.5 : top + 19.7;
+                isLeft = !isLeft;
+              }
+
+              if ((!isLeft && check === 0) || (isLeft && check === 2)) left = 9;
+              else if ((!isLeft && check === 1) || (isLeft && check === 1)) left = 40;
+              else left = 70;
+
+              return (
+                <AddCircle style={{ top: `${top}rem`, left: activity === 0 ? '4rem' : `${left}rem` }}>
+                  {activity === 0 ? (
+                    <img src="/images/green.png" alt="" />
+                  ) : (
+                    <FontAwesomeIcon icon={faPlus} className={'plusBtn'} onClick={onClickIsModal} />
+                  )}
+                </AddCircle>
+              );
+            })}
           </Road>
         </Map>
       </MapWrapper>
@@ -61,12 +84,10 @@ export default function RoadMap() {
         </AddRoadBtn>
       </SideBar>
 
-      {
-        <BaseModal
-          show={true}
-          onCloseModal={() => {
-            true;
-          }}
+      {isModal && (
+        <RoadMapModal
+          show={isModal}
+          onCloseModal={onClickIsModal}
           style={{
             width: `${leftWidth}px`,
             minHeight: '100vh',
@@ -74,8 +95,8 @@ export default function RoadMap() {
           }}
         >
           <ActivityInput />
-        </BaseModal>
-      }
+        </RoadMapModal>
+      )}
     </RoadMapContainer>
   );
 }
