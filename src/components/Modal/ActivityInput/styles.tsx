@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const Wrapper = styled.div`
   width: 100%;
+  min-width: 600px;
   height: 100vh;
 
   display: flex;
@@ -42,12 +43,14 @@ export const SubTitle = styled(Title)`
 export const Header = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
 
   margin: 0 4rem;
   margin-top: 3rem;
 
   & > img {
     width: 5.5rem;
+    cursor: pointer;
   }
 
   & > span {
@@ -56,6 +59,47 @@ export const Header = styled.div`
     font-weight: 700;
     color: #696969;
   }
+`;
+
+export const ActivityType = styled.div`
+  position: absolute;
+  top: 4.5rem;
+  left: 6rem;
+
+  & > div {
+    position: relative;
+  }
+
+  & > div > img {
+    width: 40.9rem;
+  }
+`;
+
+export const Types = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0.7rem;
+  left: 2rem;
+
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #ffffff;
+
+  & > div {
+    margin-right: 2.5rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+export const TypeImg = styled.div`
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  margin-bottom: 0.5rem;
 `;
 
 export const Info = styled.div`
@@ -82,34 +126,23 @@ export const Info = styled.div`
     }
   }
 
-  .calendar {
-    border: none;
-
-    color: #4e4e4e;
-    font-size: 1.6rem;
-
-    &:focus {
-      outline: none;
-    }
+  .dateWave {
+    margin-right: 0.3rem;
   }
+`;
 
-  .example-custom-input {
-    background-color: #282c34;
-    color: white;
-    cursor: pointer;
-    width: 240px;
-    padding: 10px;
-    margin-bottom: 5px;
+export const DateSelect = styled.select`
+  border: none;
+  -webkit-appearance: none; /* 크롬 화살표 없애기 */
+  -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
+  appearance: none; /* 화살표 없애기 */
 
-    display: flex;
-    justify-content: center;
-  }
+  margin-right: 0.3rem;
 
-  .react-datepicker__header,
-  .react-datepicker-year-header {
-    color: red;
-    background-color: blue;
-    border-bottom: 1px solid yellow;
+  font-size: 1.6rem;
+  color: #4e4e4e;
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -202,6 +235,7 @@ export const ToolPlus = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   width: 5.7rem;
   height: 2.4rem;
@@ -215,6 +249,48 @@ export const ToolPlus = styled.div`
   &:hover {
     color: #4e4e4e;
     border: 1px solid #4e4e4e;
+  }
+`;
+
+export const ToolInputModal = styled.div`
+  position: absolute;
+  top: 3rem;
+  left: -1rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 12.8rem;
+  height: 2.8rem;
+  border: 1px solid #d9d9d9;
+
+  color: #000000;
+  font-size: 1.4rem;
+  font-weight: 300;
+  background-color: #d9d9d9;
+
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+
+    border-radius: 2rem;
+    margin: 0 1rem;
+
+    width: 11.5rem;
+    height: 2.2rem;
+  }
+
+  & > div > input {
+    width: 80%;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 `;
 
