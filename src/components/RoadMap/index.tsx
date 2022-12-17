@@ -65,7 +65,7 @@ export default function RoadMap() {
               else left = 70;
 
               return (
-                <AddCircle style={{ top: `${top}rem`, left: activity === 0 ? '4rem' : `${left}rem` }}>
+                <AddCircle key={activity} style={{ top: `${top}rem`, left: activity === 0 ? '4rem' : `${left}rem` }}>
                   {activity === 0 ? (
                     <img src="/images/green.png" alt="" />
                   ) : (
