@@ -1,5 +1,6 @@
 import React, { CSSProperties, FC, useCallback } from 'react';
 import { CreateMenu } from './styles';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 interface Props {
   show: boolean;

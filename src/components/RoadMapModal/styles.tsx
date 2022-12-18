@@ -1,15 +1,14 @@
 import styled from '@emotion/styled';
 
 export const CreateMenu = styled.div`
-  display: flex;
-  justify-content: flex-end;
-
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
   z-index: 1000;
+
+  margin-left: 40.6rem;
 
   & > div {
     position: absolute;

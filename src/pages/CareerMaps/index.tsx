@@ -11,7 +11,7 @@ import {
 } from './style';
 import RoadMap from '../../components/RoadMap';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { roadMap, toggleOrderEdit } from '../../reducers/RoadMapSlice';
+import { closeIsActivityTypeModal, closeIsToolModal, roadMap, toggleOrderEdit } from '../../reducers/RoadMapSlice';
 import { useCallback, useEffect, useState } from 'react';
 import { VscThreeBars } from 'react-icons/vsc';
 
@@ -105,8 +105,8 @@ export default function CareerMaps() {
 
   const onDragEnd = (event: any) => {
     event.currentTarget.style.opacity = '1';
-    const listItens = document.querySelectorAll('.draggable');
-    listItens.forEach((item) => {
+    const listItems = document.querySelectorAll('.draggable');
+    listItems.forEach((item) => {
       item.classList.remove('over');
     });
   };

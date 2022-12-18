@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle } from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { addRoad, roadMap, toggleIsModal } from '../../reducers/RoadMapSlice';
 import RoadMapModal from '../RoadMapModal';
@@ -22,13 +21,6 @@ export default function RoadMap() {
   const onClickIsModal = useCallback(() => {
     dispatch(toggleIsModal());
   }, []);
-
-  const width = useWindowSize().width;
-  let leftWidth = 0;
-
-  if (width) {
-    leftWidth = width - 418;
-  }
 
   let isLeft = false,
     top = 0,
@@ -89,7 +81,7 @@ export default function RoadMap() {
           show={isModal}
           onCloseModal={onClickIsModal}
           style={{
-            width: `${leftWidth}px`,
+            width: '100%',
             minHeight: '100vh',
             backgroundColor: 'rgba(80,80,80,0.53)',
           }}
