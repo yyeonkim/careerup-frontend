@@ -22,7 +22,7 @@ const initialState: RoadMapState = {
   orderEdit: false,
   roadLen: 0,
   activity: 9,
-  isModal: true,
+  isModal: false,
   isActivityTypeModal: false,
   isToolModal: false,
   modalData: {
