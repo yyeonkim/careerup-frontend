@@ -23,7 +23,7 @@ export const Map = styled.div`
   align-items: center;
   min-width: 95%;
 
-  margin: 3rem 3rem 0 0;
+  margin: 3rem 3rem 2rem 0;
   background-color: #ffffff;
   border-radius: 5rem;
 
