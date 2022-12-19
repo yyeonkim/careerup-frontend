@@ -1,51 +1,184 @@
-import { useState } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
-
 import {
-  AddButton,
-  ButtonContainer,
-  CancelButton,
-  CareerMapList,
-  Map,
-  MapsContainer,
   Menu,
-  ProfileContainer,
-  ProfileImg,
-  SaveButton,
-  Title,
   CareerMapsWrapper,
+  Profile,
+  InfoWrapper,
+  ProfileTop,
+  ProfileBottom,
+  Activity,
+  ActivityContent,
+  EditBtn,
 } from './style';
 import RoadMap from '../../components/RoadMap';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { closeIsActivityTypeModal, closeIsToolModal, roadMap, toggleOrderEdit } from '../../reducers/RoadMapSlice';
+import { useCallback, useEffect, useState } from 'react';
+import { VscThreeBars } from 'react-icons/vsc';
 
 export default function CareerMaps() {
-  const [careerMaps, setCareerMaps] = useState<number[]>([0, 1, 2]);
+  const [dummyActivity, setDummyActivity] = useState([
+    '잇타 동아리',
+    '자격증1',
+    '자격증2',
+    '자격증3',
+    '자격증4',
+    '자격증5',
+    '자격증6',
+  ]);
 
-  const addCareerMap = () => {
-    setCareerMaps((current) => [...current, current.length]);
+  const [dragAndDrop, setDragAndDrop] = useState<any>({
+    draggedFrom: null,
+    draggedTo: null,
+    isDragging: false,
+    originalOrder: [],
+    updatedOrder: [],
+  });
+
+  const orderEdit = useAppSelector(roadMap).orderEdit;
+  const dispatch = useAppDispatch();
+
+  const onClickOrderEdit = useCallback(() => {
+    dispatch(toggleOrderEdit());
+  }, []);
+
+  const onClickCancel = useCallback(() => {
+    dispatch(toggleOrderEdit());
+  }, []);
+
+  const onDragStart = (event: any) => {
+    event.currentTarget.style.opacity = '0.4';
+    const initialPosition = parseInt(event.currentTarget.dataset.position);
+    setDragAndDrop({
+      ...dragAndDrop,
+      draggedFrom: initialPosition,
+      originalOrder: dummyActivity,
+    });
+  };
+
+  const onDragOver = (event: any) => {
+    event.preventDefault();
+    let newList = dragAndDrop.originalOrder;
+    const draggedFrom = dragAndDrop.draggedFrom; // 드래그 되는 항목의 인덱스(시작)
+    const draggedTo = parseInt(event.currentTarget.dataset.position); // 놓을 수 있는 영역의 인덱스(끝)
+    const itemDragged = newList[draggedFrom];
+    const remainingItems = newList.filter(
+      // draggedFrom(시작) 항목 제외한 배열 목록
+      (item: any, index: any) => index !== draggedFrom
+    );
+    newList = [
+      // 드래그 시작, 끝 인덱스를 활용해 새로운 배열로 반환해줌
+      ...remainingItems.slice(0, draggedTo),
+      itemDragged,
+      ...remainingItems.slice(draggedTo),
+    ];
+    if (draggedTo !== dragAndDrop.draggedTo) {
+      // 놓을 수 있는 영역이 변경 되면 객체를 변경해줌
+      setDragAndDrop({
+        ...dragAndDrop,
+        updatedOrder: newList,
+        draggedTo: draggedTo,
+      });
+    }
+  };
+
+  const onDrop = (event: any) => {
+    setDummyActivity(dragAndDrop.updatedOrder);
+    setDragAndDrop({
+      ...dragAndDrop,
+      draggedFrom: null,
+      draggedTo: null,
+    });
+  };
+
+  const onDragLeave = (event: any) => {
+    event.currentTarget.classList.remove('over');
+    setDragAndDrop({
+      ...dragAndDrop,
+      draggedTo: null,
+    });
+  };
+
+  // 잡은 Item이 다른 Item이랑 겹쳤을 때 발생<겹쳐졌을 때>
+  const onDragEnter = (event: any) => {
+    event.currentTarget.classList.add('over');
+  };
+
+  const onDragEnd = (event: any) => {
+    event.currentTarget.style.opacity = '1';
+    const listItems = document.querySelectorAll('.draggable');
+    listItems.forEach((item) => {
+      item.classList.remove('over');
+    });
   };
 
   return (
     <CareerMapsWrapper>
       <Menu>
-        <ProfileContainer>
-          <ProfileImg src="https://notioly.com/wp-content/uploads/2022/11/181.Nodes_.png" />
-          <ButtonContainer>
-            <SaveButton>저장</SaveButton>
-            <CancelButton>취소</CancelButton>
-          </ButtonContainer>
-        </ProfileContainer>
+        <Profile>
+          <InfoWrapper>
+            <ProfileTop>
+              <img
+                src="https://img.danawa.com/prod_img/500000/017/350/img/13350017_1.jpg?shrink=330:330&_v=20210224095944"
+                alt=""
+              />
+              <div>
+                <span>이름</span>
+                <span>나이</span>
+                <span>직업</span>
+              </div>
+              <div>
+                <span>신짱구</span>
+                <span>23세</span>
+                <span>대학생</span>
+              </div>
+            </ProfileTop>
+            <ProfileBottom>
+              <div>희망 커리어</div>
+              <div>프론트엔드 개발자</div>
+            </ProfileBottom>
+          </InfoWrapper>
+        </Profile>
 
-        <CareerMapList>
-          <Title>내 커리어 맵</Title>
-          <MapsContainer>
-            {careerMaps.map(() => (
-              <Map></Map>
-            ))}
-            <AddButton onClick={addCareerMap}>
-              <AiOutlinePlus size={24} />
-            </AddButton>
-          </MapsContainer>
-        </CareerMapList>
+        <Activity orderEdit={orderEdit}>
+          <div>
+            <span>활동</span>
+          </div>
+          <ActivityContent orderEdit={orderEdit}>
+            {dummyActivity.map((item, idx) => {
+              return (
+                <div
+                  className="draggable"
+                  key={idx}
+                  draggable={orderEdit} //  draggable => true이면 드래그가 가능합니다.
+                  data-position={idx} //  dataset에 index값을 주어 선택된 index를 찾을 수 있습니다.
+                  onDragStart={onDragStart} //  ex) event.currentTarget.dataset.position
+                  onDragOver={onDragOver}
+                  onDragLeave={onDragLeave}
+                  onDrop={onDrop}
+                  onDragEnter={onDragEnter}
+                  onDragEnd={onDragEnd}
+                >
+                  {item}
+                  <span>{orderEdit && <VscThreeBars />}</span>
+                </div>
+              );
+            })}
+          </ActivityContent>
+
+          {!orderEdit && (
+            <EditBtn>
+              <button onClick={onClickOrderEdit}>순서 편집</button>
+            </EditBtn>
+          )}
+          {orderEdit && (
+            <EditBtn>
+              <button className="save">저장</button>
+              <button className="cancel" onClick={onClickCancel}>
+                취소
+              </button>
+            </EditBtn>
+          )}
+        </Activity>
       </Menu>
       <RoadMap />
     </CareerMapsWrapper>
