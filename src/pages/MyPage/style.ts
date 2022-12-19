@@ -41,7 +41,6 @@ export const Container = styled.div`
     .content__bottom {
       margin-top: 2rem;
       width: 100%;
-      padding-right: 1.6rem;
       display: flex;
       justify-content: flex-end;
     }

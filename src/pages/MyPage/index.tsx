@@ -1,9 +1,25 @@
 import { GrFormAdd } from 'react-icons/gr';
+import { useHistory, useLocation } from 'react-router-dom';
 import MyPageBtn from '../../components/Buttons/MyPageBtn';
 
 import { MapBox, Container, InfoBox, ProfileBox } from './style';
 
 export default function MyPage() {
+  const location = useLocation();
+  const history = useHistory();
+
+  const edit = () => {
+    history.push('/mypage#edit');
+  };
+
+  const save = () => {
+    history.push('/mypage');
+  };
+
+  const cancel = () => {
+    history.push('/mypage');
+  };
+
   return (
     <Container>
       <div className="content">
@@ -55,7 +71,14 @@ export default function MyPage() {
         </div>
 
         <div className="content__bottom">
-          <MyPageBtn text="프로필 수정" />
+          {location.hash === '#edit' ? (
+            <>
+              <MyPageBtn text="저장" onClick={save} />
+              <MyPageBtn text="취소" onClick={cancel} />
+            </>
+          ) : (
+            <MyPageBtn text="프로필 수정" onClick={edit} />
+          )}
         </div>
       </div>
     </Container>
