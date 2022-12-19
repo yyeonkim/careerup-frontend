@@ -3,9 +3,9 @@ import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { addRoad, roadMap, toggleIsModal } from '../../reducers/RoadMapSlice';
 import RoadMapModal from '../RoadMapModal';
 import ActivityInput from '../Modal/ActivityInput';
+import { addRoad, roadMap, toggleIsModal } from '../../redux/reducers/RoadMapSlice';
 
 export default function RoadMap() {
   const dispatch = useAppDispatch();
