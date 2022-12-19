@@ -1,37 +1,59 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  position: relative;
   background-color: ${(props) => props.theme.colors.background};
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 8rem); // header 높이 제외
 
   display: flex;
   justify-content: center;
-  align-items: center;
 
   .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     max-width: 144rem;
-    max-height: 61.8rem;
     width: 100%;
     height: 100%;
 
-    margin: auto;
-    display: flex;
-    padding: 0 1.6rem;
-
-    .content__right {
+    .content__top {
+      display: flex;
+      max-height: 61.8rem;
       width: 100%;
+      height: 100%;
 
-      .content__info {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        height: 100%;
+      .content__right {
         width: 100%;
-        max-height: 20rem;
+
+        .content__info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          height: 100%;
+          width: 100%;
+          max-height: 20rem;
+        }
       }
     }
+
+    .content__bottom {
+      margin-top: 2rem;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
   }
+`;
+
+export const Message = styled.span`
+  position: absolute;
+  z-index: 100;
+  top: 5rem;
+  font-size: 1.8rem;
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 const Wrapper = styled.div`
