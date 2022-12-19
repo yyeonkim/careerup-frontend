@@ -1,8 +1,8 @@
-import { GrFormAdd } from 'react-icons/gr';
 import { useHistory, useLocation } from 'react-router-dom';
-import MyPageBtn from '../../components/Buttons/MyPageBtn';
+import { GrFormAdd } from 'react-icons/gr';
 
-import { MapBox, Container, InfoBox, ProfileBox } from './style';
+import MyPageBtn from '../../components/Buttons/MyPageBtn';
+import { MapBox, Container, InfoBox, ProfileBox, Message } from './style';
 
 export default function MyPage() {
   const location = useLocation();
@@ -10,18 +10,22 @@ export default function MyPage() {
 
   const edit = () => {
     history.push('/mypage#edit');
+    // 수정 가능한 input으로 바꾸기
   };
 
   const save = () => {
+    // 편집 내용 저장
     history.push('/mypage');
   };
 
   const cancel = () => {
+    // 편집 내용 취소
     history.push('/mypage');
   };
 
   return (
     <Container>
+      {location.hash === '#edit' && <Message>내용을 클릭하여 수정하세요</Message>}
       <div className="content">
         <div className="content__top">
           <ProfileBox>

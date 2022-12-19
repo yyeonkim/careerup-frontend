@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  position: relative;
   background-color: ${(props) => props.theme.colors.background};
   height: calc(100vh - 8rem); // header 높이 제외
 
@@ -45,6 +46,14 @@ export const Container = styled.div`
       justify-content: flex-end;
     }
   }
+`;
+
+export const Message = styled.span`
+  position: absolute;
+  z-index: 100;
+  top: 5rem;
+  font-size: 1.8rem;
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 const Wrapper = styled.div`
