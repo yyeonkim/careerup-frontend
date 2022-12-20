@@ -37,7 +37,7 @@ import {
   toggleIsActivityTypeModal,
   toggleIsModal,
   toggleIsToolModal,
-} from '../../../reducers/RoadMapSlice';
+} from '../../../redux/reducers/RoadMapSlice';
 
 const ActivityInput = () => {
   const dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addValue } from '../actions/TestAPI';
-import { RootState } from '../redux/store';
+import { addValue } from '../../actions/TestAPI';
+import { RootState } from '../store';
 
 export interface TestState {
   value: number;

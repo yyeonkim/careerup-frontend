@@ -11,7 +11,12 @@ import {
 } from './style';
 import RoadMap from '../../components/RoadMap';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { closeIsActivityTypeModal, closeIsToolModal, roadMap, toggleOrderEdit } from '../../reducers/RoadMapSlice';
+import {
+  closeIsActivityTypeModal,
+  closeIsToolModal,
+  roadMap,
+  toggleOrderEdit,
+} from '../../redux/reducers/RoadMapSlice';
 import { useCallback, useEffect, useState } from 'react';
 import { VscThreeBars } from 'react-icons/vsc';
 
