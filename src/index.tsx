@@ -31,6 +31,10 @@ root.render(
               text-decoration: none;
               color: inherit;
             }
+            button {
+              border: none;
+              cursor: pointer;
+            }
 
             @font-face {
               font-family: 'Noto Sans KR';
