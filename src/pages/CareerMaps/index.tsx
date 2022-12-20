@@ -10,15 +10,10 @@ import {
   EditBtn,
 } from './style';
 import RoadMap from '../../components/RoadMap';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-  closeIsActivityTypeModal,
-  closeIsToolModal,
-  roadMap,
-  toggleOrderEdit,
-} from '../../redux/reducers/RoadMapSlice';
 import { useCallback, useEffect, useState } from 'react';
 import { VscThreeBars } from 'react-icons/vsc';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { roadMap, toggleOrderEdit } from '../../redux/reducers/RoadMapSlice';
 
 export default function CareerMaps() {
   const [dummyActivity, setDummyActivity] = useState([
