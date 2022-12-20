@@ -12,6 +12,7 @@ export const Container = styled.div`
 export const Logo = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   .logo__image {
     width: 4rem;
