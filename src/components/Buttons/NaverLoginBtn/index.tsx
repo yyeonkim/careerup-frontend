@@ -1,7 +1,7 @@
 import { RefObject, useState } from 'react';
 
 import { Logo, LoginButton, Text } from './style';
-import { IUserInfo } from '../../../interfaces';
+import { IUserLoginInfo } from '../../../interfaces';
 
 interface NaverLoginBtnProps {
   refObject: RefObject<HTMLDivElement>;
@@ -12,7 +12,7 @@ export default function NaverLoginBtn({ refObject }: NaverLoginBtnProps) {
   const NAVER_CALLBACK_URL = 'http://localhost:3000/login/naver';
   const logoImg = process.env.PUBLIC_URL + '/images/naver-logo.png';
 
-  const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
+  const [userInfo, setUserInfo] = useState<IUserLoginInfo | null>(null);
 
   const onClick = () => {
     getProfileData();

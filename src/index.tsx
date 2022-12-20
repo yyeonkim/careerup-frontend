@@ -35,6 +35,9 @@ root.render(
               border: none;
               cursor: pointer;
             }
+            input {
+              font-family: 'Noto Sans KR';
+            }
 
             @font-face {
               font-family: 'Noto Sans KR';

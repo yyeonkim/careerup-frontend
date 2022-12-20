@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import NaverLoginBtn from '../Buttons/NaverLoginBtn';
+import NaverLoginBtn from '../../Buttons/NaverLoginBtn';
 import './style.css';
 
 export default function NaverLogin() {

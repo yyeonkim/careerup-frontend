@@ -72,7 +72,6 @@ export const ProfileBox = styled(Wrapper)`
   width: 100%;
   height: 100%;
   border-radius: 3rem;
-  font-size: 2.4rem;
 
   img {
     width: 25rem;
@@ -84,13 +83,35 @@ export const ProfileBox = styled(Wrapper)`
     display: flex;
     align-items: center;
 
-    p {
-      line-height: 3.8rem;
-    }
-
     div:first-of-type {
       font-weight: 100;
       margin-right: 3.4rem;
+      min-width: 4.5rem;
+
+      p {
+        font-size: 2.4rem;
+      }
+    }
+
+    div:nth-of-type(2) {
+      min-width: 12rem;
+
+      input,
+      p {
+        font-size: 2rem;
+      }
+
+      input {
+        display: block;
+        border: none;
+        border-bottom: 1px solid gray;
+        max-width: 12rem;
+        line-height: 3.5rem;
+      }
+    }
+
+    p {
+      line-height: 3.8rem;
     }
   }
 `;
@@ -109,6 +130,13 @@ export const InfoBox = styled(Wrapper)`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  input {
+    font-weight: 500;
+    font-size: 2rem;
+    border: none;
+    border-bottom: 1px solid gray;
+  }
 `;
 
 export const MapBox = styled(Wrapper)`

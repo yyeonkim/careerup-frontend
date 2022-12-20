@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 
-import GoogleLoginBtn from '../Buttons/GoogleLoginBtn';
+import GoogleLoginBtn from '../../Buttons/GoogleLoginBtn';
 
 interface IUserProfile {
   profileImg?: string;
