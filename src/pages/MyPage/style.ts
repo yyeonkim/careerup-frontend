@@ -90,6 +90,7 @@ export const ProfileBox = styled(Wrapper)`
 
       p {
         font-size: 2.4rem;
+        color: #696969;
       }
     }
 
