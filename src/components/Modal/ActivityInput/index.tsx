@@ -1,79 +1,29 @@
 import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Wrapper,
-  Header,
-  Line,
-  Info,
-  Content,
-  Title,
-  TextArea,
-  Form,
-  ProjectImage,
-  SubTitle,
-  UseTools,
-  Tool,
-  Review,
-  ToolPlus,
-  ToolInputModal,
-  DateSelect,
-  ActivityType,
-  Types,
-  TypeImg,
-} from './styles';
+import { Wrapper, Line, Info, Content, Title, TextArea, Form, ProjectImage, Review } from './styles';
 import useInput from '../../../hooks/useInput';
 import autosize from 'autosize';
 import { FiChevronDown } from 'react-icons/fi';
 import 'react-datepicker/dist/react-datepicker.css';
-import { BiPlus } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import {
-  changeEndMonth,
-  changeEndYear,
-  changeStartMonth,
-  changeStartYear,
-  closeIsActivityTypeModal,
-  closeIsToolModal,
-  roadMap,
-  toggleIsActivityTypeModal,
-  toggleIsModal,
-  toggleIsToolModal,
-} from '../../../redux/reducers/RoadMapSlice';
+import { closeIsActivityTypeModal, toggleIsModal } from '../../../redux/reducers/RoadMapSlice';
+import { ConfigProvider, DatePicker, Space } from 'antd';
+import 'moment/locale/ko';
+import locale from 'antd/lib/locale/ko_KR';
+import ActivityInputHeader from '../../ActivityInputHeader';
+const { RangePicker } = DatePicker;
 
 const ActivityInput = () => {
   const dispatch = useAppDispatch();
+
   const [projectName, onChangeProjectName, setProjectName] = useInput('');
   const [content, , setContent] = useInput('');
   const [role, onChangeRole, setRole] = useInput('');
   const [review, , setReview] = useInput('');
-  const [tool, onChangeTool, setTool] = useInput('');
-  const isActivityTypeModal = useAppSelector(roadMap).isActivityTypeModal;
-  const isToolModal = useAppSelector(roadMap).isToolModal;
+  const [range, setRange] = useState([]);
 
-  const year = new Date().getFullYear();
-  const yearRange = Array.from({ length: year - 2010 + 11 }, (v, i) => 2010 + i);
-  const monthRange = Array.from({ length: 12 }, (v, i) => 1 + i);
-  const startYear = useAppSelector(roadMap).modalData.Date.startYear;
-  const startMonth = useAppSelector(roadMap).modalData.Date.startMonth;
-  const endYear = useAppSelector(roadMap).modalData.Date.endYear;
-  const endMonth = useAppSelector(roadMap).modalData.Date.endMonth;
-
-  const onChangeStartDateYear = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeStartYear(parseInt(e.target.value)));
+  const onChangeRange = useCallback((e: any) => {
+    setRange(e);
   }, []);
-
-  const onChangeStartDateMonth = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeStartMonth(parseInt(e.target.value)));
-  }, []);
-
-  const onChangeEndDateYear = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeEndYear(parseInt(e.target.value)));
-  }, []);
-
-  const onChangeEndDateMonth = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeEndMonth(parseInt(e.target.value)));
-  }, []);
-
-  const [dummyTool, setDummyTool] = useState(['Figma', 'React', 'TS', 'JS']);
 
   const stopPropagation = useCallback((e: any) => {
     e.stopPropagation();
@@ -91,18 +41,8 @@ const ActivityInput = () => {
     dispatch(toggleIsModal());
   }, []);
 
-  const onClickHeaderPlus = useCallback(() => {
-    dispatch(toggleIsActivityTypeModal());
-  }, []);
-
-  const onClickToolPlus = useCallback(() => {
-    dispatch(toggleIsToolModal());
-  }, []);
-
   const onClose = useCallback(() => {
     dispatch(closeIsActivityTypeModal());
-    dispatch(closeIsToolModal());
-    setTool('');
   }, []);
 
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -128,50 +68,7 @@ const ActivityInput = () => {
           onClose();
         }}
       >
-        <Header>
-          <img
-            src="/images/plusBtn.png"
-            alt="plus버튼"
-            onClick={(e) => {
-              stopPropagation(e);
-              onClickHeaderPlus();
-            }}
-          />
-          <span>잇타(It's Time)</span>
-          {isActivityTypeModal && (
-            <ActivityType onClick={stopPropagation}>
-              <div>
-                <img src="/images/activityType.png" alt="활동" />
-                <Types>
-                  <div>
-                    <TypeImg></TypeImg>
-                    <span>자격증</span>
-                  </div>
-                  <div>
-                    <TypeImg></TypeImg>
-                    <span>동아리</span>
-                  </div>
-                  <div>
-                    <TypeImg></TypeImg>
-                    <span>공모전</span>
-                  </div>
-                  <div>
-                    <TypeImg></TypeImg>
-                    <span>대외활동</span>
-                  </div>
-                  <div>
-                    <TypeImg></TypeImg>
-                    <span>스터디</span>
-                  </div>
-                  <div>
-                    <TypeImg></TypeImg>
-                    <span>기타</span>
-                  </div>
-                </Types>
-              </div>
-            </ActivityType>
-          )}
-        </Header>
+        <ActivityInputHeader />
         <Line>
           <div />
         </Line>
@@ -192,35 +89,20 @@ const ActivityInput = () => {
             <div>
               <Title>기간</Title>
             </div>
-            <DateSelect onChange={onChangeStartDateYear} value={startYear}>
-              {yearRange.map((year) => (
-                <option value={year} key={year}>
-                  {year}년
-                </option>
-              ))}
-            </DateSelect>
-            <DateSelect onChange={onChangeStartDateMonth} value={startMonth}>
-              {monthRange.map((month) => (
-                <option value={month} key={month}>
-                  {month}월
-                </option>
-              ))}
-            </DateSelect>
-            <span className="dateWave">~</span>
-            <DateSelect onChange={onChangeEndDateYear} value={endYear}>
-              {yearRange.map((year) => (
-                <option value={year} key={year}>
-                  {year}년
-                </option>
-              ))}
-            </DateSelect>
-            <DateSelect onChange={onChangeEndDateMonth} value={endMonth}>
-              {monthRange.map((month) => (
-                <option value={month} key={month}>
-                  {month}월
-                </option>
-              ))}
-            </DateSelect>
+            <Space direction="vertical" style={{ width: 'auto' }}>
+              <ConfigProvider locale={locale}>
+                <RangePicker
+                  picker={'month'}
+                  format={'YYYY년 MM월'}
+                  separator={'~'}
+                  bordered={false}
+                  autoFocus={false}
+                  onChange={(e) => {
+                    onChangeRange(e);
+                  }}
+                />
+              </ConfigProvider>
+            </Space>
           </div>
           <div>
             <div>
@@ -251,31 +133,6 @@ const ActivityInput = () => {
               <FiChevronDown />
             </span>
           </ProjectImage>
-
-          <UseTools>
-            <SubTitle>사용한 도구</SubTitle>
-            <div>
-              {dummyTool.map((tool, idx) => (
-                <Tool key={idx}>{tool}</Tool>
-              ))}
-              <ToolPlus
-                onClick={(e) => {
-                  stopPropagation(e);
-                  onClickToolPlus();
-                }}
-              >
-                <BiPlus />
-                {isToolModal && (
-                  <ToolInputModal onClick={stopPropagation}>
-                    <div>
-                      <span>#</span>
-                      <input type="text" value={tool} onChange={onChangeTool} />
-                    </div>
-                  </ToolInputModal>
-                )}
-              </ToolPlus>
-            </div>
-          </UseTools>
         </Content>
         <Line>
           <div />

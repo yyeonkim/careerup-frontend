@@ -36,72 +36,6 @@ export const Title = styled.span`
   font-weight: 500;
 `;
 
-export const SubTitle = styled(Title)`
-  font-size: 1.6rem;
-`;
-
-export const Header = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  margin: 0 4rem;
-  margin-top: 3rem;
-
-  & > img {
-    width: 5.5rem;
-    cursor: pointer;
-  }
-
-  & > span {
-    margin-left: 1rem;
-    font-size: 3rem;
-    font-weight: 700;
-    color: #696969;
-  }
-`;
-
-export const ActivityType = styled.div`
-  position: absolute;
-  top: 4.5rem;
-  left: 6rem;
-
-  & > div {
-    position: relative;
-  }
-
-  & > div > img {
-    width: 40.9rem;
-  }
-`;
-
-export const Types = styled.div`
-  display: flex;
-  position: absolute;
-  top: 0.7rem;
-  left: 2rem;
-
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #ffffff;
-
-  & > div {
-    margin-right: 2.5rem;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-export const TypeImg = styled.div`
-  width: 4.2rem;
-  height: 4.2rem;
-  border-radius: 50%;
-  background-color: #ffffff;
-  margin-bottom: 0.5rem;
-`;
-
 export const Info = styled.div`
   & > div {
     margin: 0 4rem;
@@ -128,21 +62,6 @@ export const Info = styled.div`
 
   .dateWave {
     margin-right: 0.3rem;
-  }
-`;
-
-export const DateSelect = styled.select`
-  border: none;
-  -webkit-appearance: none; /* 크롬 화살표 없애기 */
-  -moz-appearance: none; /* 파이어폭스 화살표 없애기 */
-  appearance: none; /* 화살표 없애기 */
-
-  margin-right: 0.3rem;
-
-  font-size: 1.6rem;
-  color: #4e4e4e;
-  &:focus {
-    outline: none;
   }
 `;
 
