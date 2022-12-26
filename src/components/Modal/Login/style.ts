@@ -92,6 +92,7 @@ export const LoginForm = styled.form`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin-top: 1.5rem;
 
   /* 가운데 배치 */
   position: absolute;
@@ -108,9 +109,11 @@ export const LoginForm = styled.form`
     margin-bottom: 1.2rem;
     font-size: 1.6rem;
     font-weight: 500;
+    color: white;
 
     ::placeholder {
       color: white;
+      font-weight: 100;
     }
   }
 
@@ -135,4 +138,10 @@ export const LoginForm = styled.form`
       cursor: pointer;
     }
   }
+`;
+
+export const Message = styled.span`
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
 `;
