@@ -7,6 +7,7 @@ import { Background, Modal, LoginForm, Logo } from './style';
 export default function LoginModal() {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setaPassword] = useState<string>('');
   const [passwordCheck, setPasswordCheck] = useState<string>('');
@@ -23,6 +24,10 @@ export default function LoginModal() {
     setName(event.currentTarget.value);
   };
 
+  const changeUsername = (event: ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.currentTarget.value);
+  };
+
   const changeEmail = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
   };
@@ -35,11 +40,11 @@ export default function LoginModal() {
     setPasswordCheck(event.currentTarget.value);
   };
 
-  const clickSignUp = () => {
+  const onClickSignUp = () => {
     setIsSignIn(false);
   };
 
-  const clickSignIn = () => {
+  const onClickSignIn = () => {
     setIsSignIn(true);
   };
 
@@ -56,32 +61,33 @@ export default function LoginModal() {
         </div>
 
         <div className="field--login">
+          <div className="text">{isSignIn ? 'Sign in' : 'Sign up'}</div>
+          <Link style={{ position: 'absolute', top: '3rem', right: '3rem' }} to="/">
+            <IoCloseSharp size={24} color="white" />
+          </Link>
+
           {isSignIn ? (
             <LoginForm onSubmit={onSubmit}>
               <input placeholder="이메일" value={email} onChange={changeEmail} />
               <input placeholder="비밀번호" value={password} onChange={changePassword} />
               <button>로그인</button>
               <div>
-                <span>비밀번호 찾기</span> | <span onClick={clickSignUp}>회원가입</span>
+                <span>비밀번호 찾기</span> | <span onClick={onClickSignUp}>회원가입</span>
               </div>
             </LoginForm>
           ) : (
             <LoginForm onSubmit={onSubmit}>
               <input placeholder="이름" value={name} onChange={changeName} />
+              <input placeholder="닉네임" value={username} onChange={changeUsername} />
               <input placeholder="이메일" value={email} onChange={changeEmail} />
               <input placeholder="비밀번호" value={password} onChange={changePassword} />
               <input placeholder="비밀번호 확인" value={passwordCheck} onChange={changePasswordCheck} />
               <button>회원가입</button>
               <div>
-                <span onClick={clickSignIn}>로그인하기</span>
+                <span onClick={onClickSignIn}>로그인하기</span>
               </div>
             </LoginForm>
           )}
-
-          <div className="text">{isSignIn ? 'Sign in' : 'Sign up'}</div>
-          <Link style={{ position: 'absolute', top: '3rem', right: '3rem' }} to="/">
-            <IoCloseSharp size={24} color="white" />
-          </Link>
         </div>
       </Modal>
     </>
