@@ -36,35 +36,6 @@ export const Title = styled.span`
   font-weight: 500;
 `;
 
-export const Info = styled.div`
-  & > div {
-    margin: 0 4rem;
-    margin-bottom: 1rem;
-
-    display: flex;
-    align-items: center;
-
-    & > div {
-      width: 13rem;
-    }
-
-    & > input {
-      border: none;
-
-      color: #4e4e4e;
-      font-size: 1.6rem;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  .dateWave {
-    margin-right: 0.3rem;
-  }
-`;
-
 export const Content = styled.div`
   margin: 0 4rem;
 
