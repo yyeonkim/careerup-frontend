@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid;
+`;
+
 export const Header = styled.div`
   display: flex;
   align-items: center;
@@ -13,11 +20,16 @@ export const Header = styled.div`
     cursor: pointer;
   }
 
-  & > span {
+  & > input {
     margin-left: 1rem;
     font-size: 3rem;
     font-weight: 700;
     color: #696969;
+
+    border: none;
+    :focus {
+      outline: none;
+    }
   }
 `;
 

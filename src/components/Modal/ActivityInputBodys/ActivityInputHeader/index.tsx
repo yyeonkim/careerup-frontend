@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import ActivityTypeModal from '../Modal/ActivityTypeModal';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { toggleIsActivityTypeModal } from '../../redux/reducers/RoadMapSlice';
 import { Header, TypeBtn } from './styles';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import useInput from '../../../../hooks/useInput';
+import { toggleIsActivityTypeModal } from '../../../../redux/reducers/RoadMapSlice';
+import ActivityTypeModal from '../ActivityTypeModal';
 
 const ActivityInputHeader = () => {
   const dispatch = useAppDispatch();
@@ -10,6 +11,7 @@ const ActivityInputHeader = () => {
     (state) => state.roadMap
   );
 
+  const [title, onChangeTitle, setTitle] = useInput('');
   const [nowType, setNowType] = useState('');
   const types = [isCertificate, isClub, isContest, isActivity, isStudy, isEtc];
   const imgs = ['certificate', 'club', 'contest', 'activity', 'study', 'etc'];
@@ -39,7 +41,7 @@ const ActivityInputHeader = () => {
         <img src={`/images/${nowType}.png`} alt={nowType} />
       </TypeBtn>
 
-      <span>잇타(It's Time)</span>
+      <input type="text" value={title} onChange={onChangeTitle} spellCheck={false} placeholder={'제목을 입력하세요'} />
       {isActivityTypeModal && <ActivityTypeModal />}
     </Header>
   );
