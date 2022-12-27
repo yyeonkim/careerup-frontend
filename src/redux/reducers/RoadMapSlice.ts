@@ -13,6 +13,7 @@ export interface RoadMapState {
   isActivity: boolean;
   isStudy: boolean;
   isEtc: boolean;
+  nowType: string;
 }
 
 const initialState: RoadMapState = {
@@ -27,6 +28,7 @@ const initialState: RoadMapState = {
   isActivity: false,
   isStudy: false,
   isEtc: true,
+  nowType: '기타',
 };
 
 export const roadMapSlice = createSlice({
@@ -54,21 +56,27 @@ export const roadMapSlice = createSlice({
     },
     clickCertificate: (state) => {
       state.isCertificate = true;
+      state.nowType = '자격증';
     },
     clickClub: (state) => {
       state.isClub = true;
+      state.nowType = '동아리';
     },
     clickContest: (state) => {
       state.isContest = true;
+      state.nowType = '공모전';
     },
     clickActivity: (state) => {
       state.isActivity = true;
+      state.nowType = '대외활동';
     },
     clickStudy: (state) => {
       state.isStudy = true;
+      state.nowType = '스터디';
     },
     clickEtc: (state) => {
       state.isEtc = true;
+      state.nowType = '기타';
     },
     onCloseAllType: (state) => {
       state.isCertificate = state.isClub = state.isContest = state.isActivity = state.isStudy = state.isEtc = false;
