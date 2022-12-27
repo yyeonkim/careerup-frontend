@@ -26,6 +26,7 @@ root.render(
             html {
               font-size: 10px;
               font-family: 'Noto Sans KR', sans-serif;
+              color: #2d2d2d;
             }
             a {
               text-decoration: none;
