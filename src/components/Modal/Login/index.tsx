@@ -4,76 +4,37 @@ import { IoCloseSharp } from 'react-icons/io5';
 
 import { Background, Modal, LoginForm, Logo, Message } from './style';
 import { IUserBody } from '../../../interfaces';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import {
+  changeEmail,
+  changeName,
+  changePassword,
+  changePasswordCheck,
+  setMessage,
+  resetForm,
+} from '../../../redux/reducers/LoginFormSlice';
 
 export default function LoginModal() {
-  const [isSignIn, setIsSignIn] = useState<boolean>(true);
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [passwordCheck, setPasswordCheck] = useState<string>('');
-  const [message, setMessage] = useState<string>('');
+  const [isSignIn, setIsSignIn] = useState(true);
+  const { email, name, password, passwordCheck, message } = useAppSelector((state) => state.loginForm.value);
+  const dispatch = useAppDispatch();
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    dispatch(setMessage(isSignIn));
 
-    if (isSignIn) {
-      // 사용자 로그인 진행
-      const isValid = validateSingIn();
+    if (isValid()) {
+      const url = isSignIn ? 'http://3.36.230.165:8080/user/login' : 'http://3.36.230.165:8080/user/signup';
+      const body = isSignIn ? { username: email, password } : { name, username: email, password };
 
-      if (isValid) {
-        postUser('http://3.36.230.165:8080/user/login', { username: email, password });
-      }
-    } else {
-      // 회원 가입 진행
-      const isValid = validateSignUp();
-
-      if (isValid) {
-        postUser('http://3.36.230.165:8080/user/signup', { name, username: email, password });
-      }
+      postUser(url, body);
     }
   };
 
-  const validateSingIn = () => {
-    if (email === '') {
-      setMessage('*이메일을 입력해주세요.');
-      return false;
-    }
-
-    if (password === '') {
-      setMessage('*비밀번호를 입력해주세요.');
-      return false;
-    }
-
-    return true;
-  };
-
-  const validateSignUp = () => {
-    if (name === '') {
-      setMessage('*이름을 입력해주세요.');
-      return false;
-    }
-
-    if (email === '') {
-      setMessage('*이메일을 입력해주세요.');
-      return false;
-    }
-
-    if (password === '') {
-      setMessage('*비밀번호를 입력해주세요.');
-      return false;
-    }
-
-    if (passwordCheck === '') {
-      setMessage('*비밀번호 확인을 입력해주세요.');
-      return false;
-    }
-
-    if (password !== passwordCheck) {
-      setMessage('*비밀번호가 일치하지 않습니다.');
-      return false;
-    }
-
-    return true;
+  const isValid = () => {
+    return isSignIn
+      ? email !== '' && password !== ''
+      : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
   };
 
   const postUser = (url: string, body: IUserBody) => {
@@ -84,46 +45,26 @@ export default function LoginModal() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    }).then((response) => console.log(response.ok));
+    }).then((response) => console.log(response.json()));
   };
 
-  const changeName = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.currentTarget.value);
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeName(event.currentTarget.value));
+
+  const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeEmail(event.currentTarget.value));
+
+  const onChangePassword = (event: ChangeEvent<HTMLInputElement>) =>
+    dispatch(changePassword(event.currentTarget.value));
+
+  const onChangePasswordCheck = (event: ChangeEvent<HTMLInputElement>) =>
+    dispatch(changePasswordCheck(event.currentTarget.value));
+
+  const changeForm = () => {
+    toggleForm();
+    dispatch(resetForm());
   };
 
-  const changeEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
-  };
-
-  const changePassword = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
-  };
-
-  const changePasswordCheck = (event: ChangeEvent<HTMLInputElement>) => {
-    setPasswordCheck(event.currentTarget.value);
-  };
-
-  const onClickSignUp = () => {
-    resetForm();
-    setIsSignIn(false);
-  };
-
-  const onClickSignIn = () => {
-    resetForm();
-    setIsSignIn(true);
-  };
-
-  const resetForm = () => {
-    if (isSignIn) {
-      setEmail('');
-      setPassword('');
-    } else {
-      setName('');
-      setEmail('');
-      setPassword('');
-      setPasswordCheck('');
-    }
-    setMessage('');
+  const toggleForm = () => {
+    setIsSignIn((current) => !current);
   };
 
   return (
@@ -146,26 +87,31 @@ export default function LoginModal() {
 
           {isSignIn ? (
             <LoginForm onSubmit={onSubmit}>
-              <input placeholder="이메일" type="email" value={email} onChange={changeEmail} />
-              <input placeholder="비밀번호" type="password" value={password} onChange={changePassword} />
+              <input placeholder="이메일" type="email" value={email} onChange={onChangeEmail} />
+              <input placeholder="비밀번호" type="password" value={password} onChange={onChangePassword} />
 
               <Message>{message}</Message>
               <button>로그인</button>
               <div>
-                <span>비밀번호 찾기</span> | <span onClick={onClickSignUp}>회원가입</span>
+                <span>비밀번호 찾기</span> | <span onClick={changeForm}>회원가입</span>
               </div>
             </LoginForm>
           ) : (
             <LoginForm onSubmit={onSubmit}>
-              <input placeholder="이름" type="text" value={name} onChange={changeName} />
-              <input placeholder="이메일" type="email" value={email} onChange={changeEmail} />
-              <input placeholder="비밀번호" type="password" value={password} onChange={changePassword} />
-              <input placeholder="비밀번호 확인" type="password" value={passwordCheck} onChange={changePasswordCheck} />
+              <input placeholder="이름" type="text" value={name} onChange={onChangeName} />
+              <input placeholder="이메일" type="email" value={email} onChange={onChangeEmail} />
+              <input placeholder="비밀번호" type="password" value={password} onChange={onChangePassword} />
+              <input
+                placeholder="비밀번호 확인"
+                type="password"
+                value={passwordCheck}
+                onChange={onChangePasswordCheck}
+              />
 
               <Message>{message}</Message>
               <button>회원가입</button>
               <div>
-                <span onClick={onClickSignIn}>로그인하기</span>
+                <span onClick={changeForm}>로그인</span>
               </div>
             </LoginForm>
           )}
