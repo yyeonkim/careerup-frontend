@@ -23,3 +23,9 @@ export interface IUserInfo {
   email: string;
   url: string;
 }
+
+export interface IUserBody {
+  name?: string;
+  password: string;
+  username: string;
+}
