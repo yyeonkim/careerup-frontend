@@ -34,6 +34,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   };
 
   const isValid = () => {
+    // 빈 값이 하나라도 있으면 false, 아니면 true
     return isSignIn
       ? email !== '' && password !== ''
       : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
