@@ -25,7 +25,6 @@ export default function LoginModal() {
           <Link style={{ position: 'absolute', top: '3rem', right: '3rem' }} to="/">
             <IoCloseSharp size={24} color="white" />
           </Link>
-
           <LoginForm isSignIn={isSignIn} setIsSignIn={setIsSignIn} />
         </div>
       </Modal>

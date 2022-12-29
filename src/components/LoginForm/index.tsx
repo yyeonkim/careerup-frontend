@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent, Dispatch } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { StyledForm, Message } from './style';
-import { IUserBody } from '../../interfaces';
+import { ILoginData } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   changeEmail,
@@ -20,6 +21,7 @@ interface LoginFormProps {
 export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   const { email, name, password, passwordCheck, message } = useAppSelector((state) => state.loginForm.value);
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,15 +42,25 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
   };
 
-  const postUser = (url: string, body: IUserBody) => {
+  const postUser = (url: string, data: ILoginData) => {
     fetch(url, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
-    }).then((response) => console.log(response.json()));
+      body: JSON.stringify(data),
+    }).then((response) => {
+      if (response.ok && isSignIn) {
+        // accessToken 받기
+        history.push('/mypage');
+      }
+
+      if (response.ok && !isSignIn) {
+        alert('회원가입이 완료되었습니다. 로그인 해주세요.');
+        history.push('/#login');
+      }
+    });
   };
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeName(event.currentTarget.value));

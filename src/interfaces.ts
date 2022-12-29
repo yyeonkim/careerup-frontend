@@ -24,7 +24,7 @@ export interface IUserInfo {
   url: string;
 }
 
-export interface IUserBody {
+export interface ILoginData {
   name?: string;
   password: string;
   username: string;
