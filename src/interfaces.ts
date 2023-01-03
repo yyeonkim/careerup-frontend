@@ -8,6 +8,7 @@ export interface IUserLoginInfo {
 }
 
 export interface IUserProfile {
+  picture: string;
   name: string;
   age: string;
   gender: string;

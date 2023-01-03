@@ -1,30 +1,27 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { GrFormAdd } from 'react-icons/gr';
+import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
-import { MapBox, Container, InfoBox, ProfileBox, Message } from './style';
+import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
 import { IUserInfo, IUserProfile } from '../../interfaces';
-import MyPageBtn from '../../components/Buttons/MyPageBtn';
 
-const careerMaps = [0, 1];
+// API 문서 확정되면 수정하기
+const careerMaps = [0, 1, 2];
 
 export default function MyPage() {
   const location = useLocation();
   const history = useHistory();
+  const fileInput = useRef<HTMLInputElement>(null);
 
+  // DB에서 가져온 사용자 정보
   const [userProfile, setUserProfile] = useState<IUserProfile>({
+    picture: require('../../assets/profile.jpg'),
     name: '조만능',
     age: '23',
     gender: '여',
     job: '대학생',
     address: '서울특별시',
   });
-
-  const [name, setName] = useState<typeof userProfile.name>(userProfile.name);
-  const [age, setAge] = useState<typeof userProfile.age>(userProfile.age);
-  const [gender, setGender] = useState<typeof userProfile.gender>(userProfile.gender);
-  const [job, setJob] = useState<typeof userProfile.job>(userProfile.job);
-  const [address, setAddress] = useState<typeof userProfile.address>(userProfile.address);
 
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     school: '만능대학교',
@@ -34,6 +31,14 @@ export default function MyPage() {
     email: 'manneung.dev@gmail.com',
     url: 'www.manneugn.com',
   });
+
+  // input value
+  const [picture, setPicture] = useState<typeof userProfile.picture>(userProfile.picture);
+  const [name, setName] = useState<typeof userProfile.name>(userProfile.name);
+  const [age, setAge] = useState<typeof userProfile.age>(userProfile.age);
+  const [gender, setGender] = useState<typeof userProfile.gender>(userProfile.gender);
+  const [job, setJob] = useState<typeof userProfile.job>(userProfile.job);
+  const [address, setAddress] = useState<typeof userProfile.address>(userProfile.address);
 
   const [school, setSchool] = useState<typeof userInfo.school>(userInfo.school);
   const [major, setMajor] = useState<typeof userInfo.major>(userInfo.major);
@@ -47,26 +52,29 @@ export default function MyPage() {
   };
 
   const onClickSave = () => {
-    saveCurrentValue();
+    saveData();
     history.push('/mypage');
   };
 
-  const saveCurrentValue = () => {
+  const saveData = () => {
     const updatedProfile = userProfile;
     const updatedInfo = userInfo;
 
-    Object.assign(updatedProfile, { name, age, gender, job, address });
+    Object.assign(updatedProfile, { picture, name, age, gender, job, address });
     Object.assign(updatedInfo, { school, major, interest, phone, email, url });
     setUserProfile(updatedProfile);
     setUserInfo(updatedInfo);
+
+    // DB 수정
   };
 
   const onClickCancel = () => {
-    savePrevValue();
+    resetInput();
     history.push('/mypage');
   };
 
-  const savePrevValue = () => {
+  const resetInput = () => {
+    setPicture(userProfile.picture);
     setName(userProfile.name);
     setAge(userProfile.age);
     setGender(userProfile.gender);
@@ -125,14 +133,28 @@ export default function MyPage() {
     }
   };
 
+  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const fileUrl = URL.createObjectURL(event.target.files[0]);
+      setPicture(fileUrl);
+    }
+  };
+
+  const onClickImg = () => {
+    if (location.hash === '#edit') {
+      fileInput.current?.click();
+    }
+  };
+
   return (
     <Container>
       {location.hash === '#edit' && <Message>내용을 클릭하여 수정하세요</Message>}
       <div className="content">
         <div className="content__top">
           <ProfileBox>
-            <img src={require('../../assets/profile.jpg')} />
-            <div className="info">
+            <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
+            <img onClick={onClickImg} src={picture} />
+            <div className="profile__info">
               <div>
                 <p>이름</p>
                 <p>나이</p>
@@ -212,7 +234,16 @@ export default function MyPage() {
               <h3>내 커리어 맵</h3>
               <div>
                 {careerMaps.map((item) => (
-                  <div key={item} className="map"></div>
+                  <div key={item} className="map">
+                    {location.hash === '#edit' && (
+                      <GrFormClose
+                        onClick={() => {
+                          confirm('맵을 삭제하겠습니까?');
+                        }}
+                        color="#FF3D3D"
+                      />
+                    )}
+                  </div>
                 ))}
                 <div className="map button">
                   <GrFormAdd size="3.2rem" />
@@ -225,11 +256,11 @@ export default function MyPage() {
         <div className="content__bottom">
           {location.hash === '#edit' ? (
             <>
-              <MyPageBtn text="저장" onClick={onClickSave} />
-              <MyPageBtn text="취소" onClick={onClickCancel} />
+              <Button onClick={onClickSave}>저장</Button>
+              <Button onClick={onClickCancel}>취소</Button>
             </>
           ) : (
-            <MyPageBtn text="프로필 수정" onClick={edit} />
+            <Button onClick={edit}>프로필 수정</Button>
           )}
         </div>
       </div>

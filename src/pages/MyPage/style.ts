@@ -41,9 +41,11 @@ export const Container = styled.div`
 
     .content__bottom {
       margin-top: 2rem;
+      padding-right: 1.6rem;
       width: 100%;
       display: flex;
       justify-content: flex-end;
+      gap: 1.6rem;
     }
   }
 `;
@@ -73,13 +75,19 @@ export const ProfileBox = styled(Wrapper)`
   height: 100%;
   border-radius: 3rem;
 
-  img {
-    width: 25rem;
-    border-radius: 50%;
-    margin-bottom: 5.2rem;
+  input {
+    display: none;
   }
 
-  .info {
+  img {
+    width: 25rem;
+    height: 25rem;
+    border-radius: 50%;
+    margin-bottom: 1.6rem;
+  }
+
+  .profile__info {
+    margin-top: 5.2rem;
     display: flex;
     align-items: center;
 
@@ -160,12 +168,16 @@ export const MapBox = styled(Wrapper)`
   }
 
   .map {
+    display: flex;
+    justify-content: center;
     width: 17rem;
     height: 17rem;
     border-radius: 50%;
     border: 2px solid #29cc6a;
     background-color: lightgray;
     margin-right: 3.2rem;
+    cursor: pointer;
+    padding-top: 1rem;
   }
 
   .button {
@@ -175,4 +187,16 @@ export const MapBox = styled(Wrapper)`
     justify-content: center;
     align-items: center;
   }
+`;
+
+export const Button = styled.div`
+  width: fit-content;
+  background-color: #bababa;
+  text-align: center;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  cursor: pointer;
 `;
