@@ -24,7 +24,7 @@ export const Info = styled.div`
     }
   }
 
-  .dateWave {
-    margin-right: 0.3rem;
+  .date {
+    width: 22rem;
   }
 `;

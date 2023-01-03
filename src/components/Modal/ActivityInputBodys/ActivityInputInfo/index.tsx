@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Info } from './styles';
 import { Title } from '../../ActivityInput/styles';
-import { ConfigProvider, DatePicker, Space } from 'antd';
-const { RangePicker } = DatePicker;
+import moment from 'moment';
+import 'moment/locale/ko';
 import locale from 'antd/lib/locale/ko_KR';
+import { ConfigProvider, DatePicker, DatePickerProps, Space } from 'antd';
+const { RangePicker } = DatePicker;
 import useInput from '../../../../hooks/useInput';
 import { useAppSelector } from '../../../../redux/hooks';
 
-const ActivityInputContent = () => {
+moment.locale('ko');
+
+const ActivityInputInfo = () => {
   const { isCertificate, isClub, isContest, isActivity, isStudy, isEtc, nowType } = useAppSelector(
     (state) => state.roadMap
   );
@@ -29,6 +33,17 @@ const ActivityInputContent = () => {
   const onChangeRange = useCallback((e: any) => {
     setRange(e);
   }, []);
+
+  const onChangeDate: DatePickerProps['onChange'] = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
+  useEffect(() => {
+    setProjectName('');
+    setInstitution('');
+    setEach('');
+    setRange([]);
+  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc, nowType]);
 
   return (
     <Info>
@@ -64,17 +79,17 @@ const ActivityInputContent = () => {
         <div>
           <Title>{isCertificate ? '공부 기간' : '기간'}</Title>
         </div>
-        <Space direction="vertical" style={{ width: 'auto' }}>
+        <Space direction="vertical" style={{ width: 'auto', marginLeft: '-1rem' }}>
           <ConfigProvider locale={locale}>
             <RangePicker
               picker={'month'}
               format={'YYYY년 MM월'}
               separator={'~'}
               bordered={false}
-              autoFocus={false}
               onChange={(e) => {
                 onChangeRange(e);
               }}
+              className={'date'}
             />
           </ConfigProvider>
         </Space>
@@ -93,17 +108,21 @@ const ActivityInputContent = () => {
             required
           />
         </div>
-      )}{' '}
+      )}
       {isCertificate && (
         <div>
           <div>
             <Title>취득일</Title>
           </div>
-          <input type="text" spellCheck={false} required />
+          <Space direction="vertical" style={{ width: 'auto', marginLeft: '-1rem' }}>
+            <ConfigProvider locale={locale}>
+              <DatePicker format={'YYYY년 MM월 DD일'} onChange={onChangeDate} bordered={false} />
+            </ConfigProvider>
+          </Space>
         </div>
       )}
     </Info>
   );
 };
 
-export default ActivityInputContent;
+export default ActivityInputInfo;
