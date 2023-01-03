@@ -142,7 +142,7 @@ export default function MyPage() {
     setUrl(userInfo.url);
   };
 
-  const edit = () => {
+  const onClickEdit = () => {
     history.push('/mypage#edit');
   };
 
@@ -153,7 +153,11 @@ export default function MyPage() {
         <div className="content__top">
           <ProfileBox>
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
-            <img onClick={onClickImg} src={picture} />
+            <img
+              style={{ cursor: location.hash === '#edit' ? 'pointer' : 'unset' }}
+              onClick={onClickImg}
+              src={picture}
+            />
             <div className="profile__info">
               <div>
                 <p>이름</p>
@@ -260,7 +264,7 @@ export default function MyPage() {
               <Button onClick={onClickCancel}>취소</Button>
             </>
           ) : (
-            <Button onClick={edit}>프로필 수정</Button>
+            <Button onClick={onClickEdit}>프로필 수정</Button>
           )}
         </div>
       </div>
