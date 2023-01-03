@@ -16,12 +16,6 @@ const ActivityInputHeader = () => {
   const types = [isCertificate, isClub, isContest, isActivity, isStudy, isEtc];
   const imgs = ['certificate', 'club', 'contest', 'activity', 'study', 'etc'];
 
-  useEffect(() => {
-    types.forEach((type, idx) => {
-      if (type) setNowType(imgs[idx]);
-    });
-  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
-
   const onClickHeaderBtn = useCallback(() => {
     dispatch(toggleIsActivityTypeModal());
   }, []);
@@ -29,6 +23,13 @@ const ActivityInputHeader = () => {
   const stopPropagation = useCallback((e: any) => {
     e.stopPropagation();
   }, []);
+
+  useEffect(() => {
+    types.forEach((type, idx) => {
+      if (type) setNowType(imgs[idx]);
+    });
+    setTitle('');
+  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
 
   return (
     <Header>
