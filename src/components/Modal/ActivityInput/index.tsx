@@ -1,30 +1,35 @@
 import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { Wrapper, Line, Content, Title, TextArea, Form, ProjectImage, Review } from './styles';
+import {
+  Wrapper,
+  Line,
+  Content,
+  Title,
+  TextArea,
+  Form,
+  ProjectImage,
+  Review,
+  InputImgWrapper,
+  FinishBtns,
+  CloseBtn,
+} from './styles';
 import useInput from '../../../hooks/useInput';
 import autosize from 'autosize';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { closeIsActivityTypeModal, toggleIsModal } from '../../../redux/reducers/RoadMapSlice';
+import { closeIsActivityTypeModal, onChangeIsFile, toggleIsModal } from '../../../redux/reducers/RoadMapSlice';
 import ActivityInputHeader from '../ActivityInputBodys/ActivityInputHeader';
-import ActivityInputContent from '../ActivityInputBodys/ActivityInputContent';
+import ActivityInputContent from '../ActivityInputBodys/ActivityInputInfo';
+import ActivityInputImages from '../ActivityInputBodys/ActivityInputImages';
+import ActivityInputUpload from '../ActivityInputBodys/ActivityInputUpload';
 
 const ActivityInput = () => {
   const dispatch = useAppDispatch();
+  const { isCertificate, isClub, isContest, isActivity, isStudy, isEtc } = useAppSelector((state) => state.roadMap);
 
   const [content, , setContent] = useInput('');
   const [review, , setReview] = useInput('');
-  const { isCertificate, isClub, isContest, isActivity, isStudy, isEtc } = useAppSelector((state) => state.roadMap);
-
-  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const reviewTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const reviewTitleList = ['과정에서', '동아리를 하면서', '스터디를 하면서', '활동을 하면서'];
-  const [reviewTitle, setReviewTitle] = useState('');
-
-  const stopPropagation = useCallback((e: any) => {
-    e.stopPropagation();
-  }, []);
+  const [isImg, setIsImg] = useState(false);
 
   const onChangeContent = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
@@ -34,26 +39,37 @@ const ActivityInput = () => {
     setReview(e.target.value);
   }, []);
 
-  const onClickBackGround = useCallback(() => {
+  const onClickClose = useCallback(() => {
     dispatch(toggleIsModal());
+    dispatch(onChangeIsFile(false));
   }, []);
 
-  const onClose = useCallback(() => {
+  const onTypeActivityModalClose = useCallback(() => {
     dispatch(closeIsActivityTypeModal());
   }, []);
 
+  const toggleIsImg = useCallback(() => {
+    setIsImg((prev) => !prev);
+  }, [isImg]);
+
+  useEffect(() => {
+    setContent('');
+    setReview('');
+  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
+
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const reviewTextareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (contentTextareaRef) {
       autosize(contentTextareaRef.current as HTMLTextAreaElement);
     }
-  }, []);
-
-  useEffect(() => {
     if (reviewTextareaRef) {
       autosize(reviewTextareaRef.current as HTMLTextAreaElement);
     }
   }, []);
 
+  const reviewTitleList = ['과정에서', '동아리를 하면서', '스터디를 하면서', '활동을 하면서'];
+  const [reviewTitle, setReviewTitle] = useState('');
   useEffect(() => {
     if (isCertificate) setReviewTitle(reviewTitleList[0]);
     else if (isClub) setReviewTitle(reviewTitleList[1]);
@@ -62,13 +78,8 @@ const ActivityInput = () => {
   }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
 
   return (
-    <Wrapper onClick={onClickBackGround}>
-      <Form
-        onClick={(e) => {
-          stopPropagation(e);
-          onClose();
-        }}
-      >
+    <Wrapper>
+      <Form onClick={onTypeActivityModalClose}>
         <ActivityInputHeader />
         <Line>
           <div />
@@ -91,12 +102,17 @@ const ActivityInput = () => {
               />
             </div>
           </div>
-          <ProjectImage>
-            <span>프로젝트 관련 사진을 넣어보세요.</span>
-            <span>
-              <FiChevronDown />
-            </span>
-          </ProjectImage>
+          <div>
+            <ProjectImage isImg={isImg} onClick={toggleIsImg}>
+              <span>프로젝트 관련 사진을 넣어보세요.</span>
+              <span>{isImg ? <FiChevronUp /> : <FiChevronDown />}</span>
+            </ProjectImage>
+            {isImg && (
+              <InputImgWrapper>
+                <ActivityInputImages />
+              </InputImgWrapper>
+            )}
+          </div>
         </Content>
         <Line>
           <div />
@@ -117,6 +133,14 @@ const ActivityInput = () => {
         <Line>
           <div />
         </Line>
+        <ActivityInputUpload />
+
+        <FinishBtns>
+          <button type={'submit'}>저장</button>
+          <button onClick={onClickClose}>삭제</button>
+        </FinishBtns>
+
+        <CloseBtn onClick={onClickClose}>X</CloseBtn>
       </Form>
     </Wrapper>
   );
