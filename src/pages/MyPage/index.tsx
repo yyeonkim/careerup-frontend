@@ -47,45 +47,17 @@ export default function MyPage() {
   const [email, setEmail] = useState<typeof userInfo.email>(userInfo.email);
   const [url, setUrl] = useState<typeof userInfo.url>(userInfo.url);
 
-  const edit = () => {
-    history.push('/mypage#edit');
+  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const fileUrl = URL.createObjectURL(event.target.files[0]);
+      setPicture(fileUrl);
+    }
   };
 
-  const onClickSave = () => {
-    saveData();
-    history.push('/mypage');
-  };
-
-  const saveData = () => {
-    const updatedProfile = userProfile;
-    const updatedInfo = userInfo;
-
-    Object.assign(updatedProfile, { picture, name, age, gender, job, address });
-    Object.assign(updatedInfo, { school, major, interest, phone, email, url });
-    setUserProfile(updatedProfile);
-    setUserInfo(updatedInfo);
-
-    // DB 수정
-  };
-
-  const onClickCancel = () => {
-    resetInput();
-    history.push('/mypage');
-  };
-
-  const resetInput = () => {
-    setPicture(userProfile.picture);
-    setName(userProfile.name);
-    setAge(userProfile.age);
-    setGender(userProfile.gender);
-    setJob(userProfile.job);
-    setAddress(userProfile.address);
-    setSchool(userInfo.school);
-    setMajor(userInfo.major);
-    setInterest(userInfo.interest);
-    setPhone(userInfo.phone);
-    setEmail(userInfo.email);
-    setUrl(userInfo.url);
+  const onClickImg = () => {
+    if (location.hash === '#edit') {
+      fileInput.current?.click();
+    }
   };
 
   const onChangeProfile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -133,17 +105,45 @@ export default function MyPage() {
     }
   };
 
-  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const fileUrl = URL.createObjectURL(event.target.files[0]);
-      setPicture(fileUrl);
-    }
+  const onClickSave = () => {
+    saveData();
+    history.push('/mypage');
   };
 
-  const onClickImg = () => {
-    if (location.hash === '#edit') {
-      fileInput.current?.click();
-    }
+  const saveData = () => {
+    const updatedProfile = userProfile;
+    const updatedInfo = userInfo;
+
+    Object.assign(updatedProfile, { picture, name, age, gender, job, address });
+    Object.assign(updatedInfo, { school, major, interest, phone, email, url });
+    setUserProfile(updatedProfile);
+    setUserInfo(updatedInfo);
+
+    // DB 수정
+  };
+
+  const onClickCancel = () => {
+    resetInput();
+    history.push('/mypage');
+  };
+
+  const resetInput = () => {
+    setPicture(userProfile.picture);
+    setName(userProfile.name);
+    setAge(userProfile.age);
+    setGender(userProfile.gender);
+    setJob(userProfile.job);
+    setAddress(userProfile.address);
+    setSchool(userInfo.school);
+    setMajor(userInfo.major);
+    setInterest(userInfo.interest);
+    setPhone(userInfo.phone);
+    setEmail(userInfo.email);
+    setUrl(userInfo.url);
+  };
+
+  const edit = () => {
+    history.push('/mypage#edit');
   };
 
   return (
