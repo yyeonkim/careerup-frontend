@@ -36,7 +36,8 @@ root.render(
               border: none;
               cursor: pointer;
             }
-            input {
+            input,
+            button {
               font-family: 'Noto Sans KR';
             }
 
