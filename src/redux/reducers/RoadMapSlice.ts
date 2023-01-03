@@ -14,6 +14,7 @@ export interface RoadMapState {
   isStudy: boolean;
   isEtc: boolean;
   nowType: string;
+  isFile: boolean;
 }
 
 const initialState: RoadMapState = {
@@ -21,7 +22,7 @@ const initialState: RoadMapState = {
   roadLen: 0,
   activity: 9,
   isModal: true,
-  isActivityTypeModal: true,
+  isActivityTypeModal: false,
   isCertificate: false,
   isClub: false,
   isContest: false,
@@ -29,6 +30,7 @@ const initialState: RoadMapState = {
   isStudy: false,
   isEtc: true,
   nowType: '기타',
+  isFile: false,
 };
 
 export const roadMapSlice = createSlice({
@@ -81,6 +83,9 @@ export const roadMapSlice = createSlice({
     onCloseAllType: (state) => {
       state.isCertificate = state.isClub = state.isContest = state.isActivity = state.isStudy = state.isEtc = false;
     },
+    onChangeIsFile: (state, action) => {
+      state.isFile = action.payload;
+    },
   },
   extraReducers: (builder) => {
     true;
@@ -100,6 +105,7 @@ export const {
   clickStudy,
   clickEtc,
   onCloseAllType,
+  onChangeIsFile,
 } = roadMapSlice.actions;
 export const roadMap = (state: RootState) => state.roadMap;
 
