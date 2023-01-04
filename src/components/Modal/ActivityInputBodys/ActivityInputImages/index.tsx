@@ -24,12 +24,12 @@ const ActivityInputImages = () => {
               </ImgWrapper>
             ))}
             {maxNumber > images.length && (
-              <PlusBtn onClick={onImageUpload} {...dragProps}>
+              <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
                 +
               </PlusBtn>
             )}
             {images.length < 1 && (
-              <PlusBtn onClick={onImageUpload} {...dragProps}>
+              <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
                 +
               </PlusBtn>
             )}
