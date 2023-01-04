@@ -28,6 +28,7 @@
     "axios": "^1.2.0",
     "dayjs": "^1.11.7",
     "gapi-script": "^1.2.0",
+    "http-proxy-middleware": "^2.0.6",
     "moment": "^2.29.3",
     "react": "^18.2.0",
     "react-datepicker": "^4.8.0",
@@ -72,5 +73,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1"
-  }
+  },
+  "proxy": "http://3.36.230.165:8080"
 }
