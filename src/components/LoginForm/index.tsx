@@ -1,9 +1,7 @@
 import { ChangeEvent, FormEvent, Dispatch } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 
 import { StyledForm, Message } from './style';
-import { ILoginData } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   changeEmail,
@@ -13,6 +11,7 @@ import {
   setMessage,
   resetForm,
 } from '../../redux/reducers/LoginFormSlice';
+import { postUser } from '../../api/user';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -24,7 +23,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(setMessage(isSignIn)); // 로그인, 회원가입 메시지가 다름
 
@@ -32,7 +31,21 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       const url = isSignIn ? '/user/login' : '/user/signup';
       const data = isSignIn ? { username: email, password } : { name, username: email, password };
 
-      postUser(url, data);
+      const response = await postUser(url, data);
+      const signUpSuccess = response.status === 200 && !isSignIn;
+      const loginSuccess = response.status === 200 && isSignIn;
+
+      if (signUpSuccess) {
+        alert('회원가입이 완료되었습니다. 로그인 해주세요.');
+        toggleForm();
+      }
+
+      if (loginSuccess) {
+        const { accessToken } = response.data.result;
+
+        localStorage.setItem('accessToken', accessToken);
+        history.push('/mypage');
+      }
     }
   };
 
@@ -41,28 +54,6 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     return isSignIn
       ? email !== '' && password !== ''
       : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
-  };
-
-  const postUser = async (url: string, data: ILoginData) => {
-    axios
-      .post(url, data, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        const signUpSuccess = response.status === 200 && !isSignIn;
-        const loginSuccess = response.status === 200 && isSignIn;
-
-        if (signUpSuccess) {
-          alert('회원가입이 완료되었습니다. 로그인 해주세요.');
-          toggleForm();
-        }
-
-        if (loginSuccess) {
-          const { accessToken } = response.data.result;
-          localStorage.setItem('accessToken', accessToken);
-          history.push('/mypage');
-        }
-      });
   };
 
   const toggleForm = () => {

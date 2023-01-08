@@ -1,3 +1,5 @@
+import { AxiosResponse } from 'axios';
+
 // 네이버 로그인에서 사용
 export interface IUserLoginInfo {
   token: string;
@@ -30,3 +32,5 @@ export interface ILoginData {
   password: string;
   username: string;
 }
+
+export type PostUserFn = (url: string, data: ILoginData) => Promise<AxiosResponse>;
