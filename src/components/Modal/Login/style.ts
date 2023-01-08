@@ -75,6 +75,7 @@ export const Modal = styled.div`
       position: absolute;
       top: 3rem;
       right: 3rem;
+      cursor: pointer;
     }
   }
 `;
