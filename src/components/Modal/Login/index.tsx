@@ -1,12 +1,18 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { IoCloseSharp } from 'react-icons/io5';
 
 import { Background, Modal, Logo } from './style';
 import LoginForm from '../../LoginForm';
+import { useAppDispatch } from '../../../redux/hooks';
+import { resetForm } from '../../../redux/reducers/LoginFormSlice';
 
 export default function LoginModal() {
   const [isSignIn, setIsSignIn] = useState(true);
+  const dispatch = useAppDispatch();
+
+  const onClickClose = () => {
+    dispatch(resetForm());
+  };
 
   return (
     <>
@@ -22,9 +28,9 @@ export default function LoginModal() {
 
         <div className="field--login">
           <div className="text">{isSignIn ? 'Sign in' : 'Sign up'}</div>
-          <Link style={{ position: 'absolute', top: '3rem', right: '3rem' }} to="/">
+          <div className="close" onClick={onClickClose}>
             <IoCloseSharp size={24} color="white" />
-          </Link>
+          </div>
           <LoginForm isSignIn={isSignIn} setIsSignIn={setIsSignIn} />
         </div>
       </Modal>

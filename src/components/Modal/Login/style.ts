@@ -70,6 +70,12 @@ export const Modal = styled.div`
       color: white;
       font-weight: bold;
     }
+
+    .close {
+      position: absolute;
+      top: 3rem;
+      right: 3rem;
+    }
   }
 `;
 
