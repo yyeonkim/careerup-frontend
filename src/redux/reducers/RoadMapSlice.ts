@@ -7,32 +7,30 @@ export interface RoadMapState {
   activity: number;
   isModal: boolean;
   isActivityTypeModal: boolean;
-  isToolModal: boolean;
-  modalData: {
-    Date: {
-      startYear: number;
-      startMonth: number;
-      endYear: number;
-      endMonth: number;
-    };
-  };
+  isCertificate: boolean;
+  isClub: boolean;
+  isContest: boolean;
+  isActivity: boolean;
+  isStudy: boolean;
+  isEtc: boolean;
+  nowType: string;
+  isFile: boolean;
 }
 
 const initialState: RoadMapState = {
   orderEdit: false,
   roadLen: 0,
   activity: 9,
-  isModal: false,
+  isModal: true,
   isActivityTypeModal: false,
-  isToolModal: false,
-  modalData: {
-    Date: {
-      startYear: new Date().getFullYear(),
-      startMonth: new Date().getMonth() - 1,
-      endYear: new Date().getFullYear(),
-      endMonth: new Date().getMonth(),
-    },
-  },
+  isCertificate: false,
+  isClub: false,
+  isContest: false,
+  isActivity: false,
+  isStudy: false,
+  isEtc: true,
+  nowType: '기타',
+  isFile: false,
 };
 
 export const roadMapSlice = createSlice({
@@ -49,7 +47,6 @@ export const roadMapSlice = createSlice({
     toggleIsModal: (state) => {
       state.isModal = !state.isModal;
       if (!state.isModal) {
-        state.isToolModal = false;
         state.isActivityTypeModal = false;
       }
     },
@@ -59,23 +56,35 @@ export const roadMapSlice = createSlice({
     closeIsActivityTypeModal: (state) => {
       state.isActivityTypeModal = false;
     },
-    toggleIsToolModal: (state) => {
-      state.isToolModal = !state.isToolModal;
+    clickCertificate: (state) => {
+      state.isCertificate = true;
+      state.nowType = '자격증';
     },
-    closeIsToolModal: (state) => {
-      state.isToolModal = false;
+    clickClub: (state) => {
+      state.isClub = true;
+      state.nowType = '동아리';
     },
-    changeStartYear: (state, action: { payload: number }) => {
-      state.modalData.Date.startYear = action.payload;
+    clickContest: (state) => {
+      state.isContest = true;
+      state.nowType = '공모전';
     },
-    changeStartMonth: (state, action: { payload: number }) => {
-      state.modalData.Date.startMonth = action.payload;
+    clickActivity: (state) => {
+      state.isActivity = true;
+      state.nowType = '대외활동';
     },
-    changeEndYear: (state, action: { payload: number }) => {
-      state.modalData.Date.endYear = action.payload;
+    clickStudy: (state) => {
+      state.isStudy = true;
+      state.nowType = '스터디';
     },
-    changeEndMonth: (state, action: { payload: number }) => {
-      state.modalData.Date.endMonth = action.payload;
+    clickEtc: (state) => {
+      state.isEtc = true;
+      state.nowType = '기타';
+    },
+    onCloseAllType: (state) => {
+      state.isCertificate = state.isClub = state.isContest = state.isActivity = state.isStudy = state.isEtc = false;
+    },
+    onChangeIsFile: (state, action) => {
+      state.isFile = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -87,14 +96,16 @@ export const {
   toggleOrderEdit,
   addRoad,
   toggleIsModal,
-  toggleIsToolModal,
-  closeIsToolModal,
-  changeStartYear,
-  changeStartMonth,
-  changeEndYear,
-  changeEndMonth,
   toggleIsActivityTypeModal,
   closeIsActivityTypeModal,
+  clickCertificate,
+  clickClub,
+  clickContest,
+  clickActivity,
+  clickStudy,
+  clickEtc,
+  onCloseAllType,
+  onChangeIsFile,
 } = roadMapSlice.actions;
 export const roadMap = (state: RootState) => state.roadMap;
 

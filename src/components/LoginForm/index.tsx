@@ -12,6 +12,7 @@ import {
   setMessage,
   resetForm,
 } from '../../redux/reducers/LoginFormSlice';
+import axios from 'axios';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -43,24 +44,28 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   };
 
   const postUser = (url: string, data: ILoginData) => {
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok && isSignIn) {
-        // accessToken 받기
-        history.push('/mypage');
-      }
-
-      if (response.ok && !isSignIn) {
-        alert('회원가입이 완료되었습니다. 로그인 해주세요.');
-        history.push('/#login');
-      }
+    axios.post('/user/login', data, {
+      withCredentials: true,
     });
+    // fetch(url, {
+    //   method: 'POST',
+    //   mode: 'no-cors',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    // .then((response) => {
+    // if (response.ok && isSignIn) {
+    //   // accessToken 받기
+    //   history.push('/mypage');
+    // }
+    //
+    // if (response.ok && !isSignIn) {
+    //   alert('회원가입이 완료되었습니다. 로그인 해주세요.');
+    //   history.push('/#login');
+    // }
+    // });
   };
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeName(event.currentTarget.value));

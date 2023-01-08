@@ -3,16 +3,13 @@ import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import RoadMapModal from '../RoadMapModal';
+import RoadMapModal from '../Modal/RoadMapModal';
 import ActivityInput from '../Modal/ActivityInput';
 import { addRoad, roadMap, toggleIsModal } from '../../redux/reducers/RoadMapSlice';
 
 export default function RoadMap() {
   const dispatch = useAppDispatch();
-
-  const roadLen = useAppSelector(roadMap).roadLen;
-  const activity = useAppSelector(roadMap).activity;
-  const isModal = useAppSelector(roadMap).isModal;
+  const { roadLen, activity, isModal } = useAppSelector((state) => state.roadMap);
 
   const onClickAddRoad = useCallback(() => {
     dispatch(addRoad());

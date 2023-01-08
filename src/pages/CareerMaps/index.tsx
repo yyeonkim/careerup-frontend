@@ -10,10 +10,20 @@ import {
   EditBtn,
 } from './style';
 import RoadMap from '../../components/RoadMap';
-import { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import { VscThreeBars } from 'react-icons/vsc';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { roadMap, toggleOrderEdit } from '../../redux/reducers/RoadMapSlice';
+
+type Nullable<T> = T | null;
+
+interface DragAndDrop {
+  draggedFrom: Nullable<number>;
+  draggedTo: Nullable<number>;
+  isDragging: boolean;
+  originalOrder: Array<string>;
+  updatedOrder: Array<string>;
+}
 
 export default function CareerMaps() {
   const [dummyActivity, setDummyActivity] = useState([
@@ -26,7 +36,7 @@ export default function CareerMaps() {
     '자격증6',
   ]);
 
-  const [dragAndDrop, setDragAndDrop] = useState<any>({
+  const [dragAndDrop, setDragAndDrop] = useState<DragAndDrop>({
     draggedFrom: null,
     draggedTo: null,
     isDragging: false,
@@ -45,9 +55,9 @@ export default function CareerMaps() {
     dispatch(toggleOrderEdit());
   }, []);
 
-  const onDragStart = (event: any) => {
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.style.opacity = '0.4';
-    const initialPosition = parseInt(event.currentTarget.dataset.position);
+    const initialPosition = parseInt(event.currentTarget.dataset.position!);
     setDragAndDrop({
       ...dragAndDrop,
       draggedFrom: initialPosition,
@@ -55,12 +65,12 @@ export default function CareerMaps() {
     });
   };
 
-  const onDragOver = (event: any) => {
+  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     let newList = dragAndDrop.originalOrder;
     const draggedFrom = dragAndDrop.draggedFrom; // 드래그 되는 항목의 인덱스(시작)
-    const draggedTo = parseInt(event.currentTarget.dataset.position); // 놓을 수 있는 영역의 인덱스(끝)
-    const itemDragged = newList[draggedFrom];
+    const draggedTo = parseInt(event.currentTarget.dataset.position!); // 놓을 수 있는 영역의 인덱스(끝)
+    const itemDragged = newList[draggedFrom ?? 0];
     const remainingItems = newList.filter(
       // draggedFrom(시작) 항목 제외한 배열 목록
       (item: any, index: any) => index !== draggedFrom
@@ -81,7 +91,7 @@ export default function CareerMaps() {
     }
   };
 
-  const onDrop = (event: any) => {
+  const onDrop = () => {
     setDummyActivity(dragAndDrop.updatedOrder);
     setDragAndDrop({
       ...dragAndDrop,
@@ -90,7 +100,7 @@ export default function CareerMaps() {
     });
   };
 
-  const onDragLeave = (event: any) => {
+  const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.classList.remove('over');
     setDragAndDrop({
       ...dragAndDrop,
@@ -99,11 +109,11 @@ export default function CareerMaps() {
   };
 
   // 잡은 Item이 다른 Item이랑 겹쳤을 때 발생<겹쳐졌을 때>
-  const onDragEnter = (event: any) => {
+  const onDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.classList.add('over');
   };
 
-  const onDragEnd = (event: any) => {
+  const onDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.style.opacity = '1';
     const listItems = document.querySelectorAll('.draggable');
     listItems.forEach((item) => {
