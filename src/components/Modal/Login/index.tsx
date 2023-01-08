@@ -5,12 +5,15 @@ import { Background, Modal, Logo } from './style';
 import LoginForm from '../../LoginForm';
 import { useAppDispatch } from '../../../redux/hooks';
 import { resetForm } from '../../../redux/reducers/LoginFormSlice';
+import { useHistory } from 'react-router-dom';
 
 export default function LoginModal() {
+  const history = useHistory();
   const [isSignIn, setIsSignIn] = useState(true);
   const dispatch = useAppDispatch();
 
   const onClickClose = () => {
+    history.push('/');
     dispatch(resetForm());
   };
 
