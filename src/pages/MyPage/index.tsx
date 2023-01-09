@@ -1,10 +1,12 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
 import { IUserData } from '../../interfaces';
-import { getUserData } from '../../api/user';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setUserData } from '../../redux/reducers/UserDateSlice';
+import useGetUserData from '../../hooks/useGetUserData';
 
 // API 문서 확정되면 수정하기
 const careerMaps = [0, 1, 2];
@@ -14,32 +16,9 @@ export default function MyPage() {
   const history = useHistory();
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // DB에서 가져온 사용자 정보
-  const [userData, setUserData] = useState<IUserData | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await getUserData(accessToken as string);
-
-      if (response.status === 200) {
-        setUserData({
-          address: response.data.result.address,
-          age: response.data.result.age,
-          interestField: response.data.result.interestField1,
-          job: response.data.result.job,
-          link: response.data.result.link,
-          major: response.data.result.major1,
-          name: response.data.result.name,
-          phone: response.data.result.phone,
-          picture: response.data.result.picture,
-          univ: response.data.result.univ,
-          email: response.data.result.email,
-          gender: '여자',
-        });
-      }
-    })();
-  }, []);
+  useGetUserData(); // DB에서 사용자 정보 불러오기
+  const userData = useAppSelector((state) => state.userData.entities);
+  const dispatch = useAppDispatch();
 
   // input value
   const [picture, setPicture] = useState(userData?.picture);
@@ -128,7 +107,7 @@ export default function MyPage() {
       email,
       link,
     });
-    setUserData(updatedData);
+    dispatch(setUserData(updatedData));
 
     // DB 수정
   };
@@ -167,7 +146,7 @@ export default function MyPage() {
             <img
               style={{ cursor: location.hash === '#edit' ? 'pointer' : 'unset' }}
               onClick={onClickImg}
-              src={picture}
+              src={picture === '' ? require('../../assets/profile.jpg') : picture}
             />
             <div className="profile__info">
               <div>
