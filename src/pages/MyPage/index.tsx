@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setUserData } from '../../redux/reducers/UserDateSlice';
 import useGetUserData from '../../hooks/useGetUserData';
 
-// API 문서 확정되면 수정하기
 const careerMaps = [0, 1, 2];
 
 export default function MyPage() {
@@ -18,26 +17,25 @@ export default function MyPage() {
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
   const userData = useAppSelector((state) => state.userData.entities);
+  const isLoading = useAppSelector((state) => state.userData.loading);
   const dispatch = useAppDispatch();
 
-  // input value
-  const [picture, setPicture] = useState(userData?.picture);
-  const [name, setName] = useState(userData?.name);
-  const [age, setAge] = useState(userData?.age);
-  const [gender, setGender] = useState('여자');
-  const [job, setJob] = useState(userData?.job);
-  const [address, setAddress] = useState(userData?.address);
-  const [univ, setUniv] = useState(userData?.univ);
-  const [major, setMajor] = useState(userData?.major);
-  const [interestField, setInterestField] = useState(userData?.interestField);
-  const [phone, setPhone] = useState(userData?.phone);
-  const [email, setEmail] = useState(userData?.email);
-  const [link, setLink] = useState(userData?.link);
+  const [inputs, setInputs] = useState(userData);
+  /*
+    input을 redux로 합치기
+    수정 정보 저장/취소 잘 되는지 확인
+    정보를 통합했으니, memo 사용 고려
+  */
+
+  useEffect(() => {
+    setInputs(userData);
+  }, [isLoading]);
 
   const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filelink = URL.createObjectURL(event.target.files[0]);
-      setPicture(filelink);
+      dispatch(setUserData({ ...userData, picture: filelink }));
+      // DB 수정
     }
   };
 
@@ -48,43 +46,13 @@ export default function MyPage() {
   };
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputName = event.currentTarget.name as keyof IUserData;
-    const value = event.currentTarget.value;
-
-    if (inputName === 'name') {
-      setName(value);
-    }
-    if (inputName === 'age') {
-      setAge(value);
-    }
-    if (inputName === 'gender') {
-      setGender(value);
-    }
-    if (inputName === 'job') {
-      setJob(value);
-    }
-    if (inputName === 'address') {
-      setAddress(value);
-    }
-    if (inputName === 'univ') {
-      setUniv(value);
-    }
-    if (inputName === 'major') {
-      setMajor(value);
-    }
-    if (inputName === 'interestField') {
-      setInterestField(value);
-    }
-    if (inputName === 'phone') {
-      setPhone(value);
-    }
-    if (inputName === 'email') {
-      setEmail(value);
-    }
-    if (inputName === 'link') {
-      setLink(value);
-    }
+    const { name: inputName, value } = event.currentTarget;
+    setInputs({
+      ...inputs,
+      [inputName]: value,
+    });
   };
+
   const onClickSave = () => {
     saveData();
     history.push('/mypage');
@@ -93,20 +61,7 @@ export default function MyPage() {
   const saveData = () => {
     const updatedData = userData;
 
-    Object.assign(updatedData as IUserData, {
-      picture,
-      name,
-      age,
-      gender,
-      job,
-      address,
-      univ,
-      major,
-      interestField,
-      phone,
-      email,
-      link,
-    });
+    Object.assign(updatedData as IUserData, inputs);
     dispatch(setUserData(updatedData));
 
     // DB 수정
@@ -118,18 +73,7 @@ export default function MyPage() {
   };
 
   const resetInput = () => {
-    setPicture(userData?.picture);
-    setName(userData?.name);
-    setAge(userData?.age);
-    setGender(userData?.gender as string);
-    setJob(userData?.job);
-    setAddress(userData?.address);
-    setUniv(userData?.univ);
-    setMajor(userData?.major);
-    setInterestField(userData?.interestField);
-    setPhone(userData?.phone);
-    setEmail(userData?.email);
-    setLink(userData?.link);
+    setInputs(userData);
   };
 
   const onClickEdit = () => {
@@ -146,7 +90,7 @@ export default function MyPage() {
             <img
               style={{ cursor: location.hash === '#edit' ? 'pointer' : 'unset' }}
               onClick={onClickImg}
-              src={picture === '' ? require('../../assets/profile.jpg') : picture}
+              src={userData.picture}
             />
             <div className="profile__info">
               <div>
@@ -159,11 +103,11 @@ export default function MyPage() {
               <div>
                 {location.hash === '#edit' ? (
                   <>
-                    <input name="name" value={name} onChange={onChangeInput} />
-                    <input name="age" value={age} onChange={onChangeInput} />
-                    <input name="gender" value={gender} onChange={onChangeInput} />
-                    <input name="job" value={job} onChange={onChangeInput} />
-                    <input name="address" value={address} onChange={onChangeInput} />
+                    <input name="name" value={inputs.name} onChange={onChangeInput} />
+                    <input name="age" value={inputs.age} onChange={onChangeInput} />
+                    <input name="gender" value={inputs.gender} onChange={onChangeInput} />
+                    <input name="job" value={inputs.job} onChange={onChangeInput} />
+                    <input name="address" value={inputs.address} onChange={onChangeInput} />
                   </>
                 ) : (
                   <>
@@ -184,13 +128,13 @@ export default function MyPage() {
                 {location.hash === '#edit' ? (
                   <>
                     <p>
-                      🏫 <input name="univ" value={univ} onChange={onChangeInput} />
+                      🏫 <input name="univ" value={inputs.univ} onChange={onChangeInput} />
                     </p>
                     <p>
-                      📚 <input name="major" value={major} onChange={onChangeInput} />
+                      📚 <input name="major" value={inputs.major} onChange={onChangeInput} />
                     </p>
                     <p>
-                      관심 분야: <input name="interestField" value={interestField} onChange={onChangeInput} />
+                      관심 분야: <input name="interestField" value={inputs.interestField} onChange={onChangeInput} />
                     </p>
                   </>
                 ) : (
@@ -205,13 +149,13 @@ export default function MyPage() {
                 {location.hash === '#edit' ? (
                   <>
                     <p>
-                      📞 <input name="phone" value={phone} onChange={onChangeInput} />
+                      📞 <input name="phone" value={inputs.phone} onChange={onChangeInput} />
                     </p>
                     <p>
-                      ✉️ <input name="email" value={email} onChange={onChangeInput} />
+                      ✉️ <input name="email" value={inputs.email} onChange={onChangeInput} />
                     </p>
                     <p>
-                      📄 <input name="link" value={link} onChange={onChangeInput} />
+                      📄 <input name="link" value={inputs.link} onChange={onChangeInput} />
                     </p>
                   </>
                 ) : (
