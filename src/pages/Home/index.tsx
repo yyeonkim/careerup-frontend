@@ -11,6 +11,8 @@ const images = [
   { className: 'logo', path: '/images/careerup_logo_no_bg_big.png' },
 ];
 
+const accessToken = localStorage.getItem('accessToken');
+
 export default function Home() {
   const location = useLocation();
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
@@ -27,9 +29,13 @@ export default function Home() {
   return (
     <Container>
       <Header>
-        <Link to={{ hash: '#login' }}>
-          <LoginButton>Sign in</LoginButton>
-        </Link>
+        {accessToken ? (
+          <img src={require('../../assets/profile.jpg')} />
+        ) : (
+          <Link to={{ hash: '#login' }}>
+            <LoginButton>Sign in</LoginButton>
+          </Link>
+        )}
       </Header>
 
       <Main>

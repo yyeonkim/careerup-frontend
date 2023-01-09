@@ -11,6 +11,12 @@ export const Header = styled.header`
   justify-content: flex-end;
   padding: 1.6rem;
   margin-bottom: 5rem;
+
+  img {
+    width: 4rem;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 `;
 
 export const LoginButton = styled.div`
