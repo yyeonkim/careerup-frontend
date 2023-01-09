@@ -11,7 +11,7 @@ import {
   setMessage,
   resetForm,
 } from '../../redux/reducers/LoginFormSlice';
-import { postUser } from '../../api/user';
+import { postUserLogin } from '../../api/user';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -31,7 +31,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       const url = isSignIn ? '/user/login' : '/user/signup';
       const data = isSignIn ? { username: email, password } : { name, username: email, password };
 
-      const response = await postUser(url, data);
+      const response = await postUserLogin(url, data);
       const signUpSuccess = response.status === 200 && !isSignIn;
       const loginSuccess = response.status === 200 && isSignIn;
 

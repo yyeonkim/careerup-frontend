@@ -9,22 +9,19 @@ export interface IUserLoginInfo {
   nickname?: string;
 }
 
-export interface IUserProfile {
-  picture: string;
-  name: string;
-  age: string;
-  gender: string;
-  job: string;
+export interface IUserData {
   address: string;
-}
-
-export interface IUserInfo {
-  school: string;
-  major: string;
-  interest: string;
-  phone: string;
+  age: string;
   email: string;
-  url: string;
+  gender: string;
+  interestField: string;
+  job: string;
+  link: string;
+  major: string;
+  name: string;
+  phone: string;
+  picture: string;
+  univ: string;
 }
 
 export interface ILoginData {
@@ -33,4 +30,4 @@ export interface ILoginData {
   username: string;
 }
 
-export type PostUserFn = (url: string, data: ILoginData) => Promise<AxiosResponse>;
+export type PostUserLoginFn = (url: string, data: ILoginData) => Promise<AxiosResponse>;
