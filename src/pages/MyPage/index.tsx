@@ -16,16 +16,21 @@ export default function MyPage() {
   const fileInput = useRef<HTMLInputElement>(null);
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
-  const userData = useAppSelector((state) => state.userData.entities);
   const isLoading = useAppSelector((state) => state.userData.loading);
+  const userData = useAppSelector((state) => state.userData.entities);
   const dispatch = useAppDispatch();
 
   const [inputs, setInputs] = useState(userData);
+  const [isEdit, setIsEdit] = useState(false);
   /*
     input을 redux로 합치기
     수정 정보 저장/취소 잘 되는지 확인
     정보를 통합했으니, memo 사용 고려
   */
+
+  useEffect(() => {
+    setIsEdit(location.hash === '#edit');
+  }, [location.hash]);
 
   useEffect(() => {
     setInputs(userData);
@@ -40,7 +45,7 @@ export default function MyPage() {
   };
 
   const onClickImg = () => {
-    if (location.hash === '#edit') {
+    if (isEdit) {
       fileInput.current?.click();
     }
   };
@@ -82,16 +87,12 @@ export default function MyPage() {
 
   return (
     <Container>
-      {location.hash === '#edit' && <Message>내용을 클릭하여 수정하세요</Message>}
+      {isEdit && <Message>내용을 클릭하여 수정하세요</Message>}
       <div className="content">
         <div className="content__top">
           <ProfileBox>
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
-            <img
-              style={{ cursor: location.hash === '#edit' ? 'pointer' : 'unset' }}
-              onClick={onClickImg}
-              src={userData.picture}
-            />
+            <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={userData.picture} />
             <div className="profile__info">
               <div>
                 <p>이름</p>
@@ -101,7 +102,7 @@ export default function MyPage() {
                 <p>거주</p>
               </div>
               <div>
-                {location.hash === '#edit' ? (
+                {isEdit ? (
                   <>
                     <input name="name" value={inputs.name} onChange={onChangeInput} />
                     <input name="age" value={inputs.age} onChange={onChangeInput} />
@@ -125,7 +126,7 @@ export default function MyPage() {
           <div className="content__right">
             <div className="content__info">
               <InfoBox>
-                {location.hash === '#edit' ? (
+                {isEdit ? (
                   <>
                     <p>
                       🏫 <input name="univ" value={inputs.univ} onChange={onChangeInput} />
@@ -146,7 +147,7 @@ export default function MyPage() {
                 )}
               </InfoBox>
               <InfoBox>
-                {location.hash === '#edit' ? (
+                {isEdit ? (
                   <>
                     <p>
                       📞 <input name="phone" value={inputs.phone} onChange={onChangeInput} />
@@ -173,7 +174,7 @@ export default function MyPage() {
               <div>
                 {careerMaps.map((item) => (
                   <div key={item} className="map">
-                    {location.hash === '#edit' && (
+                    {isEdit && (
                       <GrFormClose
                         onClick={() => {
                           confirm('맵을 삭제하겠습니까?');
@@ -192,7 +193,7 @@ export default function MyPage() {
         </div>
 
         <div className="content__bottom">
-          {location.hash === '#edit' ? (
+          {isEdit ? (
             <>
               <Button onClick={onClickSave}>저장</Button>
               <Button onClick={onClickCancel}>취소</Button>
