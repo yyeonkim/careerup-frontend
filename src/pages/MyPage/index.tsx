@@ -94,7 +94,11 @@ export default function MyPage() {
         <div className="content__top">
           <ProfileBox>
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
-            <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={inputs.picture} />
+            <img
+              style={{ cursor: isEdit ? 'pointer' : 'unset' }}
+              onClick={onClickImg}
+              src={inputs.picture ? inputs.picture : require('../../assets/profile.jpg')}
+            />
             <div className="profile__info">
               <div>
                 <p>이름</p>
