@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
 import { Container, LoginButton, Header, Main, MapButton, Slider, Dropdown } from './style';
 import LoginModal from '../../components/Modal/Login';
+import useAutoSlide from '../../hooks/useAutoSlide';
 
 // 슬라이드에 들어갈 이미지
-const images = [
+const slides = [
   { className: 'proto', path: '/images/prototype.png' },
   { className: 'logo', path: '/images/careerup_logo_no_bg_big.png' },
 ];
@@ -16,19 +17,13 @@ const accessToken = localStorage.getItem('accessToken');
 export default function Home() {
   const location = useLocation();
   const history = useHistory();
+
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
   const [isOpen, setIsOpen] = useState(false);
 
-  // 5초마다 다음 슬라이드 이미지로 이동
-  useEffect(() => {
-    const id = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % images.length);
-    }, 5000);
+  useAutoSlide(slides, setActiveIndex);
 
-    return () => clearInterval(id);
-  }, []);
-
-  const onClickProfile = () => {
+  const toggleDropdown = () => {
     setIsOpen((current) => !current);
   };
 
@@ -53,7 +48,7 @@ export default function Home() {
       <Header>
         {accessToken ? (
           <>
-            <img src={require('../../assets/profile.jpg')} onClick={onClickProfile} />
+            <img src={require('../../assets/profile.jpg')} onClick={toggleDropdown} />
             {isOpen && (
               <Dropdown>
                 <li onClick={onClickDropdown}>마이페이지</li>
@@ -81,7 +76,7 @@ export default function Home() {
           </div>
 
           <Slider>
-            {images.map((item, index) => {
+            {slides.map((item, index) => {
               if (index === activeIndex) {
                 return (
                   <img
