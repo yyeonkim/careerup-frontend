@@ -70,9 +70,6 @@ export const userDataSlice = createSlice({
 
       state.loading = false;
     });
-    builder.addCase(patchUserData.rejected, (state, { payload }) => {
-      console.log(payload);
-    });
   },
 });
 export const { setUserData } = userDataSlice.actions;
