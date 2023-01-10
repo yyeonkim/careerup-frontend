@@ -5,17 +5,13 @@ import { IUserData } from '../../interfaces';
 
 const accessToken = localStorage.getItem('accessToken');
 
-export const fetchUserData = createAsyncThunk('GET_DATA', async () => {
+export const getUserData = createAsyncThunk('GET', async () => {
   const response = await axios.get('/user', { headers: { Authorization: `Bearer ${accessToken}` } });
   return response.data.result;
 });
 
-export const postUserData = createAsyncThunk('POST_DATA', async (data: IUserData) => {
-  const response = await axios.post(
-    '/user/modify',
-    { ...data },
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
+export const patchUserData = createAsyncThunk('MODIFY', async (data: IUserData) => {
+  const response = await axios.patch('/user/modify', data, { headers: { Authorization: `Bearer ${accessToken}` } });
 
   return response.status;
 });
@@ -56,7 +52,7 @@ export const userDataSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUserData.fulfilled, (state, { payload }) => {
+    builder.addCase(getUserData.fulfilled, (state, { payload }) => {
       state.entities = { ...payload };
 
       // default 값 설정
@@ -73,6 +69,9 @@ export const userDataSlice = createSlice({
       }
 
       state.loading = false;
+    });
+    builder.addCase(patchUserData.rejected, (state, { payload }) => {
+      console.log(payload);
     });
   },
 });

@@ -4,7 +4,7 @@ import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { postUserData, setUserData } from '../../redux/reducers/UserDateSlice';
+import { patchUserData, setUserData } from '../../redux/reducers/UserDateSlice';
 import useGetUserData from '../../hooks/useGetUserData';
 
 const careerMaps = [0, 1, 2];
@@ -58,7 +58,7 @@ export default function MyPage() {
 
   const saveData = () => {
     dispatch(setUserData(inputs));
-    dispatch(postUserData(inputs));
+    dispatch(patchUserData(inputs));
   };
 
   const onClickCancel = () => {
