@@ -1,16 +1,17 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { ChangeEvent, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { patchUserData, setUserData } from '../../redux/reducers/UserDateSlice';
 import useGetUserData from '../../hooks/useGetUserData';
+import useGetInputs from '../../hooks/useGetInputs';
+import useSetIsEdit from '../../hooks/useSetIsEdit';
 
 const careerMaps = [0, 1, 2];
 
 export default function MyPage() {
-  const location = useLocation();
   const history = useHistory();
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -19,16 +20,9 @@ export default function MyPage() {
   const userData = useAppSelector((state) => state.userData.entities);
   const dispatch = useAppDispatch();
 
-  const [inputs, setInputs] = useState(userData);
-  const [isEdit, setIsEdit] = useState(false);
+  const { isEdit } = useSetIsEdit();
 
-  useEffect(() => {
-    setIsEdit(location.hash === '#edit');
-  }, [location.hash]);
-
-  useEffect(() => {
-    setInputs(userData);
-  }, [isLoading]);
+  const { inputs, setInputs } = useGetInputs();
 
   const onClickImg = () => {
     if (isEdit) {
