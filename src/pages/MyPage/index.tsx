@@ -26,6 +26,7 @@ export default function MyPage() {
     input을 redux로 합치기
     수정 정보 저장/취소 잘 되는지 확인
     정보를 통합했으니, memo 사용 고려
+    반복되는 컴포넌트 map으로 묶기
   */
 
   useEffect(() => {

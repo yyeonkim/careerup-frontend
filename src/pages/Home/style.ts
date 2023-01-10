@@ -32,6 +32,7 @@ export const LoginButton = styled.div`
 
 export const Main = styled.div`
   max-width: 128rem;
+  padding: 0 1.6rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
