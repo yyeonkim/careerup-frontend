@@ -21,12 +21,6 @@ export default function MyPage() {
 
   const [inputs, setInputs] = useState(userData);
   const [isEdit, setIsEdit] = useState(false);
-  /*
-    input을 redux로 합치기
-    수정 정보 저장/취소 잘 되는지 확인
-    정보를 통합했으니, memo 사용 고려
-    반복되는 컴포넌트 map으로 묶기
-  */
 
   useEffect(() => {
     setIsEdit(location.hash === '#edit');
@@ -68,11 +62,11 @@ export default function MyPage() {
   };
 
   const onClickCancel = () => {
-    resetInput();
+    resetInputs();
     history.push('/mypage');
   };
 
-  const resetInput = () => {
+  const resetInputs = () => {
     setInputs(userData);
   };
 
@@ -129,10 +123,10 @@ export default function MyPage() {
                       🏫 <input name="univ" value={inputs.univ} onChange={onChangeInput} />
                     </p>
                     <p>
-                      📚 <input name="major" value={inputs.major1} onChange={onChangeInput} />
+                      📚 <input name="major1" value={inputs.major1} onChange={onChangeInput} />
                     </p>
                     <p>
-                      관심 분야: <input name="interestField" value={inputs.interestField1} onChange={onChangeInput} />
+                      관심 분야: <input name="interestField1" value={inputs.interestField1} onChange={onChangeInput} />
                     </p>
                   </>
                 ) : (
