@@ -37,17 +37,18 @@ export default function MyPage() {
     setInputs(userData);
   }, [isLoading]);
 
-  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const filelink = URL.createObjectURL(event.target.files[0]);
-      dispatch(setUserData({ ...userData, picture: filelink }));
-      // DB 수정
-    }
-  };
-
   const onClickImg = () => {
     if (isEdit) {
       fileInput.current?.click();
+    }
+  };
+
+  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const filelink = URL.createObjectURL(event.target.files[0]);
+      setInputs({ ...inputs, picture: filelink });
+
+      // DB 수정
     }
   };
 
@@ -65,7 +66,7 @@ export default function MyPage() {
   };
 
   const saveData = () => {
-    const updatedData = userData;
+    const updatedData = { ...userData };
 
     Object.assign(updatedData as IUserData, inputs);
     dispatch(setUserData(updatedData));
@@ -93,7 +94,7 @@ export default function MyPage() {
         <div className="content__top">
           <ProfileBox>
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
-            <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={userData.picture} />
+            <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={inputs.picture} />
             <div className="profile__info">
               <div>
                 <p>이름</p>
