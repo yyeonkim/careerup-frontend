@@ -94,11 +94,7 @@ export default function MyPage() {
         <div className="content__top">
           <ProfileBox>
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
-            <img
-              style={{ cursor: isEdit ? 'pointer' : 'unset' }}
-              onClick={onClickImg}
-              src={inputs.picture ? inputs.picture : require('../../assets/profile.jpg')}
-            />
+            <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={inputs.picture} />
             <div className="profile__info">
               <div>
                 <p>이름</p>
@@ -138,17 +134,17 @@ export default function MyPage() {
                       🏫 <input name="univ" value={inputs.univ} onChange={onChangeInput} />
                     </p>
                     <p>
-                      📚 <input name="major" value={inputs.major} onChange={onChangeInput} />
+                      📚 <input name="major" value={inputs.major1} onChange={onChangeInput} />
                     </p>
                     <p>
-                      관심 분야: <input name="interestField" value={inputs.interestField} onChange={onChangeInput} />
+                      관심 분야: <input name="interestField" value={inputs.interestField1} onChange={onChangeInput} />
                     </p>
                   </>
                 ) : (
                   <>
                     <p>🏫 {userData?.univ}</p>
-                    <p>📚 {userData?.major}</p>
-                    <p>관심 분야: {userData?.interestField}</p>
+                    <p>📚 {userData?.major1}</p>
+                    <p>관심 분야: {userData?.interestField1}</p>
                   </>
                 )}
               </InfoBox>

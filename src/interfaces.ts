@@ -14,11 +14,15 @@ export interface IUserData {
   age: string;
   email: string;
   gender: string;
-  interestField: string;
+  interestField1: string;
+  interestField2: string;
+  interestField3: string;
   job: string;
   link: string;
-  major: string;
+  major1: string;
+  major2: string;
   name: string;
+  nickname: string;
   phone: string;
   picture: string;
   univ: string;

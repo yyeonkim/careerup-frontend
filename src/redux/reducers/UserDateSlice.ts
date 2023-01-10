@@ -3,9 +3,21 @@ import axios from 'axios';
 
 import { IUserData } from '../../interfaces';
 
-export const fetchUserData = createAsyncThunk('GET_DATA', async (accessToken: string) => {
+const accessToken = localStorage.getItem('accessToken');
+
+export const fetchUserData = createAsyncThunk('GET_DATA', async () => {
   const response = await axios.get('/user', { headers: { Authorization: `Bearer ${accessToken}` } });
   return response.data.result;
+});
+
+export const postUserData = createAsyncThunk('POST_DATA', async (data: IUserData) => {
+  const response = await axios.post(
+    '/user/modify',
+    { ...data },
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+
+  return response.status;
 });
 
 interface UserDataState {
@@ -19,14 +31,18 @@ const initialState: UserDataState = {
     age: '',
     email: '',
     gender: '',
-    interestField: '',
+    interestField1: '',
+    interestField2: '',
+    interestField3: '',
     job: '',
     link: '',
-    major: '',
+    major1: '',
+    major2: '',
     name: '',
     phone: '',
     picture: '',
     univ: '',
+    nickname: '',
   },
   loading: true,
 };
@@ -40,8 +56,14 @@ export const userDataSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUserData.fulfilled, (state, action) => {
-      state.entities = { ...action.payload };
+    builder.addCase(fetchUserData.fulfilled, (state, { payload }) => {
+      state.entities = { ...payload };
+
+      // default 값 설정
+      if (!payload.picture) {
+        state.entities.picture = require('../../assets/profile.jpg');
+      }
+
       state.loading = false;
     });
   },
