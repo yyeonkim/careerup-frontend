@@ -3,9 +3,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
-import { IUserData } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setUserData } from '../../redux/reducers/UserDateSlice';
+import { postUserData, setUserData } from '../../redux/reducers/UserDateSlice';
 import useGetUserData from '../../hooks/useGetUserData';
 
 const careerMaps = [0, 1, 2];
@@ -47,8 +46,6 @@ export default function MyPage() {
     if (event.target.files) {
       const filelink = URL.createObjectURL(event.target.files[0]);
       setInputs({ ...inputs, picture: filelink });
-
-      // DB 수정
     }
   };
 
@@ -66,12 +63,8 @@ export default function MyPage() {
   };
 
   const saveData = () => {
-    const updatedData = { ...userData };
-
-    Object.assign(updatedData as IUserData, inputs);
-    dispatch(setUserData(updatedData));
-
-    // DB 수정
+    dispatch(setUserData(inputs));
+    dispatch(postUserData(inputs));
   };
 
   const onClickCancel = () => {
@@ -87,7 +80,9 @@ export default function MyPage() {
     history.push('/mypage#edit');
   };
 
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <Container>
       {isEdit && <Message>내용을 클릭하여 수정하세요</Message>}
       <div className="content">
@@ -155,7 +150,7 @@ export default function MyPage() {
                       📞 <input name="phone" value={inputs.phone} onChange={onChangeInput} />
                     </p>
                     <p>
-                      ✉️ <input name="email" value={inputs.email} onChange={onChangeInput} />
+                      ✉️ <input name="username" value={inputs.username} onChange={onChangeInput} />
                     </p>
                     <p>
                       📄 <input name="link" value={inputs.link} onChange={onChangeInput} />
@@ -164,7 +159,7 @@ export default function MyPage() {
                 ) : (
                   <>
                     <p>📞 {userData?.phone}</p>
-                    <p>✉️ {userData?.email}</p>
+                    <p>✉️ {userData?.username}</p>
                     <p>📄 {userData?.link}</p>
                   </>
                 )}

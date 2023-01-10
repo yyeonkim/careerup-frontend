@@ -12,7 +12,7 @@ export interface IUserLoginInfo {
 export interface IUserData {
   address: string;
   age: string;
-  email: string;
+  username: string;
   gender: string;
   interestField1: string;
   interestField2: string;

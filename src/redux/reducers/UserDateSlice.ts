@@ -29,7 +29,7 @@ const initialState: UserDataState = {
   entities: {
     address: '',
     age: '',
-    email: '',
+    username: '',
     gender: '',
     interestField1: '',
     interestField2: '',
@@ -62,6 +62,14 @@ export const userDataSlice = createSlice({
       // default 값 설정
       if (!payload.picture) {
         state.entities.picture = require('../../assets/profile.jpg');
+      }
+
+      // input에 null을 넣을 수 없음
+      if (!payload.username) {
+        state.entities.username = '';
+      }
+      if (!payload.link) {
+        state.entities.link = '';
       }
 
       state.loading = false;
