@@ -35,3 +35,8 @@ export interface ILoginData {
 }
 
 export type PostUserLoginFn = (url: string, data: ILoginData) => Promise<AxiosResponse>;
+
+export interface IMyMap {
+  mapIdx: number;
+  title: string;
+}

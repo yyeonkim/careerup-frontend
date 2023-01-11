@@ -10,12 +10,13 @@ import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
 import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
-
-const careerMaps = [0, 1, 2];
+import useGetMyMaps from '../../hooks/useGetMyMaps';
 
 export default function MyPage() {
   const history = useHistory();
   const fileInput = useRef<HTMLInputElement>(null);
+
+  const { myMaps, setMyMaps } = useGetMyMaps();
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
@@ -82,35 +83,35 @@ export default function MyPage() {
             <div className="profile__info">
               <ProfileContent
                 label="이름"
-                value={userData?.name}
+                value={userData.name}
                 inputName="name"
                 inputValue={inputs.name}
                 onChange={onChangeInput}
               />
               <ProfileContent
                 label="나이"
-                value={userData?.age}
+                value={userData.age}
                 inputName="age"
                 inputValue={inputs.age}
                 onChange={onChangeInput}
               />
               <ProfileContent
                 label="성별"
-                value={userData?.gender}
+                value={userData.gender}
                 inputName="gender"
                 inputValue={inputs.gender}
                 onChange={onChangeInput}
               />
               <ProfileContent
                 label="직업"
-                value={userData?.job}
+                value={userData.job}
                 inputName="job"
                 inputValue={inputs.job}
                 onChange={onChangeInput}
               />
               <ProfileContent
                 label="주소"
-                value={userData?.address}
+                value={userData.address}
                 inputName="address"
                 inputValue={inputs.address}
                 onChange={onChangeInput}
@@ -123,7 +124,7 @@ export default function MyPage() {
               <InfoBox>
                 <InfoContent
                   label="🏫"
-                  value={userData?.univ}
+                  value={userData.univ}
                   inputName="univ"
                   placeholder="학력을 입력하세요."
                   inputValue={inputs.univ}
@@ -131,7 +132,7 @@ export default function MyPage() {
                 />
                 <InfoContent
                   label="📚"
-                  value={userData?.major1}
+                  value={userData.major1}
                   inputName="major1"
                   placeholder="전공을 입력하세요."
                   inputValue={inputs.major1}
@@ -139,7 +140,7 @@ export default function MyPage() {
                 />
                 <InfoContent
                   label="💚"
-                  value={userData?.interestField1}
+                  value={userData.interestField1}
                   inputName="interestField1"
                   placeholder="관심분야을 입력하세요."
                   inputValue={inputs.interestField1}
@@ -149,7 +150,7 @@ export default function MyPage() {
               <InfoBox>
                 <InfoContent
                   label="📞"
-                  value={userData?.phone}
+                  value={userData.phone}
                   inputName="phone"
                   placeholder="전화번호를 입력하세요."
                   inputValue={inputs.phone}
@@ -157,7 +158,7 @@ export default function MyPage() {
                 />
                 <InfoContent
                   label="✉️"
-                  value={userData?.username}
+                  value={userData.username}
                   inputName="username"
                   placeholder="이메일을 입력하세요."
                   inputValue={inputs.username}
@@ -165,7 +166,7 @@ export default function MyPage() {
                 />
                 <InfoContent
                   label="🔗"
-                  value={userData?.link}
+                  value={userData.link}
                   inputName="link"
                   placeholder="관련 링크를 달아보세요."
                   inputValue={inputs.link}
@@ -177,8 +178,8 @@ export default function MyPage() {
             <MapBox>
               <h3>내 커리어 맵</h3>
               <div>
-                {careerMaps.map((item) => (
-                  <div key={item} className="map">
+                {myMaps.map((item) => (
+                  <div className="map">
                     {isEdit && (
                       <GrFormClose
                         onClick={() => {
@@ -189,7 +190,7 @@ export default function MyPage() {
                     )}
                   </div>
                 ))}
-                <div className="map button">
+                <div className="map button" onClick={() => console.log('커리어맵 생성')}>
                   <GrFormAdd size="3.2rem" />
                 </div>
               </div>
