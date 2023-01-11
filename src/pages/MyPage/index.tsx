@@ -4,7 +4,7 @@ import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { patchUserData, setUserData } from '../../redux/reducers/UserDateSlice';
+import { patchUserData, setUserData } from '../../redux/reducers/UserSlice';
 import useGetUserData from '../../hooks/useGetUserData';
 import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
@@ -18,8 +18,8 @@ export default function MyPage() {
   const fileInput = useRef<HTMLInputElement>(null);
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
-  const isLoading = useAppSelector((state) => state.userData.loading);
-  const userData = useAppSelector((state) => state.userData.entities);
+  const isLoading = useAppSelector((state) => state.user.loading);
+  const userData = useAppSelector((state) => state.user.entities);
   const dispatch = useAppDispatch();
 
   const { isEdit } = useSetIsEdit();

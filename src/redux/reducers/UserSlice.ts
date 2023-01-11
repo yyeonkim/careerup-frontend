@@ -5,23 +5,23 @@ import { IUserData } from '../../interfaces';
 
 const accessToken = localStorage.getItem('accessToken');
 
-export const getUserData = createAsyncThunk('GET', async () => {
+export const getUserData = createAsyncThunk('GET_USER', async () => {
   const response = await axios.get('/user', { headers: { Authorization: `Bearer ${accessToken}` } });
   return response.data.result;
 });
 
-export const patchUserData = createAsyncThunk('MODIFY', async (data: IUserData) => {
+export const patchUserData = createAsyncThunk('MODIFY_USER', async (data: IUserData) => {
   const response = await axios.patch('/user/modify', data, { headers: { Authorization: `Bearer ${accessToken}` } });
 
   return response.status;
 });
 
-interface UserDataState {
+interface UserState {
   entities: IUserData;
   loading: boolean;
 }
 
-const initialState: UserDataState = {
+const initialState: UserState = {
   entities: {
     address: '',
     age: '',
@@ -43,8 +43,8 @@ const initialState: UserDataState = {
   loading: true,
 };
 
-export const userDataSlice = createSlice({
-  name: 'userData',
+export const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
     setUserData: (state, action) => {
@@ -72,6 +72,6 @@ export const userDataSlice = createSlice({
     });
   },
 });
-export const { setUserData } = userDataSlice.actions;
+export const { setUserData } = userSlice.actions;
 
-export default userDataSlice.reducer;
+export default userSlice.reducer;
