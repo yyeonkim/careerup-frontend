@@ -10,10 +10,11 @@ import {
   EditBtn,
 } from './style';
 import RoadMap from '../../components/RoadMap';
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { VscThreeBars } from 'react-icons/vsc';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { roadMap, toggleOrderEdit } from '../../redux/reducers/RoadMapSlice';
+import { getMaps } from '../../redux/actions/RoadMapAPI';
 
 type Nullable<T> = T | null;
 
@@ -26,6 +27,8 @@ interface DragAndDrop {
 }
 
 export default function CareerMaps() {
+  const { maps } = useAppSelector((state) => state.roadMap);
+
   const [dummyActivity, setDummyActivity] = useState([
     '잇타 동아리',
     '자격증1',
@@ -120,6 +123,12 @@ export default function CareerMaps() {
       item.classList.remove('over');
     });
   };
+
+  useEffect(() => {
+    dispatch(getMaps());
+  }, []);
+
+  console.log(maps);
 
   return (
     <CareerMapsWrapper>

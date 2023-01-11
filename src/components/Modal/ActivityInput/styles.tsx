@@ -108,7 +108,7 @@ export const InputImgWrapper = styled.div`
   overflow-y: auto;
 `;
 
-export const Review = styled.div`
+export const Realization = styled.div`
   margin: 0 4rem;
 
   & > div {

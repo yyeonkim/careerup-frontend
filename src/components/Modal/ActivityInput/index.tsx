@@ -7,7 +7,7 @@ import {
   TextArea,
   Form,
   ProjectImage,
-  Review,
+  Realization,
   InputImgWrapper,
   FinishBtns,
   CloseBtn,
@@ -22,21 +22,37 @@ import ActivityInputHeader from '../ActivityInputBodys/ActivityInputHeader';
 import ActivityInputContent from '../ActivityInputBodys/ActivityInputInfo';
 import ActivityInputImages from '../ActivityInputBodys/ActivityInputImages';
 import ActivityInputUpload from '../ActivityInputBodys/ActivityInputUpload';
+import { makeMap } from '../../../redux/actions/RoadMapAPI';
 
 const ActivityInput = () => {
   const dispatch = useAppDispatch();
-  const { isCertificate, isClub, isContest, isActivity, isStudy, isEtc } = useAppSelector((state) => state.roadMap);
+  const {
+    isCertificate,
+    isClub,
+    isContest,
+    isExternalActivity,
+    isStudy,
+    isEtc,
+    title,
+    nowType,
+    projectName,
+    institution,
+    each,
+    period,
+    date,
+    maps,
+  } = useAppSelector((state) => state.roadMap);
 
   const [content, , setContent] = useInput('');
-  const [review, , setReview] = useInput('');
+  const [realization, , setrealization] = useInput('');
   const [isImg, setIsImg] = useState(false);
 
   const onChangeContent = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   }, []);
 
-  const onChangeReview = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    setReview(e.target.value);
+  const onChangeRealization = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+    setrealization(e.target.value);
   }, []);
 
   const onClickClose = useCallback(() => {
@@ -54,28 +70,28 @@ const ActivityInput = () => {
 
   useEffect(() => {
     setContent('');
-    setReview('');
-  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
+    setrealization('');
+  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
 
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const reviewTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const realizationTextareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (contentTextareaRef) {
       autosize(contentTextareaRef.current as HTMLTextAreaElement);
     }
-    if (reviewTextareaRef) {
-      autosize(reviewTextareaRef.current as HTMLTextAreaElement);
+    if (realizationTextareaRef) {
+      autosize(realizationTextareaRef.current as HTMLTextAreaElement);
     }
   }, []);
 
-  const reviewTitleList = ['과정에서', '동아리를 하면서', '스터디를 하면서', '활동을 하면서'];
-  const [reviewTitle, setReviewTitle] = useState('');
+  const realizationTitleList = ['과정에서', '동아리를 하면서', '스터디를 하면서', '활동을 하면서'];
+  const [realizationTitle, setrealizationTitle] = useState('');
   useEffect(() => {
-    if (isCertificate) setReviewTitle(reviewTitleList[0]);
-    else if (isClub) setReviewTitle(reviewTitleList[1]);
-    else if (isStudy) setReviewTitle(reviewTitleList[2]);
-    else setReviewTitle(reviewTitleList[3]);
-  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
+    if (isCertificate) setrealizationTitle(realizationTitleList[0]);
+    else if (isClub) setrealizationTitle(realizationTitleList[1]);
+    else if (isStudy) setrealizationTitle(realizationTitleList[2]);
+    else setrealizationTitle(realizationTitleList[3]);
+  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
 
   return (
     <Wrapper>
@@ -117,26 +133,46 @@ const ActivityInput = () => {
         <Line>
           <div />
         </Line>
-        <Review>
-          <Title>{reviewTitle} 배운점/느낀점</Title>
+        <Realization>
+          <Title>{realizationTitle} 배운점/느낀점</Title>
           <div>
             <TextArea
-              value={review}
-              onChange={onChangeReview}
-              ref={reviewTextareaRef}
+              value={realization}
+              onChange={onChangeRealization}
+              ref={realizationTextareaRef}
               placeholder={'배운점/느낀점을 입력해주세요.'}
               spellCheck={false}
               required
             />
           </div>
-        </Review>
+        </Realization>
         <Line>
           <div />
         </Line>
         <ActivityInputUpload />
 
         <FinishBtns>
-          <button type={'submit'}>저장</button>
+          <button
+            type={'button'}
+            onClick={() =>
+              dispatch(
+                makeMap({
+                  nowType,
+                  mainTitle: title,
+                  each,
+                  period,
+                  realization,
+                  title: projectName,
+                  acquisition: date,
+                  institution,
+                  content,
+                  sequence: maps !== null ? maps?.length : 0,
+                })
+              )
+            }
+          >
+            저장
+          </button>
           <button onClick={onClickClose}>삭제</button>
         </FinishBtns>
 
