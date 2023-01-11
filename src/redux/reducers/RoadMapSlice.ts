@@ -28,7 +28,7 @@ export interface RoadMapState {
   //취득일
   date: string;
 
-  maps: null | Array<{ maxIdx: number; title: string }>;
+  maps: Array<{ maxIdx: number; title: string }>;
 }
 
 const initialState: RoadMapState = {
@@ -54,7 +54,7 @@ const initialState: RoadMapState = {
   period: '',
   date: '',
 
-  maps: null,
+  maps: [],
 };
 
 export const roadMapSlice = createSlice({
