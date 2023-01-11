@@ -11,15 +11,6 @@ const moveIn = keyframes`
   }
 `;
 
-export const Background = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.25);
-`;
-
 export const Modal = styled.div`
   display: flex;
   width: 90%;
@@ -69,6 +60,13 @@ export const Modal = styled.div`
       font-size: 2.4rem;
       color: white;
       font-weight: bold;
+    }
+
+    .close {
+      position: absolute;
+      top: 3rem;
+      right: 3rem;
+      cursor: pointer;
     }
   }
 `;

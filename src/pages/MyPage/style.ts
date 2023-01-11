@@ -83,52 +83,19 @@ export const ProfileBox = styled(Wrapper)`
     width: 25rem;
     height: 25rem;
     border-radius: 50%;
-    margin-bottom: 1.6rem;
   }
 
   .profile__info {
     margin-top: 5.2rem;
     display: flex;
-    align-items: center;
-
-    div:first-of-type {
-      font-weight: 100;
-      margin-right: 3.4rem;
-      min-width: 4.5rem;
-
-      p {
-        font-size: 2.4rem;
-        color: #696969;
-      }
-    }
-
-    div:nth-of-type(2) {
-      min-width: 12rem;
-
-      input,
-      p {
-        font-size: 2rem;
-      }
-
-      input {
-        display: block;
-        border: none;
-        border-bottom: 1px solid gray;
-        max-width: 12rem;
-        line-height: 3.5rem;
-      }
-    }
-
-    p {
-      line-height: 3.8rem;
-    }
+    flex-direction: column;
+    gap: 1rem;
   }
 `;
 
 export const InfoBox = styled(Wrapper)`
   font-weight: 500;
   font-size: 2rem;
-  line-height: 4.5rem;
   border-radius: 2rem;
   padding-left: 3.2rem;
 
@@ -139,12 +106,23 @@ export const InfoBox = styled(Wrapper)`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 3.2rem;
+
+  p {
+    display: flex;
+    align-items: center;
+  }
 
   input {
+    display: block;
+    height: 2rem;
     font-weight: 500;
     font-size: 2rem;
     border: none;
     border-bottom: 1px solid gray;
+    ::placeholder {
+      color: #bebebe;
+    }
   }
 `;
 
@@ -165,28 +143,44 @@ export const MapBox = styled(Wrapper)`
 
   div {
     display: flex;
-  }
 
-  .map {
-    display: flex;
-    justify-content: center;
-    width: 17rem;
-    height: 17rem;
-    border-radius: 50%;
-    border: 2px solid #29cc6a;
-    background-color: lightgray;
-    margin-right: 3.2rem;
-    cursor: pointer;
-    padding-top: 1rem;
-  }
+    .map {
+      display: flex;
+      justify-content: center;
+      width: 17rem;
+      height: 17rem;
+      border-radius: 50%;
+      border: 2px solid #29cc6a;
+      background-color: lightgray;
+      margin-right: 3.2rem;
+      cursor: pointer;
+      padding-top: 1rem;
+    }
 
-  .button {
-    border: none;
+    .button {
+      border: none;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
+`;
+
+export const Modal = styled.div`
+  width: 40rem;
+  height: 30rem;
+  border-radius: 2rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // 가운데 정렬
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
 `;
 
 export const Button = styled.div`

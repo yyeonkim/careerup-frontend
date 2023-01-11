@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom';
+
 import { Container, Logo, ProfileImg } from './style';
 
 export default function Header() {

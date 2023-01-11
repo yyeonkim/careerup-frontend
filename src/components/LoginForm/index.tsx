@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, Dispatch } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { StyledForm, Message } from './style';
-import { ILoginData } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   changeEmail,
@@ -12,7 +11,7 @@ import {
   setMessage,
   resetForm,
 } from '../../redux/reducers/LoginFormSlice';
-import axios from 'axios';
+import { postUserLogin } from '../../api/user';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -24,15 +23,29 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(setMessage(isSignIn)); // 로그인, 회원가입 메시지가 다름
 
     if (isValid()) {
-      const url = isSignIn ? 'http://3.36.230.165:8080/user/login' : 'http://3.36.230.165:8080/user/signup';
-      const body = isSignIn ? { username: email, password } : { name, username: email, password };
+      const url = isSignIn ? '/user/login' : '/user/signup';
+      const data = isSignIn ? { username: email, password } : { name, username: email, password };
 
-      postUser(url, body);
+      const response = await postUserLogin(url, data);
+      const signUpSuccess = response.status === 200 && !isSignIn;
+      const loginSuccess = response.status === 200 && isSignIn;
+
+      if (signUpSuccess) {
+        alert('회원가입이 완료되었습니다. 로그인 해주세요.');
+        changeForm();
+      }
+
+      if (loginSuccess) {
+        const { accessToken } = response.data.result;
+        localStorage.setItem('accessToken', accessToken);
+        history.push('/');
+        history.go(0); // 브라우저 새로고침
+      }
     }
   };
 
@@ -43,29 +56,9 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
   };
 
-  const postUser = (url: string, data: ILoginData) => {
-    axios.post('/user/login', data, {
-      withCredentials: true,
-    });
-    // fetch(url, {
-    //   method: 'POST',
-    //   mode: 'no-cors',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // })
-    // .then((response) => {
-    // if (response.ok && isSignIn) {
-    //   // accessToken 받기
-    //   history.push('/mypage');
-    // }
-    //
-    // if (response.ok && !isSignIn) {
-    //   alert('회원가입이 완료되었습니다. 로그인 해주세요.');
-    //   history.push('/#login');
-    // }
-    // });
+  const changeForm = () => {
+    setIsSignIn((current) => !current);
+    dispatch(resetForm());
   };
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeName(event.currentTarget.value));
@@ -74,15 +67,6 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     dispatch(changePassword(event.currentTarget.value));
   const onChangePasswordCheck = (event: ChangeEvent<HTMLInputElement>) =>
     dispatch(changePasswordCheck(event.currentTarget.value));
-
-  const changeForm = () => {
-    toggleForm();
-    dispatch(resetForm());
-  };
-
-  const toggleForm = () => {
-    setIsSignIn((current) => !current);
-  };
 
   return isSignIn ? (
     <StyledForm onSubmit={onSubmit}>
