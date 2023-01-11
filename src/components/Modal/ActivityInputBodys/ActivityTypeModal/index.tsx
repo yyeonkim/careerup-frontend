@@ -13,7 +13,7 @@ import {
 
 const ActivityTypeModal = () => {
   const dispatch = useAppDispatch();
-  const types = ['certificate', 'club', 'contest', 'activity', 'study', 'etc'];
+  const types = ['certificate', 'club', 'contest', 'external-activity', 'study', 'etc'];
   const typeName = ['자격증', '동아리', '공모전', '대외활동', '스터디', '기타'];
 
   const onClickType = useCallback((type: string) => {
@@ -25,7 +25,7 @@ const ActivityTypeModal = () => {
       dispatch(clickClub());
     } else if (type === 'contest') {
       dispatch(clickContest());
-    } else if (type === 'activity') {
+    } else if (type === 'external-activity') {
       dispatch(clickActivity());
     } else if (type === 'study') {
       dispatch(clickStudy());

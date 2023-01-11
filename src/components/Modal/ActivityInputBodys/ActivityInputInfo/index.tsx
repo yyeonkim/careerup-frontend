@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Info } from './styles';
 import { Title } from '../../ActivityInput/styles';
 import moment from 'moment';
@@ -6,50 +6,84 @@ import 'moment/locale/ko';
 import locale from 'antd/lib/locale/ko_KR';
 import { ConfigProvider, DatePicker, DatePickerProps, Space } from 'antd';
 const { RangePicker } = DatePicker;
-import useInput from '../../../../hooks/useInput';
-import { useAppSelector } from '../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import {
+  changeDate,
+  changeEach,
+  changeInstitution,
+  changePeriod,
+  changeProjectName,
+} from '../../../../redux/reducers/RoadMapSlice';
 
 moment.locale('ko');
 
 const ActivityInputInfo = () => {
-  const { isCertificate, isClub, isContest, isActivity, isStudy, isEtc, nowType } = useAppSelector(
-    (state) => state.roadMap
-  );
-  const [projectName, onChangeProjectName, setProjectName] = useInput('');
-  const [institution, onChangeInstitution, setInstitution] = useInput('');
-  const [each, onChangeEach, setEach] = useInput('');
+  const dispatch = useAppDispatch();
+  const {
+    isCertificate,
+    isClub,
+    isContest,
+    isExternalActivity,
+    isStudy,
+    isEtc,
+    nowType,
+    projectName,
+    institution,
+    each,
+    nowTypeKr,
+  } = useAppSelector((state) => state.roadMap);
+
   const [eachName, setEachName] = useState('');
-  const [range, setRange] = useState([]);
 
   const eachList = ['맡은 역할', '공모 분야', '분야', '스터디 주제'];
+
+  const onChangeProjectName = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeProjectName(e.target.value));
+  }, []);
+
+  const onChangeInstitution = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeInstitution(e.target.value));
+  }, []);
+
+  const onChangeEach = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeEach(e.target.value));
+  }, []);
 
   useEffect(() => {
     if (isClub || isEtc) setEachName(eachList[0]);
     else if (isContest) setEachName(eachList[1]);
-    else if (isActivity) setEachName(eachList[2]);
+    else if (isExternalActivity) setEachName(eachList[2]);
     else setEachName(eachList[3]);
-  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
+  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
 
   const onChangeRange = useCallback((e: any) => {
-    setRange(e);
+    if (e) {
+      const day = [e[0]['$M'] + 1, e[1]['$M'] + 1];
+      if (day[0] < 10) day[0] = '0' + day[0];
+      if (day[1] < 10) day[1] = '0' + day[1];
+
+      dispatch(changePeriod(`${e[0]['$y']}.${day[0]}-${e[1]['$y']}.${day[1]}`));
+    }
   }, []);
 
   const onChangeDate: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+    let temp = dateString.split(/ |년|월|일/);
+    temp = temp.filter((day) => day !== '');
+
+    dispatch(changeDate(temp.join('.')));
   };
 
   useEffect(() => {
-    setProjectName('');
-    setInstitution('');
-    setEach('');
-    setRange([]);
-  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc, nowType]);
+    dispatch(changeProjectName(''));
+    dispatch(changeInstitution(''));
+    dispatch(changeEach(''));
+  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc, nowType]);
 
   return (
     <Info>
       <div>
         <div>
-          <Title>{isEtc ? '활동' : nowType}명</Title>
+          <Title>{isEtc ? '활동' : nowTypeKr}명</Title>
         </div>
         <input
           type="text"
@@ -60,7 +94,7 @@ const ActivityInputInfo = () => {
           required
         />
       </div>
-      {(isActivity || isContest) && (
+      {(isExternalActivity || isContest) && (
         <div>
           <div>
             <Title>기관명</Title>

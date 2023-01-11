@@ -1,20 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Header, TypeBtn } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import useInput from '../../../../hooks/useInput';
-import { toggleIsActivityTypeModal } from '../../../../redux/reducers/RoadMapSlice';
+import { toggleIsActivityTypeModal, changeTitle } from '../../../../redux/reducers/RoadMapSlice';
 import ActivityTypeModal from '../ActivityTypeModal';
 
 const ActivityInputHeader = () => {
   const dispatch = useAppDispatch();
-  const { isActivityTypeModal, isCertificate, isClub, isContest, isActivity, isStudy, isEtc } = useAppSelector(
-    (state) => state.roadMap
-  );
+  const { isActivityTypeModal, isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc, title } =
+    useAppSelector((state) => state.roadMap);
 
-  const [title, onChangeTitle, setTitle] = useInput('');
   const [nowType, setNowType] = useState('');
-  const types = [isCertificate, isClub, isContest, isActivity, isStudy, isEtc];
-  const imgs = ['certificate', 'club', 'contest', 'activity', 'study', 'etc'];
+  const types = [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc];
+  const imgs = ['certificate', 'club', 'contest', 'external-activity', 'study', 'etc'];
+
+  const onChangeTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeTitle(e.target.value));
+  }, []);
 
   const onClickHeaderBtn = useCallback(() => {
     dispatch(toggleIsActivityTypeModal());
@@ -28,8 +29,9 @@ const ActivityInputHeader = () => {
     types.forEach((type, idx) => {
       if (type) setNowType(imgs[idx]);
     });
-    setTitle('');
-  }, [isCertificate, isClub, isContest, isActivity, isStudy, isEtc]);
+
+    dispatch(changeTitle(''));
+  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
 
   return (
     <Header>

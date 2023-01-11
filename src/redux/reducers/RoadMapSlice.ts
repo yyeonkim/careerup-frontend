@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { getMaps, makeMap } from '../actions/RoadMapAPI';
 
 export interface RoadMapState {
   orderEdit: boolean;
@@ -10,27 +11,50 @@ export interface RoadMapState {
   isCertificate: boolean;
   isClub: boolean;
   isContest: boolean;
-  isActivity: boolean;
+  isExternalActivity: boolean;
   isStudy: boolean;
   isEtc: boolean;
-  nowType: string;
   isFile: boolean;
+
+  //carrer
+  nowType: string;
+  nowTypeKr: string;
+  title: string;
+  projectName: string;
+  institution: string;
+  each: string;
+  //기간
+  period: string;
+  //취득일
+  date: string;
+
+  maps: Array<{ maxIdx: number; title: string }>;
 }
 
 const initialState: RoadMapState = {
   orderEdit: false,
   roadLen: 0,
   activity: 9,
-  isModal: true,
+  isModal: false,
   isActivityTypeModal: false,
   isCertificate: false,
   isClub: false,
   isContest: false,
-  isActivity: false,
+  isExternalActivity: false,
   isStudy: false,
   isEtc: true,
-  nowType: '기타',
   isFile: false,
+
+  nowType: 'etx',
+  nowTypeKr: '기타',
+  title: '',
+  projectName: '',
+  institution: '',
+  each: '',
+  period: '',
+  date: '',
+
+  maps: [],
 };
 
 export const roadMapSlice = createSlice({
@@ -58,38 +82,89 @@ export const roadMapSlice = createSlice({
     },
     clickCertificate: (state) => {
       state.isCertificate = true;
-      state.nowType = '자격증';
+      state.nowType = 'certificate';
+      state.nowTypeKr = '자격증';
     },
     clickClub: (state) => {
       state.isClub = true;
-      state.nowType = '동아리';
+      state.nowType = 'club';
+      state.nowTypeKr = '동아리';
     },
     clickContest: (state) => {
       state.isContest = true;
-      state.nowType = '공모전';
+      state.nowType = 'contest';
+      state.nowTypeKr = '공모전';
     },
     clickActivity: (state) => {
-      state.isActivity = true;
-      state.nowType = '대외활동';
+      state.isExternalActivity = true;
+      state.nowType = 'external-activity';
+      state.nowTypeKr = '대외활동';
     },
     clickStudy: (state) => {
       state.isStudy = true;
-      state.nowType = '스터디';
+      state.nowType = 'study';
+      state.nowTypeKr = '스터디';
     },
     clickEtc: (state) => {
       state.isEtc = true;
-      state.nowType = '기타';
+      state.nowType = 'etc';
+      state.nowTypeKr = '기타';
     },
     onCloseAllType: (state) => {
-      state.isCertificate = state.isClub = state.isContest = state.isActivity = state.isStudy = state.isEtc = false;
+      state.isCertificate =
+        state.isClub =
+        state.isContest =
+        state.isExternalActivity =
+        state.isStudy =
+        state.isEtc =
+          false;
     },
     onChangeIsFile: (state, action) => {
       state.isFile = action.payload;
     },
+
+    //  carrer
+    changeTitle: (state, action) => {
+      state.title = action.payload;
+    },
+    changeProjectName: (state, action) => {
+      state.projectName = action.payload;
+    },
+    changeInstitution: (state, action) => {
+      state.institution = action.payload;
+    },
+    changeEach: (state, action) => {
+      state.each = action.payload;
+    },
+    changeDate: (state, action) => {
+      state.date = action.payload;
+    },
+    changePeriod: (state, action) => {
+      state.period = action.payload;
+    },
   },
-  extraReducers: (builder) => {
-    true;
-  },
+  extraReducers: (builder) =>
+    builder
+      //make map
+      .addCase(makeMap.pending, (state) => {
+        true;
+      })
+      .addCase(makeMap.fulfilled, (state, payload: any) => {
+        true;
+      })
+      .addCase(makeMap.rejected, (state) => {
+        true;
+      })
+      // get map
+      .addCase(getMaps.pending, (state) => {
+        true;
+      })
+      .addCase(getMaps.fulfilled, (state, action: any) => {
+        state.maps = action.payload;
+      })
+      .addCase(getMaps.rejected, (state) => {
+        true;
+      }),
 });
 
 export const {
@@ -106,6 +181,12 @@ export const {
   clickEtc,
   onCloseAllType,
   onChangeIsFile,
+  changeTitle,
+  changeProjectName,
+  changeInstitution,
+  changeEach,
+  changeDate,
+  changePeriod,
 } = roadMapSlice.actions;
 export const roadMap = (state: RootState) => state.roadMap;
 
