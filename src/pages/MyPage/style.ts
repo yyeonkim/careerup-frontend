@@ -83,52 +83,19 @@ export const ProfileBox = styled(Wrapper)`
     width: 25rem;
     height: 25rem;
     border-radius: 50%;
-    margin-bottom: 1.6rem;
   }
 
   .profile__info {
     margin-top: 5.2rem;
     display: flex;
-    align-items: center;
-
-    div:first-of-type {
-      font-weight: 100;
-      margin-right: 3.4rem;
-      min-width: 4.5rem;
-
-      p {
-        font-size: 2.4rem;
-        color: #696969;
-      }
-    }
-
-    div:nth-of-type(2) {
-      min-width: 12rem;
-
-      input,
-      p {
-        font-size: 2rem;
-      }
-
-      input {
-        display: block;
-        border: none;
-        border-bottom: 1px solid gray;
-        max-width: 12rem;
-        line-height: 3.5rem;
-      }
-    }
-
-    p {
-      line-height: 3.8rem;
-    }
+    flex-direction: column;
+    gap: 1rem;
   }
 `;
 
 export const InfoBox = styled(Wrapper)`
   font-weight: 500;
   font-size: 2rem;
-  line-height: 4.5rem;
   border-radius: 2rem;
   padding-left: 3.2rem;
 
@@ -139,12 +106,23 @@ export const InfoBox = styled(Wrapper)`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 3.2rem;
+
+  p {
+    display: flex;
+    align-items: center;
+  }
 
   input {
+    display: block;
+    height: 2rem;
     font-weight: 500;
     font-size: 2rem;
     border: none;
     border-bottom: 1px solid gray;
+    ::placeholder {
+      color: #bebebe;
+    }
   }
 `;
 

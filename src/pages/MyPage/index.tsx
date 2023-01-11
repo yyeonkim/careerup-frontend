@@ -8,6 +8,8 @@ import { patchUserData, setUserData } from '../../redux/reducers/UserDateSlice';
 import useGetUserData from '../../hooks/useGetUserData';
 import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
+import ProfileContent from '../../components/ProfileContent';
+import InfoContent from '../../components/InfoContent';
 
 const careerMaps = [0, 1, 2];
 
@@ -21,7 +23,6 @@ export default function MyPage() {
   const dispatch = useAppDispatch();
 
   const { isEdit } = useSetIsEdit();
-
   const { inputs, setInputs } = useGetInputs();
 
   const onClickImg = () => {
@@ -79,78 +80,97 @@ export default function MyPage() {
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
             <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={inputs.picture} />
             <div className="profile__info">
-              <div>
-                <p>이름</p>
-                <p>나이</p>
-                <p>성별</p>
-                <p>직업</p>
-                <p>거주</p>
-              </div>
-              <div>
-                {isEdit ? (
-                  <>
-                    <input name="name" value={inputs.name} onChange={onChangeInput} />
-                    <input name="age" value={inputs.age} onChange={onChangeInput} />
-                    <input name="gender" value={inputs.gender} onChange={onChangeInput} />
-                    <input name="job" value={inputs.job} onChange={onChangeInput} />
-                    <input name="address" value={inputs.address} onChange={onChangeInput} />
-                  </>
-                ) : (
-                  <>
-                    <p>{userData?.name}</p>
-                    <p>{userData?.age}</p>
-                    <p>{userData?.gender}</p>
-                    <p>{userData?.job}</p>
-                    <p>{userData?.address}</p>
-                  </>
-                )}
-              </div>
+              <ProfileContent
+                label="이름"
+                value={userData?.name}
+                inputName="name"
+                inputValue={inputs.name}
+                onChange={onChangeInput}
+              />
+              <ProfileContent
+                label="나이"
+                value={userData?.age}
+                inputName="age"
+                inputValue={inputs.age}
+                onChange={onChangeInput}
+              />
+              <ProfileContent
+                label="성별"
+                value={userData?.gender}
+                inputName="gender"
+                inputValue={inputs.gender}
+                onChange={onChangeInput}
+              />
+              <ProfileContent
+                label="직업"
+                value={userData?.job}
+                inputName="job"
+                inputValue={inputs.job}
+                onChange={onChangeInput}
+              />
+              <ProfileContent
+                label="주소"
+                value={userData?.address}
+                inputName="address"
+                inputValue={inputs.address}
+                onChange={onChangeInput}
+              />
             </div>
           </ProfileBox>
 
           <div className="content__right">
             <div className="content__info">
               <InfoBox>
-                {isEdit ? (
-                  <>
-                    <p>
-                      🏫 <input name="univ" value={inputs.univ} onChange={onChangeInput} />
-                    </p>
-                    <p>
-                      📚 <input name="major1" value={inputs.major1} onChange={onChangeInput} />
-                    </p>
-                    <p>
-                      관심 분야: <input name="interestField1" value={inputs.interestField1} onChange={onChangeInput} />
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>🏫 {userData?.univ}</p>
-                    <p>📚 {userData?.major1}</p>
-                    <p>관심 분야: {userData?.interestField1}</p>
-                  </>
-                )}
+                <InfoContent
+                  label="🏫"
+                  value={userData?.univ}
+                  inputName="univ"
+                  placeholder="학력을 입력하세요."
+                  inputValue={inputs.univ}
+                  onChange={onChangeInput}
+                />
+                <InfoContent
+                  label="📚"
+                  value={userData?.major1}
+                  inputName="major1"
+                  placeholder="전공을 입력하세요."
+                  inputValue={inputs.major1}
+                  onChange={onChangeInput}
+                />
+                <InfoContent
+                  label="💚"
+                  value={userData?.interestField1}
+                  inputName="interestField1"
+                  placeholder="관심분야을 입력하세요."
+                  inputValue={inputs.interestField1}
+                  onChange={onChangeInput}
+                />
               </InfoBox>
               <InfoBox>
-                {isEdit ? (
-                  <>
-                    <p>
-                      📞 <input name="phone" value={inputs.phone} onChange={onChangeInput} />
-                    </p>
-                    <p>
-                      ✉️ <input name="username" value={inputs.username} onChange={onChangeInput} />
-                    </p>
-                    <p>
-                      📄 <input name="link" value={inputs.link} onChange={onChangeInput} />
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>📞 {userData?.phone}</p>
-                    <p>✉️ {userData?.username}</p>
-                    <p>📄 {userData?.link}</p>
-                  </>
-                )}
+                <InfoContent
+                  label="📞"
+                  value={userData?.phone}
+                  inputName="phone"
+                  placeholder="전화번호를 입력하세요."
+                  inputValue={inputs.phone}
+                  onChange={onChangeInput}
+                />
+                <InfoContent
+                  label="✉️"
+                  value={userData?.username}
+                  inputName="username"
+                  placeholder="이메일을 입력하세요."
+                  inputValue={inputs.username}
+                  onChange={onChangeInput}
+                />
+                <InfoContent
+                  label="🔗"
+                  value={userData?.link}
+                  inputName="link"
+                  placeholder="관련 링크를 달아보세요."
+                  inputValue={inputs.link}
+                  onChange={onChangeInput}
+                />
               </InfoBox>
             </div>
 
