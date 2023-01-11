@@ -43,6 +43,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       if (loginSuccess) {
         const { accessToken } = response.data.result;
         localStorage.setItem('accessToken', accessToken);
+        history.push('/');
         history.go(0); // 브라우저 새로고침
       }
     }
