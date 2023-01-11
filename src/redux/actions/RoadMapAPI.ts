@@ -26,8 +26,7 @@ export interface Map {
   };
 }
 
-const jwt =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2NzM0MzU4MjJ9.Ub6D54spcLr3OJyOjaS0t4cP2SZZ2T-qH-E9-L6iajaTp4a-NU-nWF5t7uw7bnWwfKoyTDi0jNgnYxENfbQctA';
+const jwt = '';
 
 export const makeMap = createAsyncThunk('roadMap/makeMap', async (info: Carrer) => {
   try {
