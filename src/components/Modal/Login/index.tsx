@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
+import { useHistory } from 'react-router-dom';
 
-import { Background, Modal, Logo } from './style';
+import { Modal, Logo } from './style';
 import LoginForm from '../../LoginForm';
 import { useAppDispatch } from '../../../redux/hooks';
 import { resetForm } from '../../../redux/reducers/LoginFormSlice';
-import { useHistory } from 'react-router-dom';
+import Background from '../Background';
 
 export default function LoginModal() {
   const history = useHistory();
