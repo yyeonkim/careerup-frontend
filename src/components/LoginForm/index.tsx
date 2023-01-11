@@ -37,7 +37,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
 
       if (signUpSuccess) {
         alert('회원가입이 완료되었습니다. 로그인 해주세요.');
-        toggleForm();
+        changeForm();
       }
 
       if (loginSuccess) {
@@ -56,8 +56,9 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
   };
 
-  const toggleForm = () => {
+  const changeForm = () => {
     setIsSignIn((current) => !current);
+    dispatch(resetForm());
   };
 
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeName(event.currentTarget.value));
@@ -66,11 +67,6 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     dispatch(changePassword(event.currentTarget.value));
   const onChangePasswordCheck = (event: ChangeEvent<HTMLInputElement>) =>
     dispatch(changePasswordCheck(event.currentTarget.value));
-
-  const changeForm = () => {
-    toggleForm();
-    dispatch(resetForm());
-  };
 
   return isSignIn ? (
     <StyledForm onSubmit={onSubmit}>
