@@ -1,30 +1,31 @@
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GrFormAdd, GrFormClose } from 'react-icons/gr';
 
-import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
+import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { patchUserData, setUserData } from '../../redux/reducers/UserSlice';
 import useGetUserData from '../../hooks/useGetUserData';
 import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
+import useGetMyMaps from '../../hooks/useGetMyMaps';
 import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
-import useGetMyMaps from '../../hooks/useGetMyMaps';
+import Background from '../../components/Modal/Background';
 
 export default function MyPage() {
   const history = useHistory();
   const fileInput = useRef<HTMLInputElement>(null);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const { isEdit } = useSetIsEdit();
+  const { inputs, setInputs } = useGetInputs();
   const { myMaps, setMyMaps } = useGetMyMaps();
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
   const dispatch = useAppDispatch();
-
-  const { isEdit } = useSetIsEdit();
-  const { inputs, setInputs } = useGetInputs();
 
   const onClickImg = () => {
     if (isEdit) {
@@ -68,6 +69,14 @@ export default function MyPage() {
 
   const onClickEdit = () => {
     history.push('/mypage#edit');
+  };
+
+  const onClickAddMap = () => {
+    setIsOpen(true);
+  };
+
+  const onClickClose = () => {
+    setIsOpen(false);
   };
 
   return isLoading ? (
@@ -190,9 +199,22 @@ export default function MyPage() {
                     )}
                   </div>
                 ))}
-                <div className="map button" onClick={() => console.log('커리어맵 생성')}>
+
+                <div className="map button" onClick={onClickAddMap}>
                   <GrFormAdd size="3.2rem" />
                 </div>
+                {isOpen && (
+                  <>
+                    <Background />
+                    <Modal>
+                      <form>
+                        <input type="text" placeholder="커리어맵 제목을 입력하세요." />
+                        <button>확인</button>
+                        <button onClick={onClickClose}>취소</button>
+                      </form>
+                    </Modal>
+                  </>
+                )}
               </div>
             </MapBox>
           </div>

@@ -143,28 +143,44 @@ export const MapBox = styled(Wrapper)`
 
   div {
     display: flex;
-  }
 
-  .map {
-    display: flex;
-    justify-content: center;
-    width: 17rem;
-    height: 17rem;
-    border-radius: 50%;
-    border: 2px solid #29cc6a;
-    background-color: lightgray;
-    margin-right: 3.2rem;
-    cursor: pointer;
-    padding-top: 1rem;
-  }
+    .map {
+      display: flex;
+      justify-content: center;
+      width: 17rem;
+      height: 17rem;
+      border-radius: 50%;
+      border: 2px solid #29cc6a;
+      background-color: lightgray;
+      margin-right: 3.2rem;
+      cursor: pointer;
+      padding-top: 1rem;
+    }
 
-  .button {
-    border: none;
+    .button {
+      border: none;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
+`;
+
+export const Modal = styled.div`
+  width: 40rem;
+  height: 30rem;
+  border-radius: 2rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // 가운데 정렬
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
 `;
 
 export const Button = styled.div`
