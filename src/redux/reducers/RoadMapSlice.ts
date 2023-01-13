@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { getMaps, makeMap } from '../actions/RoadMapAPI';
+import { chageItems, getItems, makeItem } from '../actions/RoadMapAPI';
 
 export interface RoadMapState {
   orderEdit: boolean;
@@ -16,6 +16,8 @@ export interface RoadMapState {
   isEtc: boolean;
   isFile: boolean;
 
+  check: boolean;
+
   //carrer
   nowType: string;
   nowTypeKr: string;
@@ -28,7 +30,7 @@ export interface RoadMapState {
   //취득일
   date: string;
 
-  maps: Array<{ maxIdx: number; title: string }>;
+  items: Array<{ itemIdx: number; title: string; sequence: number }>;
 }
 
 const initialState: RoadMapState = {
@@ -45,7 +47,9 @@ const initialState: RoadMapState = {
   isEtc: true,
   isFile: false,
 
-  nowType: 'etx',
+  check: false,
+
+  nowType: 'etc',
   nowTypeKr: '기타',
   title: '',
   projectName: '',
@@ -54,7 +58,7 @@ const initialState: RoadMapState = {
   period: '',
   date: '',
 
-  maps: [],
+  items: [],
 };
 
 export const roadMapSlice = createSlice({
@@ -145,24 +149,40 @@ export const roadMapSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
-      //make map
-      .addCase(makeMap.pending, (state) => {
+      //make item
+      .addCase(makeItem.pending, (state) => {
         true;
       })
-      .addCase(makeMap.fulfilled, (state, payload: any) => {
+      .addCase(makeItem.fulfilled, (state, action: any) => {
+        state.isModal = false;
+        state.check = !state.check;
         true;
       })
-      .addCase(makeMap.rejected, (state) => {
+      .addCase(makeItem.rejected, (state) => {
+        alert('실패');
+      })
+      // get itemlist
+      .addCase(getItems.pending, (state) => {
         true;
       })
-      // get map
-      .addCase(getMaps.pending, (state) => {
+      .addCase(getItems.fulfilled, (state, action: any) => {
+        state.items = action.payload;
+        state.roadLen = state.items.length + 1 <= 9 ? 0 : Math.ceil((state.items.length - 8) / 3);
+        state.activity = 9 + state.roadLen * 3;
+
+        // console.log(state.items);
+      })
+      .addCase(getItems.rejected, (state) => {
         true;
       })
-      .addCase(getMaps.fulfilled, (state, action: any) => {
-        state.maps = action.payload;
+      // change items
+      .addCase(chageItems.pending, (state) => {
+        true;
       })
-      .addCase(getMaps.rejected, (state) => {
+      .addCase(chageItems.fulfilled, (state) => {
+        state.check = !state.check;
+      })
+      .addCase(chageItems.rejected, (state) => {
         true;
       }),
 });

@@ -20,15 +20,9 @@ interface Carrer {
   sequence: number;
 }
 
-export interface Map {
-  data: {
-    result: Array<{ maxIdx: number; title: string }>;
-  };
-}
+const jwt = localStorage.getItem('accessToken');
 
-const jwt = '';
-
-export const makeMap = createAsyncThunk('roadMap/makeMap', async (info: Carrer) => {
+export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer) => {
   try {
     const type = info.nowType;
     if (type === 'certificate') {
@@ -49,22 +43,13 @@ export const makeMap = createAsyncThunk('roadMap/makeMap', async (info: Carrer) 
       delete info.each;
     }
 
-    const map = await axios.post(
-      '/map',
-      { career: info.nowType, title: info.mainTitle },
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    );
-
-    const mapidx = map.data.result.mapIdx;
     delete info.nowType;
     delete info.mainTitle;
 
-    const url = `/item/${type}?mapIdx=${mapidx}`;
-    const addMap = await axios.post(url, info, {
+    // console.log(info);
+
+    const url = `/item/${type}?mapIdx=${37}`;
+    await axios.post(url, info, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -74,15 +59,27 @@ export const makeMap = createAsyncThunk('roadMap/makeMap', async (info: Carrer) 
   }
 });
 
-export const getMaps = createAsyncThunk('roadMap/getMaps', async () => {
+export const getItems = createAsyncThunk('roadMap/getItems', async (mapIdx: number) => {
   try {
-    const data: Map = await axios.get('/map/my-map', {
+    const res = await axios.get(`/map/${mapIdx}`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
     });
 
-    return data.data.result;
+    return res.data.result.itemList;
+  } catch (err) {
+    alert('실패');
+  }
+});
+
+export const chageItems = createAsyncThunk('roadMap/chageItems', async (data: any) => {
+  try {
+    await axios.patch(`/item/${data.mapIdx}`, data.list, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
   } catch (err) {
     alert('실패');
   }
