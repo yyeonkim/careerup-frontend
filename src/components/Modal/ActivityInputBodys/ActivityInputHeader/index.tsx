@@ -44,7 +44,14 @@ const ActivityInputHeader = () => {
         <img src={`/images/${nowType}.png`} alt={nowType} />
       </TypeBtn>
 
-      <input type="text" value={title} onChange={onChangeTitle} spellCheck={false} placeholder={'제목을 입력하세요'} />
+      <input
+        type="text"
+        value={title}
+        onChange={onChangeTitle}
+        spellCheck={false}
+        placeholder={'제목을 입력하세요'}
+        required
+      />
       {isActivityTypeModal && <ActivityTypeModal />}
     </Header>
   );
