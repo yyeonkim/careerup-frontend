@@ -22,7 +22,7 @@ import ActivityInputHeader from '../ActivityInputBodys/ActivityInputHeader';
 import ActivityInputContent from '../ActivityInputBodys/ActivityInputInfo';
 import ActivityInputImages from '../ActivityInputBodys/ActivityInputImages';
 import ActivityInputUpload from '../ActivityInputBodys/ActivityInputUpload';
-import { makeMap } from '../../../redux/actions/RoadMapAPI';
+import { makeItem } from '../../../redux/actions/RoadMapAPI';
 
 const ActivityInput = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +40,7 @@ const ActivityInput = () => {
     each,
     period,
     date,
-    maps,
+    items,
   } = useAppSelector((state) => state.roadMap);
 
   const [content, , setContent] = useInput('');
@@ -59,6 +59,27 @@ const ActivityInput = () => {
     dispatch(toggleIsModal());
     dispatch(onChangeIsFile(false));
   }, []);
+
+  const onSubmit = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      dispatch(
+        makeItem({
+          nowType,
+          mainTitle: title,
+          each,
+          period,
+          realization,
+          title: projectName,
+          acquisition: date,
+          institution,
+          content,
+          sequence: items.length + 1,
+        })
+      );
+    },
+    [nowType, title, each, period, realization, projectName, date, institution, content, items]
+  );
 
   const onTypeActivityModalClose = useCallback(() => {
     dispatch(closeIsActivityTypeModal());
@@ -95,7 +116,7 @@ const ActivityInput = () => {
 
   return (
     <Wrapper>
-      <Form onClick={onTypeActivityModalClose}>
+      <Form onClick={onTypeActivityModalClose} onSubmit={onSubmit}>
         <ActivityInputHeader />
         <Line>
           <div />
@@ -152,27 +173,7 @@ const ActivityInput = () => {
         <ActivityInputUpload />
 
         <FinishBtns>
-          <button
-            type={'button'}
-            onClick={() =>
-              dispatch(
-                makeMap({
-                  nowType,
-                  mainTitle: title,
-                  each,
-                  period,
-                  realization,
-                  title: projectName,
-                  acquisition: date,
-                  institution,
-                  content,
-                  sequence: maps !== null ? maps?.length : 0,
-                })
-              )
-            }
-          >
-            저장
-          </button>
+          <button type={'submit'}>저장</button>
           <button onClick={onClickClose}>삭제</button>
         </FinishBtns>
 

@@ -9,10 +9,11 @@ import { addRoad, roadMap, toggleIsModal } from '../../redux/reducers/RoadMapSli
 
 export default function RoadMap() {
   const dispatch = useAppDispatch();
-  const { roadLen, activity, isModal } = useAppSelector((state) => state.roadMap);
+  const { roadLen, activity, isModal, items } = useAppSelector((state) => state.roadMap);
 
   const onClickAddRoad = useCallback(() => {
-    dispatch(addRoad());
+    // dispatch(addRoad());
+    dispatch(toggleIsModal());
   }, []);
 
   const onClickIsModal = useCallback(() => {
@@ -53,15 +54,26 @@ export default function RoadMap() {
               else if ((!isLeft && check === 1) || (isLeft && check === 1)) left = 40;
               else left = 70;
 
-              return (
-                <AddCircle key={activity} style={{ top: `${top}rem`, left: activity === 0 ? '4rem' : `${left}rem` }}>
-                  {activity === 0 ? (
-                    <img src="/images/green.png" alt="" />
-                  ) : (
-                    <FontAwesomeIcon icon={faPlus} className={'plusBtn'} onClick={onClickIsModal} />
-                  )}
-                </AddCircle>
-              );
+              if (activity === 0)
+                return (
+                  <AddCircle key={activity} style={{ top: `${top}rem`, left: activity === 0 ? '4rem' : `${left}rem` }}>
+                    <img src="/images/green.png" alt="새싹" />
+                  </AddCircle>
+                );
+
+              if (activity > 0)
+                return (
+                  <AddCircle
+                    key={items[activity - 1] ? items[activity - 1].itemIdx : activity + items.length}
+                    style={{ top: `${top}rem`, left: activity === 0 ? '4rem' : `${left}rem` }}
+                  >
+                    {items[activity - 1] ? (
+                      <div title={items[activity - 1].title}>{items[activity - 1].itemIdx}</div>
+                    ) : (
+                      <FontAwesomeIcon icon={faPlus} className={'plusBtn'} onClick={onClickIsModal} />
+                    )}
+                  </AddCircle>
+                );
             })}
           </Road>
         </Map>

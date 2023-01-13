@@ -10,11 +10,11 @@ import {
   EditBtn,
 } from './style';
 import RoadMap from '../../components/RoadMap';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { VscThreeBars } from 'react-icons/vsc';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { roadMap, toggleOrderEdit } from '../../redux/reducers/RoadMapSlice';
-import { getMaps } from '../../redux/actions/RoadMapAPI';
+import { chageItems, getItems } from '../../redux/actions/RoadMapAPI';
 
 type Nullable<T> = T | null;
 
@@ -26,18 +26,21 @@ interface DragAndDrop {
   updatedOrder: Array<string>;
 }
 
-export default function CareerMaps() {
-  const { maps } = useAppSelector((state) => state.roadMap);
+interface item {
+  itemIdx: number;
+  title: string;
+  category: string;
+  sequence: number;
+}
 
-  const [dummyActivity, setDummyActivity] = useState([
-    '잇타 동아리',
-    '자격증1',
-    '자격증2',
-    '자격증3',
-    '자격증4',
-    '자격증5',
-    '자격증6',
-  ]);
+export default function CareerMaps() {
+  const { check, items } = useAppSelector((state) => state.roadMap);
+
+  const [list, setList] = useState<any>([]);
+
+  useEffect(() => {
+    setList(items.slice());
+  }, [items]);
 
   const [dragAndDrop, setDragAndDrop] = useState<DragAndDrop>({
     draggedFrom: null,
@@ -64,7 +67,7 @@ export default function CareerMaps() {
     setDragAndDrop({
       ...dragAndDrop,
       draggedFrom: initialPosition,
-      originalOrder: dummyActivity,
+      originalOrder: list,
     });
   };
 
@@ -95,7 +98,7 @@ export default function CareerMaps() {
   };
 
   const onDrop = () => {
-    setDummyActivity(dragAndDrop.updatedOrder);
+    setList(dragAndDrop.updatedOrder);
     setDragAndDrop({
       ...dragAndDrop,
       draggedFrom: null,
@@ -124,11 +127,19 @@ export default function CareerMaps() {
     });
   };
 
-  useEffect(() => {
-    dispatch(getMaps());
-  }, []);
+  const onClickSave = useCallback(() => {
+    for (let i = 0; i < list.length; i++) {
+      list[i] = { ...list[i], sequence: i + 1 };
+    }
 
-  console.log(maps);
+    console.log(list);
+    dispatch(chageItems({ mapIdx: 37, list }));
+    dispatch(toggleOrderEdit());
+  }, [list]);
+
+  useLayoutEffect(() => {
+    dispatch(getItems(37));
+  }, [check]);
 
   return (
     <CareerMapsWrapper>
@@ -163,7 +174,7 @@ export default function CareerMaps() {
             <span>활동</span>
           </div>
           <ActivityContent orderEdit={orderEdit}>
-            {dummyActivity.map((item, idx) => {
+            {list.map((item: any, idx: number) => {
               return (
                 <div
                   className="draggable"
@@ -177,7 +188,7 @@ export default function CareerMaps() {
                   onDragEnter={onDragEnter}
                   onDragEnd={onDragEnd}
                 >
-                  {item}
+                  {item.title}
                   <span>{orderEdit && <VscThreeBars />}</span>
                 </div>
               );
@@ -191,8 +202,16 @@ export default function CareerMaps() {
           )}
           {orderEdit && (
             <EditBtn>
-              <button className="save">저장</button>
-              <button className="cancel" onClick={onClickCancel}>
+              <button className="save" onClick={onClickSave}>
+                저장
+              </button>
+              <button
+                className="cancel"
+                onClick={() => {
+                  onClickCancel();
+                  setList(items);
+                }}
+              >
                 취소
               </button>
             </EditBtn>
