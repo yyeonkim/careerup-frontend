@@ -1,6 +1,7 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
+import axios from 'axios';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -14,6 +15,13 @@ import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
 import { theme } from '../../style/theme';
 
+interface IMapInputs {
+  title: string;
+  career: string;
+}
+
+const accessToken = localStorage.getItem('accessToken');
+
 export default function MyPage() {
   const history = useHistory();
   const fileInput = useRef<HTMLInputElement>(null);
@@ -22,6 +30,7 @@ export default function MyPage() {
   const { isEdit } = useSetIsEdit();
   const { inputs, setInputs } = useGetInputs();
   const { myMaps, setMyMaps } = useGetMyMaps();
+  const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
@@ -84,8 +93,43 @@ export default function MyPage() {
     setIsOpen(true);
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const onClickCancelModal = () => {
+    const ok = confirm('취소하시겠습니까?');
+    if (ok) {
+      setIsOpen(false);
+      resetMapInputs();
+    }
+  };
+
+  const resetMapInputs = () => {
+    setMapInputs({ title: '', career: '' });
+  };
+
+  const onSubmitMap = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const response = await axios.post(
+      '/map',
+      { title: mapInputs.title, career: mapInputs.career },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    console.log(response);
+
+    if (response.status === 200) {
+      const mapIdx = response.data.result.mapIdx;
+      setMyMaps([...myMaps, { mapIdx, title: mapInputs.title, career: mapInputs.career }]);
+      resetMapInputs();
+      history.push(`/career-maps/${mapIdx}`);
+    }
+  };
+
+  const onChangeMapInputs = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.currentTarget;
+    setMapInputs({ ...mapInputs, [name]: value });
+  };
+
+  const onClickMap = (mapIdx: number) => {
+    console.log(mapIdx);
+    history.push(`/career-maps/${mapIdx}`);
   };
 
   return isLoading ? (
@@ -205,21 +249,35 @@ export default function MyPage() {
                 {myMaps.length === 0 ? (
                   <span className="message">커리어 맵을 만들어보세요</span>
                 ) : (
-                  <span>커리어 맵을 만들어보세요.</span>
+                  myMaps.map(({ career, title, mapIdx }) => (
+                    <div className="map-card" onClick={() => onClickMap(mapIdx)}>
+                      <span>{title}</span>
+                      <span>{career}</span>
+                    </div>
+                  ))
                 )}
 
                 {isOpen && (
                   <>
                     <Background />
                     <Modal>
-                      <form>
-                        <input type="text" placeholder="커리어맵 제목을 입력하세요." />
+                      <form onSubmit={onSubmitMap}>
+                        <input
+                          type="text"
+                          name="title"
+                          value={mapInputs.title}
+                          onChange={onChangeMapInputs}
+                          placeholder="커리어맵 제목을 입력하세요."
+                        />
                         <textarea
+                          name="career"
+                          value={mapInputs.career}
+                          onChange={onChangeMapInputs}
                           placeholder="희망 커리어를 입력하세요.&#10;ex) 프론트엔드 개발자"
                         />
                         <div className="button-field">
                           <ModalButton>확인</ModalButton>
-                          <ModalButton onClick={closeModal}>취소</ModalButton>
+                          <ModalButton onClick={onClickCancelModal}>취소</ModalButton>
                         </div>
                       </form>
                     </Modal>

@@ -128,8 +128,6 @@ export const InfoBox = styled(Wrapper)`
 
 export const MapBox = styled(Wrapper)`
   margin-top: 3.2rem;
-  font-size: 2.4rem;
-  font-weight: bold;
   padding: 4.8rem;
   border-radius: 4rem;
 
@@ -142,7 +140,9 @@ export const MapBox = styled(Wrapper)`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 4.4rem;
+    margin-bottom: 2rem;
+    font-size: 2.4rem;
+    font-weight: 700;
 
     .add-button {
       cursor: pointer;
@@ -151,6 +151,7 @@ export const MapBox = styled(Wrapper)`
 
   .map__main {
     display: flex;
+    gap: 2rem;
 
     .message {
       margin-top: 5rem;
@@ -158,6 +159,21 @@ export const MapBox = styled(Wrapper)`
       text-align: center;
       color: #bebebe;
       font-size: 2rem;
+    }
+
+    .map-card {
+      font-size: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      gap: 1rem;
+      width: 41rem;
+      height: 10rem;
+
+      color: #696969;
+      border: 1px solid #dbdbdb;
+      border-radius: 2rem;
+      padding: 2rem;
     }
   }
 `;

@@ -8,12 +8,14 @@ export default function useGetMyMaps() {
 
   useEffect(() => {
     (async () => {
-      const {
-        data: { result },
-      } = await axios.get('/map/my-map', { headers: { Authorization: `Bearer ${accessToken}` } });
+      const response = await axios.get('/map/my-map', { headers: { Authorization: `Bearer ${accessToken}` } });
 
-      if (result !== undefined) {
-        setMyMaps(result);
+      if (response.status === 200) {
+        if (response.data.result === undefined) {
+          setMyMaps([]);
+        } else {
+          setMyMaps(response.data.result);
+        }
       }
     })();
   }, []);
