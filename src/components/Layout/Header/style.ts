@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  position: relative;
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -25,7 +26,8 @@ export const Logo = styled.div`
   }
 `;
 
-export const ProfileImg = styled.img`
+export const ProfileImage = styled.img`
+  cursor: pointer;
   width: 4rem;
   border-radius: 50%;
 `;

@@ -17,6 +17,7 @@ import MapCard from '../../components/MapCard';
 import { IMapInputs, INewMap } from '../../interfaces';
 import { setMyMap } from '../../redux/reducers/MyMapSlice';
 import { createMap } from '../../api/myMap';
+import { close } from '../../redux/reducers/DropdownSlice';
 
 export default function MyPage() {
   const history = useHistory();
@@ -120,10 +121,14 @@ export default function MyPage() {
     setMapInputs({ ...mapInputs, [name]: value });
   };
 
+  const closeDropdwon = () => {
+    dispatch(close());
+  };
+
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <Container>
+    <Container onClick={closeDropdwon}>
       {isEdit && <Message>내용을 클릭하여 수정하세요</Message>}
       <div className="content">
         <div className="content__top">

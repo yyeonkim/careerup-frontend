@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
 import { Container, LoginButton, Header, Main, MapButton, Slider } from './style';
 import LoginModal from '../../components/Modal/Login';
 import useAutoSlide from '../../hooks/useAutoSlide';
 import Dropdown from '../../components/Dropdown';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { toggle, close } from '../../redux/reducers/DropdownSlice';
 
 // 슬라이드에 들어갈 이미지
 const slides = [
@@ -17,31 +19,19 @@ const accessToken = localStorage.getItem('accessToken');
 
 export default function Home() {
   const location = useLocation();
-  const history = useHistory();
 
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useAppSelector((state) => state.dropdown.value);
+  const dispatch = useAppDispatch();
 
   useAutoSlide(slides, setActiveIndex);
 
   const toggleDropdown = () => {
-    setIsOpen((current) => !current);
+    dispatch(toggle());
   };
 
   const closeDropdown = () => {
-    setIsOpen(false);
-  };
-
-  const onClickDropdown = (event: React.MouseEvent<HTMLLIElement>) => {
-    const textContent = event.currentTarget.textContent;
-    const isLogout = textContent === '로그아웃';
-
-    if (isLogout) {
-      localStorage.removeItem('accessToken');
-      history.go(0);
-    } else {
-      history.push('/mypage');
-    }
+    dispatch(close());
   };
 
   return (
@@ -50,7 +40,7 @@ export default function Home() {
         {accessToken ? (
           <>
             <img src={require('../../assets/profile.jpg')} onClick={toggleDropdown} />
-            {isOpen && <Dropdown items={['마이페이지', '로그아웃']} onClick={onClickDropdown} />}
+            {isOpen && <Dropdown />}
           </>
         ) : (
           <Link to={{ hash: '#login' }}>
