@@ -7,6 +7,7 @@ export default function useGetInputs() {
   const userData = useAppSelector((state) => state.user.entities);
   const [inputs, setInputs] = useState(userData);
 
+  // 사용자 정보를 가져오면 input에 저장
   useEffect(() => {
     setInputs(userData);
   }, [isLoading]);

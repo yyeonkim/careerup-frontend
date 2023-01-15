@@ -16,6 +16,8 @@ export const getAuthorization = () => {
   return { Authorization: `Bearer ${accessToken}` };
 };
 
+const authorization = getAuthorization();
+
 export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginData) => {
   const response = await axios.post(url, data, {
     withCredentials: true,
@@ -25,7 +27,7 @@ export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginDa
 };
 
 export const patchUserData = async (data: IUserData) => {
-  const response = await axios.patch('/user/modify', data, { headers: { Authorization: `Bearer ${accessToken}` } });
+  const response = await axios.patch('/user/modify', data, { headers: authorization });
 
   return response;
 };
