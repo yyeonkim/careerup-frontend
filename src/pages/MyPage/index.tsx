@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
+import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
@@ -112,7 +113,6 @@ export default function MyPage() {
       { title: mapInputs.title, career: mapInputs.career },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    console.log(response);
 
     if (response.status === 200) {
       const mapIdx = response.data.result.mapIdx;
@@ -128,8 +128,24 @@ export default function MyPage() {
   };
 
   const onClickMap = (mapIdx: number) => {
-    console.log(mapIdx);
-    history.push(`/career-maps/${mapIdx}`);
+    if (!isEdit) {
+      history.push(`/career-maps/${mapIdx}`);
+    }
+  };
+
+  const onClickDeleteMap = async (mapIdx: number) => {
+    const ok = confirm('취소하시겠습니까?');
+    if (ok) {
+      const response = await axios.patch(
+        `/map/${mapIdx}/delete`,
+        { mapIdx },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+
+      if (response.status === 200) {
+        setMyMaps(myMaps.filter((item) => item.mapIdx !== mapIdx));
+      }
+    }
   };
 
   return isLoading ? (
@@ -250,9 +266,14 @@ export default function MyPage() {
                   <span className="message">커리어 맵을 만들어보세요</span>
                 ) : (
                   myMaps.map(({ career, title, mapIdx }) => (
-                    <div className="map-card" onClick={() => onClickMap(mapIdx)}>
-                      <span>{title}</span>
-                      <span>{career}</span>
+                    <div className="map-card">
+                      <div className="card__info" onClick={() => onClickMap(mapIdx)}>
+                        <span>{title}</span>
+                        <span>{career}</span>
+                      </div>
+                      <div className="card__delete-icon" onClick={() => onClickDeleteMap(mapIdx)}>
+                        <IoClose color="red" />
+                      </div>
                     </div>
                   ))
                 )}
