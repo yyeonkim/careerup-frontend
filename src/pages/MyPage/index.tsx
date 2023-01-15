@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import axios from 'axios';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -16,8 +15,8 @@ import Background from '../../components/Modal/Background';
 import { theme } from '../../style/theme';
 import MapCard from '../../components/MapCard';
 import { IMapInputs } from '../../interfaces';
-
-const accessToken = localStorage.getItem('accessToken');
+import { setMyMap } from '../../redux/reducers/MyMapSlice';
+import { createMap } from '../../api/myMap';
 
 export default function MyPage() {
   const history = useHistory();
@@ -26,12 +25,13 @@ export default function MyPage() {
   const [isOpen, setIsOpen] = useState(false);
   const { isEdit } = useSetIsEdit();
   const { inputs, setInputs, resetInputs } = useGetInputs();
-  const { myMaps, setMyMaps } = useGetMyMaps();
   const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
   useGetUserData(); // DB에서 사용자 정보 불러오기
+  useGetMyMaps(); // DB에서 내 커리어맵 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
+  const myMaps = useAppSelector((state) => state.myMap.entities);
   const dispatch = useAppDispatch();
 
   const onClickImg = () => {
@@ -100,15 +100,11 @@ export default function MyPage() {
 
   const onSubmitMap = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await axios.post(
-      '/map',
-      { title: mapInputs.title, career: mapInputs.career },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+    const response = await createMap({ title: mapInputs.title, career: mapInputs.career });
 
     if (response.status === 200) {
       const mapIdx = response.data.result.mapIdx;
-      setMyMaps([...myMaps, { mapIdx, title: mapInputs.title, career: mapInputs.career }]);
+      dispatch(setMyMap([...myMaps, { mapIdx, title: mapInputs.title, career: mapInputs.career }]));
       resetMapInputs();
       history.push(`/career-maps/${mapIdx}`);
     }

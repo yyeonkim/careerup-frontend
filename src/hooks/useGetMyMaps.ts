@@ -1,24 +1,11 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { IMyMap } from '../interfaces';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../redux/hooks';
+import { getMyMap } from '../redux/reducers/MyMapSlice';
 
 export default function useGetMyMaps() {
-  const accessToken = localStorage.getItem('accessToken');
-  const [myMaps, setMyMaps] = useState<IMyMap[]>([]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    (async () => {
-      const response = await axios.get('/map/my-map', { headers: { Authorization: `Bearer ${accessToken}` } });
-
-      if (response.status === 200) {
-        if (response.data.result === undefined) {
-          setMyMaps([]);
-        } else {
-          setMyMaps(response.data.result);
-        }
-      }
-    })();
+    dispatch(getMyMap());
   }, []);
-
-  return { myMaps, setMyMaps };
 }

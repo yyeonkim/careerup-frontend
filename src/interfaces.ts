@@ -9,6 +9,7 @@ export interface IUserLoginInfo {
   nickname?: string;
 }
 
+// 사용자 정보
 export interface IUserData {
   address: string;
   age: string;
@@ -36,8 +37,19 @@ export interface ILoginData {
 
 export type PostUserLoginFn = (url: string, data: ILoginData) => Promise<AxiosResponse>;
 
+// 커리어 맵
 export interface IMyMap {
   mapIdx: number;
+  title: string;
+  career: string;
+}
+
+export interface INewMap {
+  title: string;
+  career: string;
+}
+
+export interface IMapInputs {
   title: string;
   career: string;
 }

@@ -1,19 +1,17 @@
-import axios from 'axios';
 import { IoClose } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 
-import useGetMyMaps from '../../hooks/useGetMyMaps';
 import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
 import { IMyMap } from '../../interfaces';
 import { Card } from './style';
-
-const accessToken = localStorage.getItem('accessToken');
+import { useAppDispatch } from '../../redux/hooks';
+import { deleteMap } from '../../redux/reducers/MyMapSlice';
 
 export default function MapCard({ title, career, mapIdx }: IMyMap) {
   const { isEdit } = useSetIsEdit();
-  const { myMaps, setMyMaps } = useGetMyMaps();
   const { resetInputs } = useGetInputs();
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
 
@@ -37,15 +35,7 @@ export default function MapCard({ title, career, mapIdx }: IMyMap) {
   const onClickDeleteMap = async (mapIdx: number) => {
     const ok = confirm('커리어 맵을 삭제할까요?');
     if (ok) {
-      const response = await axios.patch(
-        `/map/${mapIdx}/delete`,
-        { mapIdx },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-
-      if (response.status === 200) {
-        setMyMaps(myMaps.filter((item) => item.mapIdx !== mapIdx));
-      }
+      dispatch(deleteMap(mapIdx));
     }
   };
 
