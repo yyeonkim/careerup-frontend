@@ -11,5 +11,9 @@ export default function useGetInputs() {
     setInputs(userData);
   }, [isLoading]);
 
-  return { inputs, setInputs };
+  const resetInputs = () => {
+    setInputs(userData);
+  };
+
+  return { inputs, setInputs, resetInputs };
 }
