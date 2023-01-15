@@ -271,9 +271,11 @@ export default function MyPage() {
                         <span>{title}</span>
                         <span>{career}</span>
                       </div>
-                      <div className="card__delete-icon" onClick={() => onClickDeleteMap(mapIdx)}>
-                        <IoClose color="red" />
-                      </div>
+                      {!isEdit && (
+                        <div className="card__delete-icon" onClick={() => onClickDeleteMap(mapIdx)}>
+                          <IoClose color="red" />
+                        </div>
+                      )}
                     </div>
                   ))
                 )}
