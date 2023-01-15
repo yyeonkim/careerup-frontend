@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ILoginData, PostUserLoginFn } from '../interfaces';
+import { ILoginData, IUserData, PostUserLoginFn } from '../interfaces';
 
 export const getAccessToken = () => {
   const accessToken = JSON.parse(localStorage.getItem('accessToken') as string);
@@ -10,10 +10,18 @@ export const getAccessToken = () => {
   return null;
 };
 
+const accessToken = getAccessToken();
+
 export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginData) => {
   const response = await axios.post(url, data, {
     withCredentials: true,
   });
+
+  return response;
+};
+
+export const patchUserData = async (data: IUserData) => {
+  const response = await axios.patch('/user/modify', data, { headers: { Authorization: `Bearer ${accessToken}` } });
 
   return response;
 };

@@ -64,9 +64,7 @@ export default function MyPage() {
 
   const saveData = () => {
     dispatch(setUserData(inputs));
-    const response = patchUserData(inputs);
-    console.log(inputs);
-    console.log(response);
+    patchUserData(inputs);
   };
 
   const cancelEdit = () => {
