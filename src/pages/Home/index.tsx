@@ -76,7 +76,7 @@ export default function Home() {
           </Slider>
         </div>
 
-        <Link to="/career-maps">
+        <Link to="/mypage">
           <MapButton>
             <span>내 커리어 맵 만들러가기</span>
             <AiOutlineArrowRight size="3.2rem" />
