@@ -20,20 +20,6 @@ export const Header = styled.header`
   }
 `;
 
-export const Dropdown = styled.ul`
-  position: absolute;
-  bottom: -10rem;
-  background-color: white;
-  border-radius: 1rem;
-  font-size: 1.4rem;
-  padding: 1rem 2rem;
-
-  li {
-    padding: 1rem 0;
-    cursor: pointer;
-  }
-`;
-
 export const LoginButton = styled.div`
   font-size: 1.6rem;
   font-weight: bold;

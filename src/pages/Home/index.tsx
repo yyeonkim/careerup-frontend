@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
-import { Container, LoginButton, Header, Main, MapButton, Slider, Dropdown } from './style';
+import { Container, LoginButton, Header, Main, MapButton, Slider } from './style';
 import LoginModal from '../../components/Modal/Login';
 import useAutoSlide from '../../hooks/useAutoSlide';
+import Dropdown from '../../components/Dropdown';
 
 // 슬라이드에 들어갈 이미지
 const slides = [
@@ -49,13 +50,7 @@ export default function Home() {
         {accessToken ? (
           <>
             <img src={require('../../assets/profile.jpg')} onClick={toggleDropdown} />
-            {isOpen && (
-              <Dropdown>
-                <li onClick={onClickDropdown}>마이페이지</li>
-                <hr color="lightgrey" />
-                <li onClick={onClickDropdown}>로그아웃</li>
-              </Dropdown>
-            )}
+            {isOpen && <Dropdown items={['마이페이지', '로그아웃']} onClick={onClickDropdown} />}
           </>
         ) : (
           <Link to={{ hash: '#login' }}>
