@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
@@ -15,11 +14,8 @@ import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
 import { theme } from '../../style/theme';
-
-interface IMapInputs {
-  title: string;
-  career: string;
-}
+import MapCard from '../../components/MapCard';
+import { IMapInputs } from '../../interfaces';
 
 const accessToken = localStorage.getItem('accessToken');
 
@@ -29,7 +25,7 @@ export default function MyPage() {
 
   const [isOpen, setIsOpen] = useState(false);
   const { isEdit } = useSetIsEdit();
-  const { inputs, setInputs } = useGetInputs();
+  const { inputs, setInputs, resetInputs } = useGetInputs();
   const { myMaps, setMyMaps } = useGetMyMaps();
   const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
@@ -69,13 +65,9 @@ export default function MyPage() {
     dispatch(patchUserData(inputs));
   };
 
-  const onClickCancel = () => {
+  const cancelEdit = () => {
     resetInputs();
     history.push('/mypage');
-  };
-
-  const resetInputs = () => {
-    setInputs(userData);
   };
 
   const goEditMode = () => {
@@ -85,7 +77,7 @@ export default function MyPage() {
   const goToAddMap = () => {
     const ok = confirm('수정을 취소할까요? 값이 저장되지 않습니다.');
     if (ok) {
-      onClickCancel();
+      cancelEdit();
       openModal();
     }
   };
@@ -94,7 +86,7 @@ export default function MyPage() {
     setIsOpen(true);
   };
 
-  const onClickCancelModal = () => {
+  const cancelEditModal = () => {
     const ok = confirm('작성을 취소할까요?');
     if (ok) {
       setIsOpen(false);
@@ -125,33 +117,6 @@ export default function MyPage() {
   const onChangeMapInputs = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget;
     setMapInputs({ ...mapInputs, [name]: value });
-  };
-
-  const onClickMap = (mapIdx: number) => {
-    if (isEdit) {
-      const ok = confirm('수정을 취소할까요? 값이 저장되지 않습니다.');
-      if (ok) {
-        onClickCancel();
-        history.push(`/career-maps/${mapIdx}`);
-      }
-    } else {
-      history.push(`/career-maps/${mapIdx}`);
-    }
-  };
-
-  const onClickDeleteMap = async (mapIdx: number) => {
-    const ok = confirm('커리어 맵을 삭제할까요?');
-    if (ok) {
-      const response = await axios.patch(
-        `/map/${mapIdx}/delete`,
-        { mapIdx },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-
-      if (response.status === 200) {
-        setMyMaps(myMaps.filter((item) => item.mapIdx !== mapIdx));
-      }
-    }
   };
 
   return isLoading ? (
@@ -271,19 +236,7 @@ export default function MyPage() {
                 {myMaps.length === 0 ? (
                   <span className="message">커리어 맵을 만들어보세요</span>
                 ) : (
-                  myMaps.map(({ career, title, mapIdx }) => (
-                    <div className="map-card">
-                      <div className="card__info" onClick={() => onClickMap(mapIdx)}>
-                        <span>{title}</span>
-                        <span>{career}</span>
-                      </div>
-                      {!isEdit && (
-                        <div className="card__delete-icon" onClick={() => onClickDeleteMap(mapIdx)}>
-                          <IoClose color="red" />
-                        </div>
-                      )}
-                    </div>
-                  ))
+                  myMaps.map((item) => <MapCard {...item} />)
                 )}
 
                 {isOpen && (
@@ -310,7 +263,7 @@ export default function MyPage() {
                         />
                         <div className="button-field">
                           <ModalButton>확인</ModalButton>
-                          <ModalButton onClick={onClickCancelModal}>취소</ModalButton>
+                          <ModalButton onClick={cancelEditModal}>취소</ModalButton>
                         </div>
                       </form>
                     </Modal>
@@ -325,7 +278,7 @@ export default function MyPage() {
           {isEdit ? (
             <>
               <Button onClick={onClickSave}>저장</Button>
-              <Button onClick={onClickCancel}>취소</Button>
+              <Button onClick={cancelEdit}>취소</Button>
             </>
           ) : (
             <Button onClick={goEditMode}>프로필 수정</Button>
