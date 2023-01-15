@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import { getAccessToken } from '../../api/user';
 import { IMyMap } from '../../interfaces';
 
-const accessToken = localStorage.getItem('accessToken');
+const accessToken = getAccessToken();
 
-export const getMyMap = createAsyncThunk('GET_MAPS', async () => {
+export const getMyMap = createAsyncThunk('GET_MAP', async () => {
   const response = await axios.get('/map/my-map', { headers: { Authorization: `Bearer ${accessToken}` } });
   return response.data.result;
 });

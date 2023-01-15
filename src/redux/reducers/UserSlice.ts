@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import { getAccessToken } from '../../api/user';
 import { IUserData } from '../../interfaces';
 
-const accessToken = localStorage.getItem('accessToken');
+const accessToken = getAccessToken();
 
 export const getUserData = createAsyncThunk('GET_USER', async () => {
   const response = await axios.get('/user', { headers: { Authorization: `Bearer ${accessToken}` } });

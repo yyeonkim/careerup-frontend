@@ -18,6 +18,8 @@ interface LoginFormProps {
   setIsSignIn: Dispatch<React.SetStateAction<boolean>>;
 }
 
+const ONEDAY = 86400000;
+
 export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   const { email, name, password, passwordCheck, message } = useAppSelector((state) => state.loginForm.value);
   const dispatch = useAppDispatch();
@@ -41,12 +43,16 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       }
 
       if (loginSuccess) {
-        const { accessToken } = response.data.result;
-        localStorage.setItem('accessToken', accessToken);
+        saveAccessToken(response.data.result.accessToken);
         history.push('/');
         history.go(0); // 브라우저 새로고침
       }
     }
+  };
+
+  const saveAccessToken = (accessToken: string) => {
+    const value = JSON.stringify({ value: accessToken, expiration: Date.now() + ONEDAY });
+    localStorage.setItem('accessToken', value);
   };
 
   const isValid = () => {
