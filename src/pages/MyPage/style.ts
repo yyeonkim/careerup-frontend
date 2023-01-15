@@ -157,6 +157,7 @@ export const MapBox = styled(Wrapper)`
       width: 100%;
       text-align: center;
       color: #bebebe;
+      font-size: 2rem;
     }
   }
 `;

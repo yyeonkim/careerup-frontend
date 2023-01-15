@@ -195,7 +195,7 @@ export default function MyPage() {
 
               <div className="map__main">
                 {myMaps.length === 0 ? (
-                  <span className="message">커리어 맵을 만들어보세요.</span>
+                  <span className="message">커리어 맵을 만들어보세요</span>
                 ) : (
                   <span>커리어 맵을 만들어보세요.</span>
                 )}
