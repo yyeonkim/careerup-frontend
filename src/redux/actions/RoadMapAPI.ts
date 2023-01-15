@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { getAccessToken } from '../../api/user';
 axios.defaults.withCredentials = true;
 
 interface Carrer {
@@ -20,7 +21,7 @@ interface Carrer {
   sequence: number;
 }
 
-const jwt = localStorage.getItem('accessToken');
+const jwt = getAccessToken();
 
 export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer) => {
   try {

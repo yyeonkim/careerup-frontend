@@ -3,8 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { patchUserData, setUserData } from '../../redux/reducers/UserSlice';
+import { theme } from '../../style/theme';
 import useGetUserData from '../../hooks/useGetUserData';
 import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
@@ -12,12 +11,14 @@ import useGetMyMaps from '../../hooks/useGetMyMaps';
 import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
-import { theme } from '../../style/theme';
 import MapCard from '../../components/MapCard';
 import { IMapInputs, INewMap } from '../../interfaces';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setUserData } from '../../redux/reducers/UserSlice';
 import { setMyMap } from '../../redux/reducers/MyMapSlice';
-import { createMap } from '../../api/myMap';
 import { close } from '../../redux/reducers/DropdownSlice';
+import { createMap } from '../../api/myMap';
+import { patchUserData } from '../../api/user';
 
 export default function MyPage() {
   const history = useHistory();
@@ -49,10 +50,10 @@ export default function MyPage() {
   };
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name: inputName, value } = event.currentTarget;
+    const { name, value } = event.currentTarget;
     setInputs({
       ...inputs,
-      [inputName]: value,
+      [name]: value,
     });
   };
 
@@ -63,7 +64,9 @@ export default function MyPage() {
 
   const saveData = () => {
     dispatch(setUserData(inputs));
-    dispatch(patchUserData(inputs));
+    const response = patchUserData(inputs);
+    console.log(inputs);
+    console.log(response);
   };
 
   const cancelEdit = () => {
