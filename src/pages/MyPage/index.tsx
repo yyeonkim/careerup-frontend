@@ -14,7 +14,7 @@ import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
 import { theme } from '../../style/theme';
 import MapCard from '../../components/MapCard';
-import { IMapInputs } from '../../interfaces';
+import { IMapInputs, INewMap } from '../../interfaces';
 import { setMyMap } from '../../redux/reducers/MyMapSlice';
 import { createMap } from '../../api/myMap';
 
@@ -94,20 +94,25 @@ export default function MyPage() {
     }
   };
 
-  const resetMapInputs = () => {
-    setMapInputs({ title: '', career: '' });
-  };
-
   const onSubmitMap = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await createMap({ title: mapInputs.title, career: mapInputs.career });
+    const newMap = { title: mapInputs.title, career: mapInputs.career };
+    const response = await createMap(newMap);
 
     if (response.status === 200) {
       const mapIdx = response.data.result.mapIdx;
-      dispatch(setMyMap([...myMaps, { mapIdx, title: mapInputs.title, career: mapInputs.career }]));
+      addIdxToMap(mapIdx, newMap);
       resetMapInputs();
       history.push(`/career-maps/${mapIdx}`);
     }
+  };
+
+  const addIdxToMap = (mapIdx: number, newMap: INewMap) => {
+    dispatch(setMyMap([...myMaps, { mapIdx, ...newMap }]));
+  };
+
+  const resetMapInputs = () => {
+    setMapInputs({ title: '', career: '' });
   };
 
   const onChangeMapInputs = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

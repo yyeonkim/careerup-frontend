@@ -13,7 +13,7 @@ export const getUserData = createAsyncThunk('GET_USER', async () => {
 export const patchUserData = createAsyncThunk('MODIFY_USER', async (data: IUserData) => {
   const response = await axios.patch('/user/modify', data, { headers: { Authorization: `Bearer ${accessToken}` } });
 
-  return response.status;
+  return response;
 });
 
 interface UserState {
@@ -55,7 +55,7 @@ export const userSlice = createSlice({
     builder.addCase(getUserData.fulfilled, (state, { payload }) => {
       state.entities = { ...payload };
 
-      // default 값 설정
+      // 프로필 사진 default 값 설정
       if (!payload.picture) {
         state.entities.picture = require('../../assets/profile.jpg');
       }

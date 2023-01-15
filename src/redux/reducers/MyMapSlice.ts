@@ -39,18 +39,19 @@ export const myMapSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getMyMap.fulfilled, (state, { payload }) => {
-      // 생성한 커리어 맵이 없으면 빈 배열
-      if (payload !== undefined) {
-        state.entities = payload;
-      }
-      state.loading = false;
-    });
+    builder
+      .addCase(getMyMap.fulfilled, (state, { payload }) => {
+        // 생성한 커리어 맵이 없으면 빈 배열
+        if (payload !== undefined) {
+          state.entities = payload;
+        }
+        state.loading = false;
+      })
 
-    builder.addCase(deleteMap.fulfilled, (state, { payload }) => {
-      const mapIdx = payload.data.result.mapIdx;
-      state.entities = state.entities.filter((item) => item.mapIdx !== mapIdx);
-    });
+      .addCase(deleteMap.fulfilled, (state, { payload }) => {
+        const mapIdx = payload.data.result.mapIdx;
+        state.entities = state.entities.filter((item) => item.mapIdx !== mapIdx);
+      });
   },
 });
 
