@@ -95,7 +95,7 @@ export default function MyPage() {
   };
 
   const onClickCancelModal = () => {
-    const ok = confirm('취소하시겠습니까?');
+    const ok = confirm('작성을 취소할까요?');
     if (ok) {
       setIsOpen(false);
       resetMapInputs();
@@ -128,13 +128,19 @@ export default function MyPage() {
   };
 
   const onClickMap = (mapIdx: number) => {
-    if (!isEdit) {
+    if (isEdit) {
+      const ok = confirm('수정을 취소할까요? 값이 저장되지 않습니다.');
+      if (ok) {
+        onClickCancel();
+        history.push(`/career-maps/${mapIdx}`);
+      }
+    } else {
       history.push(`/career-maps/${mapIdx}`);
     }
   };
 
   const onClickDeleteMap = async (mapIdx: number) => {
-    const ok = confirm('취소하시겠습니까?');
+    const ok = confirm('커리어 맵을 삭제할까요?');
     if (ok) {
       const response = await axios.patch(
         `/map/${mapIdx}/delete`,
@@ -286,6 +292,8 @@ export default function MyPage() {
                     <Modal>
                       <form onSubmit={onSubmitMap}>
                         <input
+                          required={true}
+                          maxLength={30}
                           type="text"
                           name="title"
                           value={mapInputs.title}
@@ -293,6 +301,8 @@ export default function MyPage() {
                           placeholder="커리어맵 제목을 입력하세요."
                         />
                         <textarea
+                          required={true}
+                          maxLength={30}
                           name="career"
                           value={mapInputs.career}
                           onChange={onChangeMapInputs}
