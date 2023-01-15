@@ -72,6 +72,14 @@ export default function MyPage() {
     history.push('/mypage#edit');
   };
 
+  const goToAddMap = () => {
+    const ok = confirm('수정을 취소할까요? 값이 저장되지 않습니다.');
+    if (ok) {
+      onClickCancel();
+      openModal();
+    }
+  };
+
   const openModal = () => {
     setIsOpen(true);
   };
@@ -188,7 +196,7 @@ export default function MyPage() {
             <MapBox>
               <div className="map__header">
                 <h3>내 커리어 맵</h3>
-                <div className="add-button" onClick={openModal}>
+                <div className="add-button" onClick={isEdit ? goToAddMap : openModal}>
                   <IoIosAddCircleOutline color={theme.colors.primary} size="4rem" />
                 </div>
               </div>
