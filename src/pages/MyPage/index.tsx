@@ -1,8 +1,8 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { GrFormAdd, GrFormClose } from 'react-icons/gr';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 
-import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal } from './style';
+import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { patchUserData, setUserData } from '../../redux/reducers/UserSlice';
 import useGetUserData from '../../hooks/useGetUserData';
@@ -12,6 +12,7 @@ import useGetMyMaps from '../../hooks/useGetMyMaps';
 import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
+import { theme } from '../../style/theme';
 
 export default function MyPage() {
   const history = useHistory();
@@ -67,15 +68,15 @@ export default function MyPage() {
     setInputs(userData);
   };
 
-  const onClickEdit = () => {
+  const goEditMode = () => {
     history.push('/mypage#edit');
   };
 
-  const onClickAddMap = () => {
+  const openModal = () => {
     setIsOpen(true);
   };
 
-  const onClickClose = () => {
+  const closeModal = () => {
     setIsOpen(false);
   };
 
@@ -185,32 +186,33 @@ export default function MyPage() {
             </div>
 
             <MapBox>
-              <h3>내 커리어 맵</h3>
-              <div>
-                {myMaps.map((item) => (
-                  <div className="map">
-                    {isEdit && (
-                      <GrFormClose
-                        onClick={() => {
-                          confirm('맵을 삭제하겠습니까?');
-                        }}
-                        color="#FF3D3D"
-                      />
-                    )}
-                  </div>
-                ))}
-
-                <div className="map button" onClick={onClickAddMap}>
-                  <GrFormAdd size="3.2rem" />
+              <div className="map__header">
+                <h3>내 커리어 맵</h3>
+                <div className="add-button" onClick={openModal}>
+                  <IoIosAddCircleOutline color={theme.colors.primary} size="4rem" />
                 </div>
+              </div>
+
+              <div className="map__main">
+                {myMaps.length === 0 ? (
+                  <span className="message">커리어 맵을 만들어보세요.</span>
+                ) : (
+                  <span>커리어 맵을 만들어보세요.</span>
+                )}
+
                 {isOpen && (
                   <>
                     <Background />
                     <Modal>
                       <form>
                         <input type="text" placeholder="커리어맵 제목을 입력하세요." />
-                        <button>확인</button>
-                        <button onClick={onClickClose}>취소</button>
+                        <textarea
+                          placeholder="희망 커리어를 입력하세요.&#10;ex) 프론트엔드 개발자"
+                        />
+                        <div className="button-field">
+                          <ModalButton>확인</ModalButton>
+                          <ModalButton onClick={closeModal}>취소</ModalButton>
+                        </div>
                       </form>
                     </Modal>
                   </>
@@ -227,7 +229,7 @@ export default function MyPage() {
               <Button onClick={onClickCancel}>취소</Button>
             </>
           ) : (
-            <Button onClick={onClickEdit}>프로필 수정</Button>
+            <Button onClick={goEditMode}>프로필 수정</Button>
           )}
         </div>
       </div>
