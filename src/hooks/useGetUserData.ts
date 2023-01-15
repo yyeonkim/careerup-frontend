@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
+import { getUserData } from '../redux/actions/UserAPI';
 import { useAppDispatch } from '../redux/hooks';
-import { getUserData } from '../redux/reducers/UserSlice';
 
 export default function useGetUserData() {
   const dispatch = useAppDispatch();

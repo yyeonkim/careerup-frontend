@@ -1,21 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { getAccessToken } from '../../api/user';
 import { IUserData } from '../../interfaces';
-
-const accessToken = getAccessToken();
-
-export const getUserData = createAsyncThunk('GET_USER', async () => {
-  const response = await axios.get('/user', { headers: { Authorization: `Bearer ${accessToken}` } });
-  return response.data.result;
-});
-
-export const patchUserData = createAsyncThunk('MODIFY_USER', async (data: IUserData) => {
-  const response = await axios.patch('/user/modify', data, { headers: { Authorization: `Bearer ${accessToken}` } });
-
-  return response;
-});
+import { getUserData } from '../actions/UserAPI';
 
 interface UserState {
   entities: IUserData;

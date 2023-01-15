@@ -1,25 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { getAccessToken } from '../../api/user';
 import { IMyMap } from '../../interfaces';
-
-const accessToken = getAccessToken();
-
-export const getMyMap = createAsyncThunk('GET_MAP', async () => {
-  const response = await axios.get('/map/my-map', { headers: { Authorization: `Bearer ${accessToken}` } });
-  return response.data.result;
-});
-
-export const deleteMap = createAsyncThunk('DELETE_MAP', async (mapIdx: number) => {
-  const response = await axios.patch(
-    `/map/${mapIdx}/delete`,
-    { mapIdx },
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
-
-  return response;
-});
+import { deleteMap, getMyMap } from '../actions/MyMapAPI';
 
 interface MyMapState {
   entities: IMyMap[] | [];

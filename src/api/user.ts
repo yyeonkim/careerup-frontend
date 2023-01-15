@@ -12,6 +12,10 @@ export const getAccessToken = () => {
 
 const accessToken = getAccessToken();
 
+export const getAuthorization = () => {
+  return { Authorization: `Bearer ${accessToken}` };
+};
+
 export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginData) => {
   const response = await axios.post(url, data, {
     withCredentials: true,

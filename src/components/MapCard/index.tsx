@@ -6,7 +6,7 @@ import useSetIsEdit from '../../hooks/useSetIsEdit';
 import { IMyMap } from '../../interfaces';
 import { Card } from './style';
 import { useAppDispatch } from '../../redux/hooks';
-import { deleteMap } from '../../redux/reducers/MyMapSlice';
+import { deleteMap } from '../../redux/actions/MyMapAPI';
 
 export default function MapCard({ title, career, mapIdx }: IMyMap) {
   const { isEdit } = useSetIsEdit();
