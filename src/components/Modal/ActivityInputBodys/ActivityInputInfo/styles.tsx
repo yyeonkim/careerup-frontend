@@ -16,6 +16,7 @@ export const Info = styled.div`
       border: none;
 
       color: #4e4e4e;
+      background-color: white;
       font-size: 1.6rem;
 
       &:focus {
