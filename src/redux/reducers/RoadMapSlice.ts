@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { chageItems, getItems, makeItem } from '../actions/RoadMapAPI';
+import { chageItems, getItemInfo, getItems, makeItem } from '../actions/RoadMapAPI';
+import { ImageListType } from 'react-images-uploading';
 
 export interface RoadMapState {
   orderEdit: boolean;
@@ -15,22 +16,37 @@ export interface RoadMapState {
   isStudy: boolean;
   isEtc: boolean;
   isFile: boolean;
+  reLender: boolean;
+  isEditMode: boolean;
 
-  check: boolean;
-
-  //carrer
+  // 활동에 입력한 정보들
   nowType: string;
   nowTypeKr: string;
   title: string;
   projectName: string;
   institution: string;
   each: string;
-  //기간
   period: string;
-  //취득일
   date: string;
 
-  items: Array<{ itemIdx: number; title: string; sequence: number }>;
+  // get한 정보
+  items: Array<{ itemIdx: number; title: string; sequence: number; category: string }>;
+  itemInfo: {
+    acquisition: string;
+    category: string;
+    content: string;
+    field: string;
+    files: Array<{
+      fileIdx: number;
+      fileUrl: string;
+      fileType: string;
+    }>;
+    institution: string;
+    period: string;
+    realization: string;
+    role: string;
+    title: string;
+  } | null;
 }
 
 const initialState: RoadMapState = {
@@ -46,8 +62,8 @@ const initialState: RoadMapState = {
   isStudy: false,
   isEtc: true,
   isFile: false,
-
-  check: false,
+  reLender: false,
+  isEditMode: false,
 
   nowType: 'etc',
   nowTypeKr: '기타',
@@ -59,6 +75,7 @@ const initialState: RoadMapState = {
   date: '',
 
   items: [],
+  itemInfo: null,
 };
 
 export const roadMapSlice = createSlice({
@@ -67,10 +84,6 @@ export const roadMapSlice = createSlice({
   reducers: {
     toggleOrderEdit: (state) => {
       state.orderEdit = !state.orderEdit;
-    },
-    addRoad: (state) => {
-      state.roadLen++;
-      state.activity += 3;
     },
     toggleIsModal: (state) => {
       state.isModal = !state.isModal;
@@ -126,6 +139,12 @@ export const roadMapSlice = createSlice({
     onChangeIsFile: (state, action) => {
       state.isFile = action.payload;
     },
+    editMode: (state) => {
+      state.isEditMode = true;
+    },
+    readMode: (state) => {
+      state.isEditMode = false;
+    },
 
     //  carrer
     changeTitle: (state, action) => {
@@ -146,6 +165,18 @@ export const roadMapSlice = createSlice({
     changePeriod: (state, action) => {
       state.period = action.payload;
     },
+    initData: (state) => {
+      state.nowType = 'etc';
+      state.nowTypeKr = '기타';
+      state.title = '';
+      state.projectName = '';
+      state.institution = '';
+      state.each = '';
+      state.period = '';
+      state.date = '';
+
+      state.itemInfo = null;
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -155,7 +186,7 @@ export const roadMapSlice = createSlice({
       })
       .addCase(makeItem.fulfilled, (state, action: any) => {
         state.isModal = false;
-        state.check = !state.check;
+        state.reLender = !state.reLender;
         true;
       })
       .addCase(makeItem.rejected, (state) => {
@@ -180,16 +211,26 @@ export const roadMapSlice = createSlice({
         true;
       })
       .addCase(chageItems.fulfilled, (state) => {
-        state.check = !state.check;
+        state.reLender = !state.reLender;
       })
       .addCase(chageItems.rejected, (state) => {
+        true;
+      })
+      // get item info
+      .addCase(getItemInfo.pending, (state) => {
+        true;
+      })
+      .addCase(getItemInfo.fulfilled, (state, action: any) => {
+        state.itemInfo = action.payload;
+        // console.log(action.payload);
+      })
+      .addCase(getItemInfo.rejected, (state) => {
         true;
       }),
 });
 
 export const {
   toggleOrderEdit,
-  addRoad,
   toggleIsModal,
   toggleIsActivityTypeModal,
   closeIsActivityTypeModal,
@@ -207,6 +248,9 @@ export const {
   changeEach,
   changeDate,
   changePeriod,
+  editMode,
+  readMode,
+  initData,
 } = roadMapSlice.actions;
 export const roadMap = (state: RootState) => state.roadMap;
 

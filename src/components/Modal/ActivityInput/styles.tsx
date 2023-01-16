@@ -60,6 +60,7 @@ export const TextArea = styled.textarea`
   resize: none;
 
   font-size: 1.6rem;
+  background-color: white;
   color: #4e4e4e;
 
   &:focus {

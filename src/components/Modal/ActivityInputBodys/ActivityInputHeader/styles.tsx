@@ -25,6 +25,7 @@ export const Header = styled.div`
     font-size: 3rem;
     font-weight: 700;
     color: #696969;
+    background-color: white;
 
     border: none;
     :focus {

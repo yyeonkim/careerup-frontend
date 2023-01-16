@@ -1,82 +1,55 @@
-import React, { useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
 import { Img, Images, PlusBtn, RemoveBtn, ImgWrapper } from './styles';
-import axios from 'axios';
+import { useAppSelector } from '../../../../redux/hooks';
 
-const ActivityInputImages = () => {
-  const [images, setImages] = useState<any>([]);
+interface Props {
+  images: ImageListType;
+  setImages: (imageList: ImageListType) => void;
+}
+
+const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
+  const { itemInfo, isEditMode } = useAppSelector((state) => state.roadMap);
+
   const maxNumber = 4;
 
-  const onChange = (imageList: ImageListType) => {
-    setImages(imageList as never[]);
-  };
-  // const onChange = (e: any) => {
-  //   setImages(e.target.files);
-  // };
-
-  // const [files, setFiles] = useState<any>();
-  // const encodeFileToBase64 = (fileBlob: Blob) => {
-  //   const reader: any = new FileReader();
-  //
-  //   reader.readAsDataURL(fileBlob);
-  //
-  //   return new Promise<void>((resolve) => {
-  //     reader.onload = () => {
-  //       if (reader.result) setImageSrc(reader.result);
-  //
-  //       resolve();
-  //     };
-  //   });
-  // };
-  //
-  // const onLoadFile = (e: any) => {
-  //   const file = e.target.files;
-  //   setFiles(file);
-  //
-  //   encodeFileToBase64(e.target.files[0]);
-  // };
-  const a = useCallback(() => {
-    const images = new FormData();
-
-    [].forEach.call(images, (image) => {
-      images.append('images', image);
-    });
-
-    axios
-      .post('/item/upload/43/picture', images, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        alert('성공');
-      })
-      .catch((err) => {
-        alert('실패');
-      });
+  const onChangeImages = useCallback((imageList: ImageListType) => {
+    setImages(imageList);
   }, []);
 
   return (
     <div>
-      <ImageUploading multiple value={images} onChange={onChange} maxNumber={maxNumber} maxFileSize={100000}>
+      <ImageUploading
+        multiple
+        value={images}
+        onChange={onChangeImages}
+        maxNumber={maxNumber}
+        maxFileSize={20 * 1024 * 1024}
+      >
         {({ imageList, onImageUpload, onImageRemove, dragProps }) => (
           <Images>
-            {imageList.map((image, index) => (
-              <ImgWrapper key={index}>
-                <Img src={image.dataURL} alt={image.dataURL} />
-                <div>
-                  <RemoveBtn onClick={() => onImageRemove(index)}>X</RemoveBtn>
-                </div>
-              </ImgWrapper>
-            ))}
-            {maxNumber > images.length && (
+            {isEditMode &&
+              imageList.map((image, index) => (
+                <ImgWrapper key={index}>
+                  <Img src={image.dataURL} alt={image.dataURL} />
+                  <div>
+                    <RemoveBtn onClick={() => onImageRemove(index)}>X</RemoveBtn>
+                  </div>
+                </ImgWrapper>
+              ))}
+            {!isEditMode &&
+              images.map((image: any, index) => (
+                <ImgWrapper key={index}>
+                  <Img src={image} alt={image.dataURL} />
+                  <div>{isEditMode && <RemoveBtn onClick={() => onImageRemove(index)}>X</RemoveBtn>}</div>
+                </ImgWrapper>
+              ))}
+            {maxNumber > images.length && isEditMode && (
               <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
                 +
               </PlusBtn>
             )}
-            {images.length < 1 && (
+            {images.length < 1 && isEditMode && (
               <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
                 +
               </PlusBtn>
@@ -84,7 +57,6 @@ const ActivityInputImages = () => {
           </Images>
         )}
       </ImageUploading>
-      <button onClick={a}>클릭</button>
     </div>
   );
 };

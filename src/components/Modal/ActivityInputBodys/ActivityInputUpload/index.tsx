@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { Upload, UploadFile } from 'antd';
 import { RemoveBtn, UploadBtn, UploadedBtn, Wrapper } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { onChangeIsFile } from '../../../../redux/reducers/RoadMapSlice';
+import { UploadChangeParam } from 'antd/es/upload';
 
 const plusIcon = (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,44 +13,15 @@ const plusIcon = (
   </svg>
 );
 
-const ActivityInputUpload = () => {
-  const dispatch = useAppDispatch();
-  const { isFile } = useAppSelector((state) => state.roadMap);
+interface Props {
+  files: UploadFile[];
+  setFiles: Dispatch<SetStateAction<UploadFile[]>>;
+}
 
-  const fileList: UploadFile[] = [
-    // {
-    //   uid: '0',
-    //   name: 'xxx.png',
-    //   status: 'uploading',
-    //   percent: 33,
-    // },
-    // {
-    //   uid: '-3',
-    //   name: 'yyy.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    //   thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-1',
-    //   name: 'yyy.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    //   thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-4',
-    //   name: 'yyy.png',
-    //   status: 'done',
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    //   thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-    // {
-    //   uid: '-2',
-    //   name: 'zzz.png',
-    //   status: 'error',
-    // },
-  ];
+const ActivityInputUpload: FC<Props> = ({ files, setFiles }) => {
+  const dispatch = useAppDispatch();
+  const { isFile, itemInfo } = useAppSelector((state) => state.roadMap);
+  // const fileList: UploadFile[] = [];
 
   const checkIsFile = useCallback(
     (e: any) => {
@@ -60,11 +32,15 @@ const ActivityInputUpload = () => {
     [isFile]
   );
 
+  const onChangeFiles = useCallback((e: UploadChangeParam) => {
+    setFiles(e.fileList);
+  }, []);
+
   return (
     <Wrapper>
       <Upload
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        defaultFileList={[...fileList]}
+        defaultFileList={[...files]}
         showUploadList={{
           showRemoveIcon: true,
           removeIcon: <RemoveBtn>X</RemoveBtn>,
@@ -74,6 +50,7 @@ const ActivityInputUpload = () => {
         multiple={true}
         onChange={(e) => {
           checkIsFile(e);
+          onChangeFiles(e);
         }}
       >
         {isFile ? (

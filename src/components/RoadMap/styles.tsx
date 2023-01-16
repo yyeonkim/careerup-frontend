@@ -123,6 +123,7 @@ export const AddCircle = styled.div`
   width: 9rem;
   height: 9rem;
   font-size: 3.5rem;
+  cursor: pointer;
 
   & > img {
     width: 4.5rem;
@@ -131,5 +132,24 @@ export const AddCircle = styled.div`
 
   .plusBtn {
     cursor: pointer;
+  }
+`;
+
+export const InfoCircle = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > img {
+    width: 38%;
+    height: 38%;
+
+    margin-bottom: 1rem;
+  }
+
+  & > span {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: black;
   }
 `;

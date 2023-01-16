@@ -13,7 +13,10 @@ import {
   changeInstitution,
   changePeriod,
   changeProjectName,
+  changeTitle,
+  editMode,
 } from '../../../../redux/reducers/RoadMapSlice';
+import dayjs from 'dayjs';
 
 moment.locale('ko');
 
@@ -31,6 +34,9 @@ const ActivityInputInfo = () => {
     institution,
     each,
     nowTypeKr,
+    isEditMode,
+    itemInfo,
+    date,
   } = useAppSelector((state) => state.roadMap);
 
   const [eachName, setEachName] = useState('');
@@ -79,6 +85,15 @@ const ActivityInputInfo = () => {
     dispatch(changeEach(''));
   }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc, nowType]);
 
+  useEffect(() => {
+    if (itemInfo) {
+      dispatch(changeInstitution(itemInfo.institution));
+      dispatch(changePeriod(itemInfo.period));
+      dispatch(changeDate(itemInfo.acquisition));
+      dispatch(changeEach(itemInfo.field ?? itemInfo.role));
+    }
+  }, [itemInfo]);
+
   return (
     <Info>
       <div>
@@ -91,6 +106,7 @@ const ActivityInputInfo = () => {
           onChange={onChangeProjectName}
           placeholder={'ex) 커리업(Career-up)'}
           spellCheck={false}
+          disabled={!isEditMode}
           required
         />
       </div>
@@ -105,6 +121,7 @@ const ActivityInputInfo = () => {
             onChange={onChangeInstitution}
             placeholder={'ex) 기관명'}
             spellCheck={false}
+            disabled={!isEditMode}
             required
           />
         </div>
@@ -115,16 +132,35 @@ const ActivityInputInfo = () => {
         </div>
         <Space direction="vertical" style={{ width: 'auto', marginLeft: '-1rem' }}>
           <ConfigProvider locale={locale}>
-            <RangePicker
-              picker={'month'}
-              format={'YYYY년 MM월'}
-              separator={'~'}
-              bordered={false}
-              onChange={(e) => {
-                onChangeRange(e);
-              }}
-              className={'date'}
-            />
+            {!itemInfo && (
+              <RangePicker
+                picker={'month'}
+                format={'YYYY년 MM월'}
+                separator={'~'}
+                bordered={false}
+                onChange={(e) => {
+                  onChangeRange(e);
+                }}
+                className={'date'}
+              />
+            )}
+            {itemInfo && (
+              <RangePicker
+                picker={'month'}
+                format={'YYYY년 MM월'}
+                separator={'~'}
+                bordered={false}
+                onChange={(e) => {
+                  onChangeRange(e);
+                }}
+                className={'date'}
+                defaultValue={[
+                  dayjs(itemInfo.period.split('-')[0], 'YYYY년 MM월'),
+                  dayjs(itemInfo.period.split('-')[1], 'YYYY년 MM월'),
+                ]}
+                disabled={true}
+              />
+            )}
           </ConfigProvider>
         </Space>
       </div>
@@ -139,6 +175,7 @@ const ActivityInputInfo = () => {
             onChange={onChangeEach}
             placeholder={'ex) 기획 / 디자인'}
             spellCheck={false}
+            disabled={!isEditMode}
             required
           />
         </div>
@@ -150,7 +187,16 @@ const ActivityInputInfo = () => {
           </div>
           <Space direction="vertical" style={{ width: 'auto', marginLeft: '-1rem' }}>
             <ConfigProvider locale={locale}>
-              <DatePicker format={'YYYY년 MM월 DD일'} onChange={onChangeDate} bordered={false} />
+              {!itemInfo && <DatePicker format={'YYYY년 MM월 DD일'} onChange={onChangeDate} bordered={false} />}
+              {itemInfo && (
+                <DatePicker
+                  format={'YYYY년 MM월 DD일'}
+                  onChange={onChangeDate}
+                  bordered={false}
+                  defaultValue={dayjs(itemInfo.acquisition, 'YYYY년 MM월 DD일')}
+                  disabled={true}
+                />
+              )}
             </ConfigProvider>
           </Space>
         </div>

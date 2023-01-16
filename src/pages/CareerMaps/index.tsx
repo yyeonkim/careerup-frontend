@@ -34,7 +34,7 @@ interface item {
 }
 
 export default function CareerMaps() {
-  const { check, items } = useAppSelector((state) => state.roadMap);
+  const { reLender, items } = useAppSelector((state) => state.roadMap);
 
   const [list, setList] = useState<any>([]);
 
@@ -139,7 +139,7 @@ export default function CareerMaps() {
 
   useLayoutEffect(() => {
     dispatch(getItems(37));
-  }, [check]);
+  }, [reLender]);
 
   return (
     <CareerMapsWrapper>
