@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityType, TypeImg, Types } from './styles';
-import { useAppDispatch } from '../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import {
   clickActivity,
   clickCertificate,
@@ -19,22 +19,15 @@ const ActivityTypeModal = () => {
   const onClickType = useCallback((type: string) => {
     dispatch(onCloseAllType());
 
-    if (type === 'certificate') {
-      dispatch(clickCertificate());
-    } else if (type === 'club') {
-      dispatch(clickClub());
-    } else if (type === 'contest') {
-      dispatch(clickContest());
-    } else if (type === 'external-activity') {
-      dispatch(clickActivity());
-    } else if (type === 'study') {
-      dispatch(clickStudy());
-    } else if (type === 'etc') {
-      dispatch(clickEtc());
-    }
+    if (type === 'certificate') dispatch(clickCertificate());
+    else if (type === 'club') dispatch(clickClub());
+    else if (type === 'contest') dispatch(clickContest());
+    else if (type === 'external-activity') dispatch(clickActivity());
+    else if (type === 'study') dispatch(clickStudy());
+    else if (type === 'etc') dispatch(clickEtc());
   }, []);
 
-  const stopPropagation = useCallback((e: any) => {
+  const stopPropagation = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   }, []);
 
