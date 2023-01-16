@@ -39,24 +39,25 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserData.fulfilled, (state, { payload }) => {
-      state.entities = { ...payload };
+    builder
+      .addCase(getUserData.fulfilled, (state, { payload }) => {
+        state.entities = { ...payload };
 
-      // 프로필 사진 default 값 설정
-      if (!payload.picture) {
-        state.entities.picture = require('../../assets/profile.jpg');
-      }
+        // 프로필 사진 default 값 설정
+        if (!payload.picture) {
+          state.entities.picture = require('../../assets/profile.jpg');
+        }
 
-      // input에 null을 넣을 수 없음
-      if (!payload.username) {
-        state.entities.username = '';
-      }
-      if (!payload.link) {
-        state.entities.link = '';
-      }
+        // input에 null을 넣을 수 없음
+        if (!payload.link) {
+          state.entities.link = '';
+        }
 
-      state.loading = false;
-    });
+        state.loading = false;
+      })
+      .addCase(getUserData.pending, (state) => {
+        state.loading = true;
+      });
   },
 });
 

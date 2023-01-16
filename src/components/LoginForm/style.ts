@@ -29,6 +29,20 @@ export const StyledForm = styled.form`
     }
   }
 
+  .verification {
+    display: flex;
+
+    .verification__button {
+      width: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+
   button {
     padding: 1rem 0;
     border-radius: 1rem;

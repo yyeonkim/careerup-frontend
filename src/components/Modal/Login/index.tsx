@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Modal, Logo } from './style';
 import LoginForm from '../../LoginForm';
 import { useAppDispatch } from '../../../redux/hooks';
-import { resetForm } from '../../../redux/reducers/LoginFormSlice';
+import { resetForm } from '../../../redux/reducers/LoginSlice';
 import Background from '../Background';
 
 export default function LoginModal() {

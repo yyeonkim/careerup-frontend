@@ -1,17 +1,11 @@
-import { ChangeEvent, FormEvent, Dispatch } from 'react';
+import { ChangeEvent, FormEvent, Dispatch, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 import { StyledForm, Message } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-  changeEmail,
-  changeName,
-  changePassword,
-  changePasswordCheck,
-  setMessage,
-  resetForm,
-} from '../../redux/reducers/LoginFormSlice';
-import { postUserLogin } from '../../api/user';
+import { setMessage, resetForm, setValue, completeCertification } from '../../redux/reducers/LoginSlice';
+import { getAuthorization, postUserLogin } from '../../api/user';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -21,7 +15,8 @@ interface LoginFormProps {
 const ONEDAY = 86400000;
 
 export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
-  const { email, name, password, passwordCheck, message } = useAppSelector((state) => state.loginForm.value);
+  const loginValue = useAppSelector((state) => state.login.value);
+  const [checkNum, setCheckNum] = useState(null);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -31,7 +26,8 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
 
     if (isValid()) {
       const url = isSignIn ? '/user/login' : '/user/signup';
-      const data = isSignIn ? { username: email, password } : { name, username: email, password };
+      const { username, password, name, emailCertification } = loginValue;
+      const data = isSignIn ? { username: username, password } : { name, username, password, emailCertification };
 
       const response = await postUserLogin(url, data);
       const signUpSuccess = response.status === 200 && !isSignIn;
@@ -56,10 +52,15 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   };
 
   const isValid = () => {
-    // 빈 값이 하나라도 있으면 false, 아니면 true
+    // 빈 값이 하나라도 있으면 false
+    // 메일 인증을 안 하면 false
     return isSignIn
-      ? email !== '' && password !== ''
-      : email !== '' && password !== '' && name !== '' && passwordCheck !== '';
+      ? loginValue.username !== '' && loginValue.password !== ''
+      : loginValue.username !== '' &&
+          loginValue.password !== '' &&
+          loginValue.name !== '' &&
+          loginValue.passwordCheck !== '' &&
+          loginValue.emailCertification;
   };
 
   const changeForm = () => {
@@ -67,19 +68,43 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     dispatch(resetForm());
   };
 
-  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeName(event.currentTarget.value));
-  const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => dispatch(changeEmail(event.currentTarget.value));
-  const onChangePassword = (event: ChangeEvent<HTMLInputElement>) =>
-    dispatch(changePassword(event.currentTarget.value));
-  const onChangePasswordCheck = (event: ChangeEvent<HTMLInputElement>) =>
-    dispatch(changePasswordCheck(event.currentTarget.value));
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+    dispatch(setValue({ ...loginValue, [name]: value }));
+  };
+
+  const onClickSend = async () => {
+    try {
+      const response = await axios.post(
+        '/user/signup/mailconfirm',
+        { email: loginValue.username },
+        { headers: getAuthorization() }
+      );
+
+      if (response.status === 200) {
+        alert('이메일을 전송했습니다. 인증번호를 입력해주세요.');
+        setCheckNum(response.data.result.checkNum);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onClickCheck = () => {
+    if (loginValue.checkNum === `${checkNum}`) {
+      alert('인증되었습니다.');
+      dispatch(completeCertification());
+    } else {
+      alert('유효하지 않은 번호입니다.');
+    }
+  };
 
   return isSignIn ? (
     <StyledForm onSubmit={onSubmit}>
-      <input placeholder="이메일" type="email" value={email} onChange={onChangeEmail} />
-      <input placeholder="비밀번호" type="password" value={password} onChange={onChangePassword} />
+      <input name="username" placeholder="이메일" type="username" value={loginValue.username} onChange={onChange} />
+      <input name="password" placeholder="비밀번호" type="password" value={loginValue.password} onChange={onChange} />
 
-      <Message>{message}</Message>
+      <Message>{loginValue.message}</Message>
       <button>로그인</button>
       <div>
         <span>비밀번호 찾기</span> | <span onClick={changeForm}>회원가입</span>
@@ -87,12 +112,32 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     </StyledForm>
   ) : (
     <StyledForm onSubmit={onSubmit}>
-      <input placeholder="이름" type="text" value={name} onChange={onChangeName} />
-      <input placeholder="이메일" type="email" value={email} onChange={onChangeEmail} />
-      <input placeholder="비밀번호" type="password" value={password} onChange={onChangePassword} />
-      <input placeholder="비밀번호 확인" type="password" value={passwordCheck} onChange={onChangePasswordCheck} />
+      <input name="name" placeholder="이름" type="text" value={loginValue.name} onChange={onChange} />
+      <div className="verification">
+        <input name="username" placeholder="이메일" type="username" value={loginValue.username} onChange={onChange} />
+        <div className="verification__button" onClick={onClickSend}>
+          {checkNum ? '재전송' : '인증'}
+        </div>
+      </div>
+      {checkNum && (
+        <div className="verification">
+          <input name="checkNum" placeholder="인증번호" type="text" value={loginValue.checkNum} onChange={onChange} />
+          <div className="verification__button" onClick={onClickCheck}>
+            확인
+          </div>
+        </div>
+      )}
 
-      <Message>{message}</Message>
+      <input name="password" placeholder="비밀번호" type="password" value={loginValue.password} onChange={onChange} />
+      <input
+        name="passwordCheck"
+        placeholder="비밀번호 확인"
+        type="password"
+        value={loginValue.passwordCheck}
+        onChange={onChange}
+      />
+
+      <Message>{loginValue.message}</Message>
       <button>회원가입</button>
       <div>
         <span onClick={changeForm}>로그인</span>
