@@ -4,7 +4,7 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
 import { theme } from '../../style/theme';
-import useGetInputs from '../../hooks/useGetInputs';
+import useUserInputs from '../../hooks/useUserInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
 import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
@@ -27,11 +27,11 @@ export default function MyPage() {
 
   const [isOpen, setIsOpen] = useState(false);
   const { isEdit } = useSetIsEdit();
-  const { inputs, setInputs, resetInputs } = useGetInputs();
+  const { inputs, setInputs, resetInputs } = useUserInputs();
   const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
-  useGetData(getUserData);
-  useGetData(getMyMap);
+  useGetData(getUserData); // 사용자 정보 불러오기
+  useGetData(getMyMap); // 커리어 맵 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
   const myMaps = useAppSelector((state) => state.myMap.entities);
@@ -43,15 +43,15 @@ export default function MyPage() {
     }
   };
 
-  const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+
+    if (name === 'picture' && event.target.files) {
       const filelink = URL.createObjectURL(event.target.files[0]);
       setInputs({ ...inputs, picture: filelink });
+      return;
     }
-  };
 
-  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
     setInputs({
       ...inputs,
       [name]: value,
@@ -123,19 +123,19 @@ export default function MyPage() {
     setMapInputs({ ...mapInputs, [name]: value });
   };
 
-  const closeDropdwon = () => {
+  const closeDropdown = () => {
     dispatch(close());
   };
 
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <Container onClick={closeDropdwon}>
+    <Container onClick={closeDropdown}>
       {isEdit && <Message>내용을 클릭하여 수정하세요</Message>}
       <div className="content">
         <div className="content__top">
           <ProfileBox>
-            <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
+            <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChange} />
             <img
               style={{ cursor: isEdit ? 'pointer' : 'unset' }}
               onClick={onClickImg}
@@ -147,35 +147,35 @@ export default function MyPage() {
                 value={userData.name}
                 inputName="name"
                 inputValue={inputs.name}
-                onChange={onChangeInput}
+                onChange={onChange}
               />
               <ProfileContent
                 label="나이"
                 value={userData.age}
                 inputName="age"
                 inputValue={inputs.age}
-                onChange={onChangeInput}
+                onChange={onChange}
               />
               <ProfileContent
                 label="성별"
                 value={userData.gender}
                 inputName="gender"
                 inputValue={inputs.gender}
-                onChange={onChangeInput}
+                onChange={onChange}
               />
               <ProfileContent
                 label="직업"
                 value={userData.job}
                 inputName="job"
                 inputValue={inputs.job}
-                onChange={onChangeInput}
+                onChange={onChange}
               />
               <ProfileContent
                 label="주소"
                 value={userData.address}
                 inputName="address"
                 inputValue={inputs.address}
-                onChange={onChangeInput}
+                onChange={onChange}
               />
             </div>
           </ProfileBox>
@@ -189,7 +189,7 @@ export default function MyPage() {
                   inputName="univ"
                   placeholder="학력을 입력하세요."
                   inputValue={inputs.univ}
-                  onChange={onChangeInput}
+                  onChange={onChange}
                 />
                 <InfoContent
                   label="📚"
@@ -197,7 +197,7 @@ export default function MyPage() {
                   inputName="major1"
                   placeholder="전공을 입력하세요."
                   inputValue={inputs.major1}
-                  onChange={onChangeInput}
+                  onChange={onChange}
                 />
                 <InfoContent
                   label="💚"
@@ -205,7 +205,7 @@ export default function MyPage() {
                   inputName="interestField1"
                   placeholder="관심분야을 입력하세요."
                   inputValue={inputs.interestField1}
-                  onChange={onChangeInput}
+                  onChange={onChange}
                 />
               </InfoBox>
               <InfoBox>
@@ -215,7 +215,7 @@ export default function MyPage() {
                   inputName="phone"
                   placeholder="전화번호를 입력하세요."
                   inputValue={inputs.phone}
-                  onChange={onChangeInput}
+                  onChange={onChange}
                 />
                 <InfoContent
                   label="✉️"
@@ -223,7 +223,7 @@ export default function MyPage() {
                   inputName="username"
                   placeholder="이메일을 입력하세요."
                   inputValue={inputs.username}
-                  onChange={onChangeInput}
+                  onChange={onChange}
                 />
                 <InfoContent
                   label="🔗"
@@ -231,7 +231,7 @@ export default function MyPage() {
                   inputName="link"
                   placeholder="링크를 달아보세요."
                   inputValue={inputs.link}
-                  onChange={onChangeInput}
+                  onChange={onChange}
                 />
               </InfoBox>
             </div>
@@ -248,7 +248,7 @@ export default function MyPage() {
                 {myMaps.length === 0 ? (
                   <span className="message">커리어 맵을 만들어보세요</span>
                 ) : (
-                  myMaps.map((item) => <MapCard {...item} />)
+                  myMaps.map((item) => <MapCard key={item.mapIdx} {...item} />)
                 )}
 
                 {isOpen && (

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useAppSelector } from '../redux/hooks';
 
-export default function useGetInputs() {
+export default function useUserInputs() {
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
   const [inputs, setInputs] = useState(userData);

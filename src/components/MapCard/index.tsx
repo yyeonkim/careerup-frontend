@@ -1,7 +1,7 @@
 import { IoClose } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 
-import useGetInputs from '../../hooks/useGetInputs';
+import useGetInputs from '../../hooks/useUserInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
 import { IMyMap } from '../../interfaces';
 import { Card } from './style';
