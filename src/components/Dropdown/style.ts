@@ -11,9 +11,16 @@ export const List = styled.ul`
   font-size: 1.4rem;
   padding: 1rem 2rem;
   z-index: 10;
-
-  li {
-    padding: 1rem 0;
-    cursor: pointer;
-  }
 `;
+
+export const itemStyle = {
+  default: {
+    padding: '1rem 0',
+    cursor: 'pointer',
+  },
+  delete: {
+    padding: '1rem 0',
+    cursor: 'pointer',
+    color: 'red',
+  },
+};
