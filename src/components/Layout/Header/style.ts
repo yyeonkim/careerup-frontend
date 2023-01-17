@@ -29,5 +29,6 @@ export const Logo = styled.div`
 export const ProfileImage = styled.img`
   cursor: pointer;
   width: 4rem;
+  height: 4rem;
   border-radius: 50%;
 `;
