@@ -25,3 +25,13 @@ export const modifyUserData = async (data: IUserData) => {
 
   return response;
 };
+
+export const deleteUser = async () => {
+  const response = await axios({
+    method: 'patch',
+    url: '/user/withdrawal',
+    headers: getAuthorization(),
+  });
+
+  return response;
+};

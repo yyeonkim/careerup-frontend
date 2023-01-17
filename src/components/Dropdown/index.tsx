@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { deleteUser } from '../../api/user';
 
 import { useAppDispatch } from '../../redux/hooks';
 import { close } from '../../redux/reducers/DropdownSlice';
@@ -21,22 +22,40 @@ export default function Dropdown() {
     setItems(location.pathname === '/mypage' ? [Items.LOGOUT, Items.DELETE] : [Items.LOGOUT, Items.MYPAGE]);
   }, [location.pathname]);
 
-  const onClick = (event: React.MouseEvent<HTMLLIElement>) => {
+  const onClick = async (event: React.MouseEvent<HTMLLIElement>) => {
     const textContent = event.currentTarget.textContent;
     const isLogout = textContent === Items.LOGOUT;
     const isMyPage = textContent === Items.MYPAGE;
     const isDelete = textContent === Items.DELETE;
 
     if (isLogout) {
-      localStorage.removeItem('accessToken');
-      history.push('/');
-      history.go(0);
+      logoutUser();
+      refreshPage();
     } else if (isMyPage) {
       history.push('/mypage');
     } else if (isDelete) {
       // 계정 탈퇴
+      try {
+        const response = await deleteUser();
+        if (response.status === 200) {
+          alert('탈퇴가 완료되었습니다.');
+          logoutUser();
+          refreshPage();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
     dispatch(close());
+  };
+
+  const logoutUser = () => {
+    localStorage.removeItem('accessToken');
+  };
+
+  const refreshPage = () => {
+    history.push('/');
+    history.go(0);
   };
 
   return (
