@@ -4,10 +4,8 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 
 import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
 import { theme } from '../../style/theme';
-import useGetUserData from '../../hooks/useGetUserData';
 import useGetInputs from '../../hooks/useGetInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
-import useGetMyMaps from '../../hooks/useGetMyMaps';
 import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
@@ -19,6 +17,9 @@ import { setMyMap } from '../../redux/reducers/MyMapSlice';
 import { close } from '../../redux/reducers/DropdownSlice';
 import { createMap } from '../../api/myMap';
 import { patchUserData } from '../../api/user';
+import useGetData from '../../hooks/useGetData';
+import { getUserData } from '../../redux/actions/UserAPI';
+import { getMyMap } from '../../redux/actions/MyMapAPI';
 
 export default function MyPage() {
   const history = useHistory();
@@ -29,8 +30,8 @@ export default function MyPage() {
   const { inputs, setInputs, resetInputs } = useGetInputs();
   const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
-  useGetUserData(); // DB에서 사용자 정보 불러오기
-  useGetMyMaps(); // DB에서 내 커리어맵 불러오기
+  useGetData(getUserData);
+  useGetData(getMyMap);
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
   const myMaps = useAppSelector((state) => state.myMap.entities);
@@ -135,7 +136,11 @@ export default function MyPage() {
         <div className="content__top">
           <ProfileBox>
             <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
-            <img style={{ cursor: isEdit ? 'pointer' : 'unset' }} onClick={onClickImg} src={inputs.picture} />
+            <img
+              style={{ cursor: isEdit ? 'pointer' : 'unset' }}
+              onClick={onClickImg}
+              src={isEdit ? inputs.picture : userData.picture}
+            />
             <div className="profile__info">
               <ProfileContent
                 label="이름"

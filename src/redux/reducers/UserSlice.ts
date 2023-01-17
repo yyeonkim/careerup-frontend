@@ -48,11 +48,6 @@ export const userSlice = createSlice({
           state.entities.picture = require('../../assets/profile.jpg');
         }
 
-        // input에 null을 넣을 수 없음
-        if (!payload.link) {
-          state.entities.link = '';
-        }
-
         state.loading = false;
       })
       .addCase(getUserData.pending, (state) => {

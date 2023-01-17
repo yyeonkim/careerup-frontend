@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 
-import { getMyMap } from '../redux/actions/MyMapAPI';
 import { useAppDispatch } from '../redux/hooks';
 
-export default function useGetMyMaps() {
+export default function useGetData(asyncThunk: any) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getMyMap());
+    dispatch(asyncThunk());
   }, []);
 }
