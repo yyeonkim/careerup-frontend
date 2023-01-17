@@ -15,7 +15,12 @@ export default function ProfileContent({ label, value, inputName, inputValue, on
   return (
     <Content>
       <span>{label}</span>
-      {isEdit ? <input name={inputName} value={inputValue} onChange={onChange} /> : <span>{value}</span>}
+      <input
+        disabled={isEdit ? false : true}
+        name={inputName}
+        value={isEdit ? inputValue : value}
+        onChange={onChange}
+      />
     </Content>
   );
 }

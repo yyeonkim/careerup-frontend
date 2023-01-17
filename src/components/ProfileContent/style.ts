@@ -6,26 +6,20 @@ export const Content = styled.div`
   line-height: 3.8rem;
   gap: 3.4rem;
 
-  span: first-of-type {
+  span {
     font-size: 2.4rem;
     color: #696969;
     font-weight: 100;
   }
 
-  span: nth-of-type(2), input {
-    font-size: 2rem;
-    max-width: 18rem;
-  }
-
-  span: nth-of-type(2) {
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
   input {
+    font-size: 2rem;
     display: block;
     width: 18rem;
     border: none;
-    border-bottom: 1px solid gray;
+
+    :disabled {
+      background-color: transparent;
+    }
   }
 `;

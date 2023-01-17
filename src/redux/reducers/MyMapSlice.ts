@@ -24,10 +24,7 @@ export const myMapSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getMyMap.fulfilled, (state, { payload }) => {
-        // 생성한 커리어 맵이 없으면 빈 배열
-        if (payload !== undefined) {
-          state.entities = payload;
-        }
+        state.entities = payload;
         state.loading = false;
       })
 

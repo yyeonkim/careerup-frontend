@@ -224,7 +224,7 @@ export default function MyPage() {
                   label="🔗"
                   value={userData.link}
                   inputName="link"
-                  placeholder="관련 링크를 달아보세요."
+                  placeholder="링크를 달아보세요."
                   inputValue={inputs.link}
                   onChange={onChangeInput}
                 />

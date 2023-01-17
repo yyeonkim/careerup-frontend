@@ -10,9 +10,12 @@ export const Content = styled.p`
     font-weight: 500;
     font-size: 2rem;
     border: none;
-    border-bottom: 1px solid gray;
+
     ::placeholder {
       color: #bebebe;
+    }
+    :disabled {
+      background-color: transparent;
     }
   }
 `;

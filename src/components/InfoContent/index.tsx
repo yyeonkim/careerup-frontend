@@ -16,7 +16,13 @@ export default function InfoContent({ label, value, inputName, placeholder, inpu
   return (
     <Content>
       {label}{' '}
-      {isEdit ? <input name={inputName} placeholder={placeholder} value={inputValue} onChange={onChange} /> : value}
+      <input
+        disabled={isEdit ? false : true}
+        name={inputName}
+        placeholder={placeholder}
+        value={isEdit ? inputValue : value}
+        onChange={onChange}
+      />
     </Content>
   );
 }
