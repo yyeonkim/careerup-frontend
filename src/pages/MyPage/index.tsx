@@ -16,7 +16,7 @@ import { setUserData } from '../../redux/reducers/UserSlice';
 import { setMyMap } from '../../redux/reducers/MyMapSlice';
 import { close } from '../../redux/reducers/DropdownSlice';
 import { createMap } from '../../api/myMap';
-import { patchUserData } from '../../api/user';
+import { modifyUserData } from '../../api/user';
 import useGetData from '../../hooks/useGetData';
 import { getUserData } from '../../redux/actions/UserAPI';
 import { getMyMap } from '../../redux/actions/MyMapAPI';
@@ -43,9 +43,10 @@ export default function MyPage() {
     }
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
 
+    // 프로필 사진 변경
     if (name === 'picture' && event.target.files) {
       const filelink = URL.createObjectURL(event.target.files[0]);
       setInputs({ ...inputs, picture: filelink });
@@ -65,7 +66,7 @@ export default function MyPage() {
 
   const saveData = () => {
     dispatch(setUserData(inputs));
-    patchUserData(inputs);
+    modifyUserData(inputs);
   };
 
   const cancelEdit = () => {

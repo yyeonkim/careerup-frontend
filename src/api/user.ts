@@ -20,7 +20,7 @@ export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginDa
   return response;
 };
 
-export const patchUserData = async (data: IUserData) => {
+export const modifyUserData = async (data: IUserData) => {
   const response = await axios.patch('/user/modify', data, { headers: getAuthorization() });
 
   return response;
