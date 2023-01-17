@@ -119,7 +119,7 @@ export default function MyPage() {
     setMapInputs({ title: '', career: '' });
   };
 
-  const onChangeMapInputs = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onChangeMap = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget;
     setMapInputs({ ...mapInputs, [name]: value });
   };
@@ -263,7 +263,7 @@ export default function MyPage() {
                           type="text"
                           name="title"
                           value={mapInputs.title}
-                          onChange={onChangeMapInputs}
+                          onChange={onChangeMap}
                           placeholder="커리어맵 제목을 입력하세요."
                         />
                         <textarea
@@ -271,7 +271,7 @@ export default function MyPage() {
                           maxLength={30}
                           name="career"
                           value={mapInputs.career}
-                          onChange={onChangeMapInputs}
+                          onChange={onChangeMap}
                           placeholder="희망 커리어를 입력하세요.&#10;ex) 프론트엔드 개발자"
                         />
                         <div className="button-field">
