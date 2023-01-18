@@ -40,15 +40,9 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
 
       if (loginSuccess) {
         saveAccessToken(response.data.result.accessToken);
-        history.push('/');
-        history.go(0); // 브라우저 새로고침
+        refreshPage();
       }
     }
-  };
-
-  const saveAccessToken = (accessToken: string) => {
-    const value = JSON.stringify({ value: accessToken, expiration: Date.now() + ONEDAY });
-    localStorage.setItem('accessToken', value);
   };
 
   const isValid = () => {
@@ -61,6 +55,20 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
           loginValue.name !== '' &&
           loginValue.passwordCheck !== '' &&
           loginValue.emailCertification;
+  };
+
+  const saveAccessToken = (accessToken: string) => {
+    const value = JSON.stringify({ value: accessToken, expiration: Date.now() + ONEDAY });
+    localStorage.setItem('accessToken', value);
+  };
+
+  const refreshPage = () => {
+    history.push('/');
+    history.go(0);
+  };
+
+  const goForgottenPassword = async () => {
+    history.push('/forgottenpassword');
   };
 
   const changeForm = () => {
@@ -107,7 +115,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
       <Message>{loginValue.message}</Message>
       <button>로그인</button>
       <div>
-        <span>비밀번호 찾기</span> | <span onClick={changeForm}>회원가입</span>
+        <span onClick={goForgottenPassword}>비밀번호 찾기</span> | <span onClick={changeForm}>회원가입</span>
       </div>
     </StyledForm>
   ) : (

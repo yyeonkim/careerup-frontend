@@ -35,3 +35,8 @@ export const deleteUser = async () => {
 
   return response;
 };
+
+export const getNewPassword = async (email: string) => {
+  const response = await axios.get('/user/password', { params: { email } });
+  return response;
+};

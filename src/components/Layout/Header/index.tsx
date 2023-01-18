@@ -1,5 +1,3 @@
-import { useHistory } from 'react-router-dom';
-
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { toggle } from '../../../redux/reducers/DropdownSlice';
 import Dropdown from '../../Dropdown';
@@ -7,7 +5,6 @@ import HomeLogo from '../../HomeLogo';
 import { Container, ProfileImage } from './style';
 
 export default function Header() {
-  const history = useHistory();
   const profileImagePath = useAppSelector((state) => state.user.entities.picture);
   const isLoading = useAppSelector((state) => state.user.loading);
   const isOpen = useAppSelector((state) => state.dropdown.value);
