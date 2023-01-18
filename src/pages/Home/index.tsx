@@ -8,6 +8,9 @@ import useAutoSlide from '../../hooks/useAutoSlide';
 import Dropdown from '../../components/Dropdown';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { toggle, close } from '../../redux/reducers/DropdownSlice';
+import { getAccessToken } from '../../api/user';
+import useGetData from '../../hooks/useGetData';
+import { getUserData } from '../../redux/actions/UserAPI';
 
 // 슬라이드에 들어갈 이미지
 const slides = [
@@ -15,16 +18,18 @@ const slides = [
   { className: 'logo', path: '/images/careerup_logo_no_bg_big.png' },
 ];
 
-const accessToken = localStorage.getItem('accessToken');
+const accessToken = getAccessToken();
 
 export default function Home() {
   const location = useLocation();
 
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
   const profileUrl = useAppSelector((state) => state.user.entities.picture);
+  const isLoading = useAppSelector((state) => state.user.loading);
   const isOpen = useAppSelector((state) => state.dropdown.value);
   const dispatch = useAppDispatch();
 
+  useGetData(getUserData);
   useAutoSlide(slides, setActiveIndex);
 
   const toggleDropdown = () => {
@@ -40,7 +45,7 @@ export default function Home() {
       <Header>
         {accessToken ? (
           <>
-            <img src={profileUrl} onClick={toggleDropdown} />
+            <img src={isLoading ? require('../../assets/profile.jpg') : profileUrl} onClick={toggleDropdown} />
             {isOpen && <Dropdown />}
           </>
         ) : (
