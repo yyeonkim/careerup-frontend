@@ -8,6 +8,7 @@ import { Container, Logo, ProfileImage } from './style';
 export default function Header() {
   const history = useHistory();
   const profileImagePath = useAppSelector((state) => state.user.entities.picture);
+  const isLoading = useAppSelector((state) => state.user.loading);
   const isOpen = useAppSelector((state) => state.dropdown.value);
   const dispatch = useAppDispatch();
 
@@ -19,7 +20,9 @@ export default function Header() {
     dispatch(toggle());
   };
 
-  return (
+  return isLoading ? (
+    <></>
+  ) : (
     <Container>
       <Logo onClick={goHome}>
         <img className="logo__image" src={`${process.env.PUBLIC_URL}/images/careerup_logo_bg.png`} />
