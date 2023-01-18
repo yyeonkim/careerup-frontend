@@ -18,7 +18,7 @@ import { close } from '../../redux/reducers/DropdownSlice';
 import { createMap } from '../../api/myMap';
 import { modifyUserData } from '../../api/user';
 import useGetData from '../../hooks/useGetData';
-import { getUserData } from '../../redux/actions/UserAPI';
+import { getUserData, patchPicture } from '../../redux/actions/UserAPI';
 import { getMyMap } from '../../redux/actions/MyMapAPI';
 
 export default function MyPage() {
@@ -28,6 +28,7 @@ export default function MyPage() {
   const [isOpen, setIsOpen] = useState(false);
   const { isEdit } = useSetIsEdit();
   const { inputs, setInputs, resetInputs } = useUserInputs();
+  const [picture, setPicture] = useState<File | null>(null);
   const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
   useGetData(getUserData); // 사용자 정보 불러오기
@@ -46,10 +47,12 @@ export default function MyPage() {
   const onChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
 
-    // 프로필 사진 변경
+    // 프로필 사진 미리보기
     if (name === 'picture' && event.target.files) {
-      const filelink = URL.createObjectURL(event.target.files[0]);
+      const file = event.target.files[0];
+      const filelink = URL.createObjectURL(file);
       setInputs({ ...inputs, picture: filelink });
+      setPicture(file);
       return;
     }
 
@@ -67,6 +70,7 @@ export default function MyPage() {
   const saveData = () => {
     dispatch(setUserData(inputs));
     modifyUserData(inputs);
+    dispatch(patchPicture(picture as File));
   };
 
   const cancelEdit = () => {

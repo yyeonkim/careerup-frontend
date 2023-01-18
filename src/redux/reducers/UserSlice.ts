@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { IUserData } from '../../interfaces';
-import { getUserData } from '../actions/UserAPI';
+import { getUserData, patchPicture } from '../actions/UserAPI';
 
 interface UserState {
   entities: IUserData;
@@ -41,7 +41,7 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUserData.fulfilled, (state, { payload }) => {
-        state.entities = { ...payload };
+        state.entities = payload;
 
         // 프로필 사진 default 값 설정
         if (!payload.picture) {
@@ -52,6 +52,9 @@ export const userSlice = createSlice({
       })
       .addCase(getUserData.pending, (state) => {
         state.loading = true;
+      })
+      .addCase(patchPicture.fulfilled, (state, action) => {
+        state.entities.picture = action.payload;
       });
   },
 });
