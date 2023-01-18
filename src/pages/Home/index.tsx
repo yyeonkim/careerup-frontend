@@ -21,6 +21,7 @@ export default function Home() {
   const location = useLocation();
 
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
+  const profileUrl = useAppSelector((state) => state.user.entities.picture);
   const isOpen = useAppSelector((state) => state.dropdown.value);
   const dispatch = useAppDispatch();
 
@@ -39,7 +40,7 @@ export default function Home() {
       <Header>
         {accessToken ? (
           <>
-            <img src={require('../../assets/profile.jpg')} onClick={toggleDropdown} />
+            <img src={profileUrl} onClick={toggleDropdown} />
             {isOpen && <Dropdown />}
           </>
         ) : (

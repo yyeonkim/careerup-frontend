@@ -15,6 +15,7 @@ export const Header = styled.header`
 
   img {
     width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     cursor: pointer;
   }
