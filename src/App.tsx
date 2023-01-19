@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import useExpireToken from './hooks/useExpireToken';
+import ChangePassword from './pages/ChangePassword';
 
 const CareerMaps = loadable(() => import('./pages/CareerMaps'));
 const Home = loadable(() => import('./pages/Home'));
@@ -23,7 +24,7 @@ function App() {
             <MyPage />
           </Route>
           <Route path="/changepassword">
-            <ForgottenPassword />
+            <ChangePassword />
           </Route>
           <Route path="/forgottenpassword">
             <ForgottenPassword />

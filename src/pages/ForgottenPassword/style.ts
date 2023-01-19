@@ -36,19 +36,19 @@ export const StyledForm = styled.form`
   gap: 1rem;
   margin-top: 2rem;
   margin-bottom: 1rem;
+`;
 
-  input {
-    border: 2px solid #dbdbdb;
-    padding: 1rem 1.5rem;
-    width: 30rem;
-    border-radius: 1rem;
-    font-size: 1.6rem;
-    font-weight: 500;
+export const StyledInput = styled.input`
+  border: 2px solid #dbdbdb;
+  padding: 1rem 1.5rem;
+  width: 30rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  font-weight: 500;
 
-    :focus {
-      outline: none;
-      border-color: ${(props) => props.theme.colors.primary};
-    }
+  :focus {
+    outline: none;
+    border-color: ${(props) => props.theme.colors.primary};
   }
 `;
 

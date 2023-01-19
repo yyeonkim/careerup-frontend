@@ -5,7 +5,7 @@ import { getNewPassword } from '../../api/user';
 import HomeLogo from '../../components/HomeLogo';
 import Background from '../../components/Modal/Background';
 import useInput from '../../hooks/useInput';
-import { Button, Container, Header, StyledForm, Message, Modal, Title } from './style';
+import { Button, Container, Header, StyledForm, Message, Modal, Title, StyledInput } from './style';
 
 export default function ForgottenPassword() {
   const [value, handler] = useInput('');
@@ -43,7 +43,7 @@ export default function ForgottenPassword() {
       </Header>
       <Title>새 비밀번호를 발급해드릴게요</Title>
       <StyledForm onSubmit={onSubmit}>
-        <input type="email" placeholder="가입한 이메일을 입력하세요." value={value} onChange={handler} />
+        <StyledInput type="email" placeholder="가입한 이메일을 입력하세요." value={value} onChange={handler} />
         <Button>확인</Button>
       </StyledForm>
       <Message>{message}</Message>
