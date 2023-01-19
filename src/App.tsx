@@ -22,6 +22,9 @@ function App() {
           <Route path="/mypage">
             <MyPage />
           </Route>
+          <Route path="/changepassword">
+            <ForgottenPassword />
+          </Route>
           <Route path="/forgottenpassword">
             <ForgottenPassword />
           </Route>

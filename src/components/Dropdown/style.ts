@@ -11,6 +11,13 @@ export const List = styled.ul`
   font-size: 1.4rem;
   padding: 1rem 2rem;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  hr {
+    width: 100%;
+  }
 `;
 
 export const itemStyle = {

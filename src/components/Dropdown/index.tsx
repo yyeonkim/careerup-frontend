@@ -9,6 +9,7 @@ import { List, itemStyle } from './style';
 enum Items {
   LOGOUT = '로그아웃',
   MYPAGE = '마이페이지',
+  PASSWORD = '비밀번호 변경',
   DELETE = '탈퇴하기',
 }
 
@@ -19,32 +20,40 @@ export default function Dropdown() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setItems(location.pathname === '/mypage' ? [Items.LOGOUT, Items.DELETE] : [Items.LOGOUT, Items.MYPAGE]);
+    setItems(
+      location.pathname === '/mypage' ? [Items.LOGOUT, Items.PASSWORD, Items.DELETE] : [Items.LOGOUT, Items.MYPAGE]
+    );
   }, [location.pathname]);
 
   const onClick = async (event: React.MouseEvent<HTMLLIElement>) => {
     const textContent = event.currentTarget.textContent;
-    const isLogout = textContent === Items.LOGOUT;
-    const isMyPage = textContent === Items.MYPAGE;
-    const isDelete = textContent === Items.DELETE;
 
-    if (isLogout) {
-      logoutUser();
-      refreshPage();
-    } else if (isMyPage) {
-      history.push('/mypage');
-    } else if (isDelete) {
-      // 계정 탈퇴
-      try {
-        const response = await deleteUser();
-        if (response.status === 200) {
-          alert('탈퇴가 완료되었습니다.');
-          logoutUser();
-          refreshPage();
+    switch (textContent) {
+      case Items.LOGOUT:
+        logoutUser();
+        refreshPage();
+        break;
+
+      case Items.MYPAGE:
+        history.push('/mypage');
+        break;
+
+      case Items.PASSWORD:
+        history.push('/changepassword');
+        break;
+
+      case Items.DELETE:
+        try {
+          const response = await deleteUser();
+          if (response.status === 200) {
+            alert('탈퇴가 완료되었습니다.');
+            logoutUser();
+            refreshPage();
+          }
+        } catch (error) {
+          alert(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
+        break;
     }
     dispatch(close());
   };
