@@ -1,3 +1,5 @@
+import useGetData from '../../../hooks/useGetData';
+import { getUserData } from '../../../redux/actions/UserAPI';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { toggle } from '../../../redux/reducers/DropdownSlice';
 import Dropdown from '../../Dropdown';
@@ -9,6 +11,8 @@ export default function Header() {
   const isLoading = useAppSelector((state) => state.user.loading);
   const isOpen = useAppSelector((state) => state.dropdown.value);
   const dispatch = useAppDispatch();
+
+  useGetData(getUserData); // 프로필 사진 가져오기
 
   const onClickProfile = () => {
     dispatch(toggle());
