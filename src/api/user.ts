@@ -40,3 +40,13 @@ export const getNewPassword = async (email: string) => {
   const response = await axios.get('/user/password', { params: { email } });
   return response;
 };
+
+export const patchNewPassword = async (newPassword: string) => {
+  const response = await axios({
+    method: 'patch',
+    url: '/user/password',
+    params: { newPassword },
+    headers: getAuthorization(),
+  });
+  return response;
+};
