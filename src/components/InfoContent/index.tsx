@@ -17,7 +17,7 @@ export default function InfoContent({ label, value, inputName, placeholder, inpu
     <Content>
       {label}{' '}
       <input
-        disabled={isEdit ? false : true}
+        disabled={inputName === 'username' ? true : isEdit ? false : true}
         name={inputName}
         placeholder={placeholder}
         value={isEdit ? inputValue : value}

@@ -6,7 +6,7 @@ export const Content = styled.p`
 
   input {
     display: block;
-    height: 2rem;
+    height: 2.5rem;
     font-weight: 500;
     font-size: 2rem;
     border: none;
