@@ -73,14 +73,14 @@ export default function Dropdown() {
         // 마지막 아이템이면
         if (index + 1 === items.length) {
           return (
-            <li style={Items.DELETE ? itemStyle.delete : itemStyle.default} onClick={onClick}>
+            <li key={item} style={Items.DELETE ? itemStyle.delete : itemStyle.default} onClick={onClick}>
               {item}
             </li>
           );
         }
         return (
           <>
-            <li style={itemStyle.default} onClick={onClick}>
+            <li key={item} style={itemStyle.default} onClick={onClick}>
               {item}
             </li>
             <hr color="lightgrey" />
