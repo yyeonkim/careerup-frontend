@@ -1,7 +1,8 @@
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Logo } from './style';
 
-export default function HomeLogo() {
+function HomeLogo() {
   const history = useHistory();
 
   const goHome = () => {
@@ -14,3 +15,5 @@ export default function HomeLogo() {
     </Logo>
   );
 }
+
+export default React.memo(HomeLogo);

@@ -29,7 +29,7 @@ function MyPage() {
   const match = useRouteMatch();
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const { isEdit } = useSetIsEdit();
+  const isEdit = useSetIsEdit();
   const { inputs, setInputs, resetInputs, onChange } = useUserInputs();
   const [picture, setPicture] = useState<File | null>(null);
   const {
@@ -38,7 +38,7 @@ function MyPage() {
     resetInputs: resetMapInputs,
   } = useInputs<IMapInputs>({ title: '', career: '' });
 
-  useGetData(getUserData); // 사용자 정보 불러오기
+  // useGetData(getUserData); // 사용자 정보 불러오기
   useGetData(getMyMap); // 커리어 맵 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
@@ -64,12 +64,12 @@ function MyPage() {
 
   const onClickSave = () => {
     saveData();
-    history.push(`${match.url}`);
+    history.push(`${match.path}`);
   };
 
-  const saveData = () => {
+  const saveData = async () => {
     dispatch(setUserData(inputs));
-    modifyUserData(inputs);
+    await modifyUserData(inputs);
     // 프로필 사진을 바꿔을 때만 실행 (null이 아닐 때)
     if (picture) {
       dispatch(patchPicture(picture as File));
@@ -78,11 +78,11 @@ function MyPage() {
 
   const cancelEdit = () => {
     resetInputs();
-    history.push(`${match.url}`);
+    history.push(`${match.path}`);
   };
 
   const goEditMode = () => {
-    history.push(`${match.url}/#edit`);
+    history.push(`${match.path}/#edit`);
   };
 
   const goToAddMap = () => {
@@ -94,7 +94,7 @@ function MyPage() {
   };
 
   const openModal = () => {
-    history.push(`${match.url}/#createMap`);
+    history.push(`${match.path}/#createMap`);
   };
 
   const onSubmitMap = async (event: FormEvent<HTMLFormElement>) => {

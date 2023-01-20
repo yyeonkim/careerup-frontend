@@ -1,3 +1,4 @@
+import React from 'react';
 import { IoClose } from 'react-icons/io5';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -9,8 +10,8 @@ import { Card, Icon } from './style';
 import { useAppDispatch } from '../../redux/hooks';
 import { deleteMap } from '../../redux/actions/MyMapAPI';
 
-export default function MapCard({ title, career, mapIdx }: IMyMap) {
-  const { isEdit } = useSetIsEdit();
+function MapCard({ title, career, mapIdx }: IMyMap) {
+  const isEdit = useSetIsEdit();
   const { resetInputs } = useGetInputs();
   const dispatch = useAppDispatch();
 
@@ -64,3 +65,5 @@ export default function MapCard({ title, career, mapIdx }: IMyMap) {
     </Card>
   );
 }
+
+export default React.memo(MapCard);

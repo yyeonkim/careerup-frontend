@@ -27,7 +27,7 @@ export default function Header() {
     <Container>
       <HomeLogo />
       {location.pathname === '/forgottenpassword' ? (
-        <Link to="/#login">
+        <Link to={{ hash: '#login' }}>
           <Login>로그인</Login>
         </Link>
       ) : (

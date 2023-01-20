@@ -1,3 +1,5 @@
+import React from 'react';
+
 import useSetIsEdit from '../../hooks/useSetIsEdit';
 import { Content } from './style';
 
@@ -10,8 +12,8 @@ interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function InfoContent({ label, value, inputName, placeholder, inputValue, onChange }: Props) {
-  const { isEdit } = useSetIsEdit();
+function InfoContent({ label, value, inputName, placeholder, inputValue, onChange }: Props) {
+  const isEdit = useSetIsEdit();
 
   return (
     <Content>
@@ -26,3 +28,5 @@ export default function InfoContent({ label, value, inputName, placeholder, inpu
     </Content>
   );
 }
+
+export default React.memo(InfoContent);

@@ -11,5 +11,5 @@ export default function useSetIsEdit() {
     setIsEdit(location.hash === '#edit');
   }, [location.hash]);
 
-  return { isEdit };
+  return isEdit;
 }

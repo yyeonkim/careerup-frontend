@@ -18,7 +18,7 @@ function MapModal({ inputs, onChange, onSubmit, resetInputs }: Props) {
   const cancelEditMap = () => {
     const ok = confirm('작성을 취소할까요?');
     if (ok) {
-      history.push(`${match.url}`);
+      history.push(`${match.path}`);
       resetInputs();
     }
   };
