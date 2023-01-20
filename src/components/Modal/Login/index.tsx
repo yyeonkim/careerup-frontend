@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useHistory } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../../redux/hooks';
 import { resetForm } from '../../../redux/reducers/LoginSlice';
 import Background from '../Background';
 
-export default function LoginModal() {
+function LoginModal() {
   const history = useHistory();
   const [isSignIn, setIsSignIn] = useState(true);
   const dispatch = useAppDispatch();
@@ -41,3 +41,5 @@ export default function LoginModal() {
     </>
   );
 }
+
+export default React.memo(LoginModal);

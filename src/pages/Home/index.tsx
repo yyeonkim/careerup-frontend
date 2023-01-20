@@ -24,6 +24,7 @@ export default function Home() {
   const location = useLocation();
 
   const [activeIndex, setActiveIndex] = useState(0); // 현재 슬라이드 이미지 index
+
   const profileUrl = useAppSelector((state) => state.user.entities.picture);
   const isLoading = useAppSelector((state) => state.user.loading);
   const isOpen = useAppSelector((state) => state.dropdown.value);
