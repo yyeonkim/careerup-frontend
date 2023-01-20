@@ -35,15 +35,9 @@ export default function ForgottenPassword() {
 
   return (
     <Container>
-      <Header>
-        <HomeLogo />
-        <Link to="/#login">
-          <span>로그인</span>
-        </Link>
-      </Header>
       <Title>새 비밀번호를 발급해드릴게요</Title>
       <StyledForm onSubmit={onSubmit}>
-        <StyledInput type="email" placeholder="가입한 이메일을 입력하세요." value={value} onChange={handler} />
+        <StyledInput type="email" placeholder="가입한 이메일을 입력하세요" value={value} onChange={handler} />
         <Button>확인</Button>
       </StyledForm>
       <Message>{message}</Message>

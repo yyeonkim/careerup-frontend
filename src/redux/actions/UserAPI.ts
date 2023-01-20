@@ -1,12 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { getAuthorization } from '../../api/user';
+import { getAccessToken, getAuthorization } from '../../api/user';
 import { IUserData } from '../../interfaces';
 
 export const getUserData = createAsyncThunk('user/getUser', async () => {
-  const response = await axios.get('/user', { headers: getAuthorization() });
-  return response.data.result;
+  const isLogin = getAccessToken();
+  if (isLogin) {
+    const response = await axios.get('/user', { headers: getAuthorization() });
+    return response.data.result;
+  }
 });
 
 export const modifyUserData = createAsyncThunk('user/modifyUser', async (data: IUserData) => {

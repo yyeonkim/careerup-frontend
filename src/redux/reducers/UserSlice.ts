@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getAccessToken } from '../../api/user';
 
 import { IUserData } from '../../interfaces';
 import { getUserData, patchPicture } from '../actions/UserAPI';
@@ -41,11 +42,14 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUserData.fulfilled, (state, { payload }) => {
-        state.entities = payload;
+        const isLogin = getAccessToken();
+        if (isLogin) {
+          state.entities = payload;
 
-        // 프로필 사진 default 값 설정
-        if (!payload.picture) {
-          state.entities.picture = require('../../assets/profile.jpg');
+          // 프로필 사진 default 값 설정
+          if (!payload.picture) {
+            state.entities.picture = require('../../assets/profile.jpg');
+          }
         }
 
         state.loading = false;
