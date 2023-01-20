@@ -21,13 +21,13 @@ import useGetData from '../../hooks/useGetData';
 import { getUserData, patchPicture } from '../../redux/actions/UserAPI';
 import { getMyMap } from '../../redux/actions/MyMapAPI';
 
-export default function MyPage() {
+function MyPage() {
   const history = useHistory();
   const fileInput = useRef<HTMLInputElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const { isEdit } = useSetIsEdit();
-  const { inputs, setInputs, resetInputs } = useUserInputs();
+  const { inputs, setInputs, resetInputs, onChange } = useUserInputs();
   const [picture, setPicture] = useState<File | null>(null);
   const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
 
@@ -44,22 +44,15 @@ export default function MyPage() {
     }
   };
 
-  const onChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-
+  const onChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
     // 프로필 사진 미리보기
-    if (name === 'picture' && event.target.files) {
-      const file = event.target.files[0];
+    if (files) {
+      const file = files[0];
       const filelink = URL.createObjectURL(file);
       setInputs({ ...inputs, picture: filelink });
       setPicture(file);
-      return;
     }
-
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
   };
 
   const onClickSave = () => {
@@ -70,7 +63,10 @@ export default function MyPage() {
   const saveData = () => {
     dispatch(setUserData(inputs));
     modifyUserData(inputs);
-    dispatch(patchPicture(picture as File));
+    // 프로필 사진을 바꿔을 때만 실행 (null이 아닐 때)
+    if (picture) {
+      dispatch(patchPicture(picture as File));
+    }
   };
 
   const cancelEdit = () => {
@@ -140,7 +136,7 @@ export default function MyPage() {
       <div className="content">
         <div className="content__top">
           <ProfileBox>
-            <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChange} />
+            <input ref={fileInput} type="file" name="picture" accept="image/png, image/jpeg" onChange={onChangeFile} />
             <img
               style={{ cursor: isEdit ? 'pointer' : 'unset' }}
               onClick={onClickImg}
@@ -305,3 +301,5 @@ export default function MyPage() {
     </Container>
   );
 }
+
+export default MyPage;

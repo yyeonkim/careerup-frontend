@@ -1,6 +1,11 @@
 import React, { useCallback, useState } from 'react';
 
-type ReturnTypes<T> = [T, (e: React.ChangeEvent<HTMLInputElement>) => void, () => void];
+type ReturnTypes<T> = {
+  inputs: T;
+  setInputs: React.Dispatch<React.SetStateAction<T>>;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  resetInputs: () => void;
+};
 
 export default function useInputs<T extends Record<string, unknown>>(initialState: T): ReturnTypes<T> {
   const [inputs, setInputs] = useState(initialState);
@@ -22,5 +27,5 @@ export default function useInputs<T extends Record<string, unknown>>(initialStat
     setInputs(newInputs);
   };
 
-  return [inputs, onChange, resetInputs];
+  return { inputs, setInputs, onChange, resetInputs };
 }

@@ -16,7 +16,6 @@ export const getAuthorization = () => {
 
 export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginData) => {
   const response = await axios.post(url, data);
-
   return response;
 };
 

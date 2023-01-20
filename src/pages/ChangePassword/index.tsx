@@ -22,7 +22,7 @@ interface IPasswords {
 
 const ChangePassword = () => {
   const history = useHistory();
-  const [inputs, onChange, resetInputs] = useInputs<IPasswords>({ password: '', passwordCheck: '' });
+  const { inputs, onChange, resetInputs } = useInputs<IPasswords>({ password: '', passwordCheck: '' });
   const [message, setMessage] = useState('');
 
   useEffect(() => {

@@ -21,6 +21,7 @@ export const modifyUserData = createAsyncThunk('user/modifyUser', async (data: I
 export const patchPicture = createAsyncThunk('user/patchPicture', async (file: File) => {
   const formData = new FormData();
   formData.append('data', file);
+
   const response = await axios.patch('/user/picture', formData, {
     headers: { ...getAuthorization(), 'Content-Type': 'multipart/form-data' },
   });

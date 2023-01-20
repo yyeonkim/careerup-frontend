@@ -11,6 +11,7 @@ export interface IUserLoginInfo {
 
 // 사용자 정보
 export interface IUserData {
+  [index: string]: string;
   address: string;
   age: string;
   username: string;
