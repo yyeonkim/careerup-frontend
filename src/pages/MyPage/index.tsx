@@ -1,8 +1,8 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { Route, Switch, useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 
-import { MapBox, Container, InfoBox, ProfileBox, Message, Button, Modal, ModalButton } from './style';
+import { MapBox, Container, InfoBox, ProfileBox, Message, Button } from './style';
 import { theme } from '../../style/theme';
 import useUserInputs from '../../hooks/useUserInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
@@ -10,7 +10,7 @@ import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
 import MapCard from '../../components/MapCard';
-import { IMapInputs, INewMap } from '../../interfaces';
+import { IMapInputs } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setUserData } from '../../redux/reducers/UserSlice';
 import { setMyMap } from '../../redux/reducers/MyMapSlice';
@@ -19,17 +19,24 @@ import { createMap } from '../../api/myMap';
 import { modifyUserData } from '../../api/user';
 import useGetData from '../../hooks/useGetData';
 import { getUserData, patchPicture } from '../../redux/actions/UserAPI';
-import { getMyMap } from '../../redux/actions/MyMapAPI';
+import { getMyMap, modifyMap } from '../../redux/actions/MyMapAPI';
+import useInputs from '../../hooks/useInputs';
+import MapModal from '../../components/Modal/MapModal';
 
 function MyPage() {
   const history = useHistory();
+  const location = useLocation();
+  const match = useRouteMatch();
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const [isOpen, setIsOpen] = useState(false);
   const { isEdit } = useSetIsEdit();
   const { inputs, setInputs, resetInputs, onChange } = useUserInputs();
   const [picture, setPicture] = useState<File | null>(null);
-  const [mapInputs, setMapInputs] = useState<IMapInputs>({ title: '', career: '' });
+  const {
+    inputs: mapInputs,
+    onChange: onChangeMap,
+    resetInputs: resetMapInputs,
+  } = useInputs<IMapInputs>({ title: '', career: '' });
 
   useGetData(getUserData); // 사용자 정보 불러오기
   useGetData(getMyMap); // 커리어 맵 불러오기
@@ -57,7 +64,7 @@ function MyPage() {
 
   const onClickSave = () => {
     saveData();
-    history.push('/mypage');
+    history.push(`${match.url}`);
   };
 
   const saveData = () => {
@@ -71,11 +78,11 @@ function MyPage() {
 
   const cancelEdit = () => {
     resetInputs();
-    history.push('/mypage');
+    history.push(`${match.url}`);
   };
 
   const goEditMode = () => {
-    history.push('/mypage#edit');
+    history.push(`${match.url}/#edit`);
   };
 
   const goToAddMap = () => {
@@ -87,15 +94,7 @@ function MyPage() {
   };
 
   const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const cancelEditModal = () => {
-    const ok = confirm('작성을 취소할까요?');
-    if (ok) {
-      setIsOpen(false);
-      resetMapInputs();
-    }
+    history.push(`${match.url}/#createMap`);
   };
 
   const onSubmitMap = async (event: FormEvent<HTMLFormElement>) => {
@@ -111,17 +110,8 @@ function MyPage() {
     }
   };
 
-  const addIdxToMap = (mapIdx: number, newMap: INewMap) => {
+  const addIdxToMap = (mapIdx: number, newMap: IMapInputs) => {
     dispatch(setMyMap([...myMaps, { mapIdx, ...newMap }]));
-  };
-
-  const resetMapInputs = () => {
-    setMapInputs({ title: '', career: '' });
-  };
-
-  const onChangeMap = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.currentTarget;
-    setMapInputs({ ...mapInputs, [name]: value });
   };
 
   const closeDropdown = () => {
@@ -252,34 +242,15 @@ function MyPage() {
                   myMaps.map((item) => <MapCard key={item.mapIdx} {...item} />)
                 )}
 
-                {isOpen && (
+                {location.hash === '#createMap' && (
                   <>
                     <Background />
-                    <Modal>
-                      <form onSubmit={onSubmitMap}>
-                        <input
-                          required={true}
-                          maxLength={30}
-                          type="text"
-                          name="title"
-                          value={mapInputs.title}
-                          onChange={onChangeMap}
-                          placeholder="커리어맵 제목을 입력하세요."
-                        />
-                        <textarea
-                          required={true}
-                          maxLength={30}
-                          name="career"
-                          value={mapInputs.career}
-                          onChange={onChangeMap}
-                          placeholder="희망 커리어를 입력하세요.&#10;ex) 프론트엔드 개발자"
-                        />
-                        <div className="button-field">
-                          <ModalButton>확인</ModalButton>
-                          <ModalButton onClick={cancelEditModal}>취소</ModalButton>
-                        </div>
-                      </form>
-                    </Modal>
+                    <MapModal
+                      inputs={mapInputs}
+                      onSubmit={onSubmitMap}
+                      onChange={onChangeMap}
+                      resetInputs={resetMapInputs}
+                    />
                   </>
                 )}
               </div>
@@ -298,8 +269,44 @@ function MyPage() {
           )}
         </div>
       </div>
+
+      <Switch>
+        <Route path={`${match.path}/:mapIdx`}>
+          <MyMap />
+        </Route>
+      </Switch>
     </Container>
   );
 }
 
 export default MyPage;
+
+interface Params {
+  mapIdx: string;
+}
+
+function MyMap() {
+  const { mapIdx } = useParams<Params>();
+  const { inputs, setInputs, onChange, resetInputs } = useInputs<IMapInputs>({ title: '', career: '' });
+  const myMaps = useAppSelector((state) => state.myMap.entities);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const found = myMaps.find((item) => `${item.mapIdx}` === mapIdx);
+    const value = { title: found?.title, career: found?.career };
+    setInputs(value as IMapInputs);
+  }, [mapIdx]);
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const modified = { ...inputs, mapIdx: parseInt(mapIdx) };
+    dispatch(modifyMap(modified));
+  };
+
+  return (
+    <>
+      <Background />
+      <MapModal inputs={inputs} onSubmit={onSubmit} onChange={onChange} resetInputs={resetInputs} />
+    </>
+  );
+}

@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 type ReturnTypes<T> = {
   inputs: T;
   setInputs: React.Dispatch<React.SetStateAction<T>>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   resetInputs: () => void;
 };
 
@@ -11,7 +11,7 @@ export default function useInputs<T extends Record<string, unknown>>(initialStat
   const [inputs, setInputs] = useState(initialState);
 
   const onChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = event.currentTarget;
       setInputs({ ...inputs, [name]: value });
     },

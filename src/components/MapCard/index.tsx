@@ -1,6 +1,6 @@
 import { IoClose } from 'react-icons/io5';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import useGetInputs from '../../hooks/useUserInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
@@ -15,6 +15,7 @@ export default function MapCard({ title, career, mapIdx }: IMyMap) {
   const dispatch = useAppDispatch();
 
   const history = useHistory();
+  const match = useRouteMatch();
 
   const onClickMap = () => {
     if (isEdit) {
@@ -41,7 +42,7 @@ export default function MapCard({ title, career, mapIdx }: IMyMap) {
   };
 
   const onClickEdit = () => {
-    console.log();
+    history.push(`${match.url}/${mapIdx}/#updateMap`);
   };
 
   return (

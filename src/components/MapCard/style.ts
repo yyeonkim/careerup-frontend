@@ -21,7 +21,14 @@ export const Card = styled.div`
     font-size: 2rem;
   }
 
-  .card__delete-icon {
-    cursor: pointer;
+  .card__icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
+`;
+
+export const Icon = styled.div`
+  cursor: pointer;
 `;

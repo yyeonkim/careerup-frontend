@@ -17,6 +17,9 @@ function App() {
     <Router>
       <Layout>
         <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
           <Route path="/career-maps">
             <CareerMaps />
           </Route>
@@ -28,9 +31,6 @@ function App() {
           </Route>
           <Route path="/forgottenpassword">
             <ForgottenPassword />
-          </Route>
-          <Route exact path="/">
-            <Home />
           </Route>
         </Switch>
       </Layout>

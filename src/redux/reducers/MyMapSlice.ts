@@ -23,8 +23,8 @@ export const myMapSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getMyMap.fulfilled, (state, { payload }) => {
-        state.entities = payload;
+      .addCase(getMyMap.fulfilled, (state, action) => {
+        state.entities = action.payload;
         state.loading = false;
       })
 
