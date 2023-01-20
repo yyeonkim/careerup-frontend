@@ -45,12 +45,8 @@ export interface IMyMap {
   career: string;
 }
 
-export interface INewMap {
-  title: string;
-  career: string;
-}
-
 export interface IMapInputs {
+  [index: string]: string;
   title: string;
   career: string;
 }

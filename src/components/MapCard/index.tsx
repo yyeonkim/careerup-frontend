@@ -1,10 +1,11 @@
 import { IoClose } from 'react-icons/io5';
+import { AiOutlineEdit } from 'react-icons/ai';
 import { useHistory } from 'react-router-dom';
 
 import useGetInputs from '../../hooks/useUserInputs';
 import useSetIsEdit from '../../hooks/useSetIsEdit';
 import { IMyMap } from '../../interfaces';
-import { Card } from './style';
+import { Card, Icon } from './style';
 import { useAppDispatch } from '../../redux/hooks';
 import { deleteMap } from '../../redux/actions/MyMapAPI';
 
@@ -15,7 +16,7 @@ export default function MapCard({ title, career, mapIdx }: IMyMap) {
 
   const history = useHistory();
 
-  const onClickMap = (mapIdx: number) => {
+  const onClickMap = () => {
     if (isEdit) {
       const ok = confirm('수정을 취소할까요? 값이 저장되지 않습니다.');
       if (ok) {
@@ -32,22 +33,31 @@ export default function MapCard({ title, career, mapIdx }: IMyMap) {
     history.push('/mypage');
   };
 
-  const onClickDeleteMap = async (mapIdx: number) => {
+  const onClickDelete = async () => {
     const ok = confirm('커리어 맵을 삭제할까요?');
     if (ok) {
       dispatch(deleteMap(mapIdx));
     }
   };
 
+  const onClickEdit = () => {
+    console.log();
+  };
+
   return (
     <Card>
-      <div className="card__info" onClick={() => onClickMap(mapIdx)}>
+      <div className="card__info" onClick={onClickMap}>
         <span>{title}</span>
         <span>{career}</span>
       </div>
       {!isEdit && (
-        <div className="card__delete-icon" onClick={() => onClickDeleteMap(mapIdx)}>
-          <IoClose color="red" size="2rem" />
+        <div className="card__icons">
+          <Icon onClick={onClickDelete}>
+            <IoClose color="red" size="2rem" />
+          </Icon>
+          <Icon onClick={onClickEdit}>
+            <AiOutlineEdit color="#696969" size="2rem" />
+          </Icon>
         </div>
       )}
     </Card>
