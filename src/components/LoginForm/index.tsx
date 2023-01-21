@@ -27,18 +27,28 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     if (isValid()) {
       const url = isSignIn ? '/user/login' : '/user/signup';
       const { username, password, name, emailCertification } = loginValue;
-      const data = isSignIn ? { username: username, password } : { name, username, password, emailCertification };
+      const data = isSignIn ? { username, password } : { name, username, password, emailCertification };
 
       const response = await postUserLogin(url, data);
       const signUpSuccess = response.status === 200 && !isSignIn;
       const loginSuccess = response.status === 200 && isSignIn;
 
       if (signUpSuccess) {
+        // 토큰을 받지 못했으면
+        if (!response.data.result) {
+          alert(response.data.message);
+          return;
+        }
         alert('회원가입이 완료되었습니다. 로그인 해주세요.');
         changeForm();
       }
 
       if (loginSuccess) {
+        // 토큰을 받지 못했으면
+        if (!response.data.result) {
+          alert(response.data.message);
+          return;
+        }
         saveAccessToken(response.data.result.accessToken);
         refreshPage();
       }
