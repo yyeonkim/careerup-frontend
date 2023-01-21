@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { Route, Switch, useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 
@@ -10,7 +10,7 @@ import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
 import MapCard from '../../components/MapCard';
-import { IMapInputs } from '../../interfaces';
+import { IMapInputs, IMyMap } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setUserData } from '../../redux/reducers/UserSlice';
 import { setMyMap } from '../../redux/reducers/MyMapSlice';
@@ -22,6 +22,7 @@ import { getUserData, patchPicture } from '../../redux/actions/UserAPI';
 import { getMyMap, modifyMap } from '../../redux/actions/MyMapAPI';
 import useInputs from '../../hooks/useInputs';
 import MapModal from '../../components/Modal/MapModal';
+import useMapInputs from '../../hooks/useMapInputs';
 
 function MyPage() {
   const history = useHistory();
@@ -288,25 +289,23 @@ interface Params {
 function MyMap() {
   const history = useHistory();
   const { mapIdx } = useParams<Params>();
-  const { inputs, setInputs, onChange, resetInputs } = useInputs<IMapInputs>({ title: '', career: '' });
+  const { inputs, onChange, resetInputs } = useMapInputs(mapIdx);
   const myMaps = useAppSelector((state) => state.myMap.entities);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const found = myMaps.find((item) => `${item.mapIdx}` === mapIdx);
-    const value = { title: found?.title, career: found?.career };
-    setInputs(value as IMapInputs);
-  }, [mapIdx]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const target = { ...inputs, mapIdx: parseInt(mapIdx) };
     dispatch(modifyMap(target));
+    modifyState(target);
 
+    history.push('/mypage');
+  };
+
+  const modifyState = (target: IMyMap) => {
     let modified = myMaps.filter((item) => `${item.mapIdx}` !== mapIdx);
     modified = [...modified, target];
     dispatch(setMyMap(modified));
-    history.push('/mypage');
   };
 
   return (
