@@ -20,7 +20,7 @@ export default function Header() {
     dispatch(toggle());
   };
 
-  // 비밀번호 찾기 페이지면 프로필 사진 대신 '로그인' 버튼
+  // '비밀번호 찾기' 페이지면 프로필 사진 대신 '로그인' 버튼
   return isLoading ? (
     <></>
   ) : (

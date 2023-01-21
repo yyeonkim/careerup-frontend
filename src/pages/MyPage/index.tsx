@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { Route, Switch, useHistory, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 
@@ -10,6 +10,7 @@ import ProfileContent from '../../components/ProfileContent';
 import InfoContent from '../../components/InfoContent';
 import Background from '../../components/Modal/Background';
 import MapCard from '../../components/MapCard';
+import MapModal from '../../components/Modal/MapModal';
 import { IMapInputs, IMyMap } from '../../interfaces';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setUserData } from '../../redux/reducers/UserSlice';
@@ -18,11 +19,11 @@ import { close } from '../../redux/reducers/DropdownSlice';
 import { createMap } from '../../api/myMap';
 import { modifyUserData } from '../../api/user';
 import useGetData from '../../hooks/useGetData';
-import { getUserData, patchPicture } from '../../redux/actions/UserAPI';
+import { patchPicture } from '../../redux/actions/UserAPI';
 import { getMyMap, modifyMap } from '../../redux/actions/MyMapAPI';
 import useInputs from '../../hooks/useInputs';
-import MapModal from '../../components/Modal/MapModal';
 import useMapInputs from '../../hooks/useMapInputs';
+import Loader from '../../components/Loader';
 
 function MyPage() {
   const history = useHistory();
@@ -123,7 +124,7 @@ function MyPage() {
   };
 
   return isLoading ? (
-    <div>Loading...</div>
+    <Loader />
   ) : (
     <Container onClick={closeDropdown}>
       {isEdit && <Message>내용을 클릭하여 수정하세요</Message>}
