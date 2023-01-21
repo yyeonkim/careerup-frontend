@@ -1,5 +1,5 @@
 import { ChangeEventHandler, FormEventHandler } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { IMapInputs } from '../../../interfaces';
 import { Modal, ModalButton } from './style';
@@ -13,12 +13,11 @@ interface Props {
 
 function MapModal({ inputs, onChange, onSubmit, resetInputs }: Props) {
   const history = useHistory();
-  const match = useRouteMatch();
 
   const cancelEditMap = () => {
     const ok = confirm('작성을 취소할까요?');
     if (ok) {
-      history.push(`${match.path}`);
+      history.push('/mypage');
       resetInputs();
     }
   };

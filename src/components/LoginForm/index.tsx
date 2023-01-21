@@ -94,7 +94,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
         setCheckNum(response.data.result.checkNum);
       }
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 

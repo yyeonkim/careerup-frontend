@@ -18,7 +18,7 @@ export const deleteMap = createAsyncThunk('map/deleteMap', async (mapIdx: number
 });
 
 export const modifyMap = createAsyncThunk('map/modifyMap', async ({ mapIdx, title, career }: IMyMap) => {
-  const response = await axios.patch(`/map/${mapIdx}/modify`, { title, career }, { headers: getAuthorization() });
+  const response = await axios.patch(`/map/${mapIdx}/modify`, { title, career }, { headers: authorization });
 
   return response;
 });

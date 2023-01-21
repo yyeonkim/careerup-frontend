@@ -286,6 +286,7 @@ interface Params {
 }
 
 function MyMap() {
+  const history = useHistory();
   const { mapIdx } = useParams<Params>();
   const { inputs, setInputs, onChange, resetInputs } = useInputs<IMapInputs>({ title: '', career: '' });
   const myMaps = useAppSelector((state) => state.myMap.entities);
@@ -299,8 +300,13 @@ function MyMap() {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const modified = { ...inputs, mapIdx: parseInt(mapIdx) };
-    dispatch(modifyMap(modified));
+    const target = { ...inputs, mapIdx: parseInt(mapIdx) };
+    dispatch(modifyMap(target));
+
+    let modified = myMaps.filter((item) => `${item.mapIdx}` !== mapIdx);
+    modified = [...modified, target];
+    dispatch(setMyMap(modified));
+    history.push('/mypage');
   };
 
   return (
