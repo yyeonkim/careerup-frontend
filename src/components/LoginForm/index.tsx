@@ -68,8 +68,8 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
   };
 
   const saveAccessToken = (accessToken: string) => {
-    const value = JSON.stringify({ value: accessToken, expiration: Date.now() + ONEDAY });
-    localStorage.setItem('accessToken', value);
+    const tokenObject = JSON.stringify({ value: accessToken, expiration: Date.now() + ONEDAY });
+    localStorage.setItem('accessToken', tokenObject);
   };
 
   const refreshPage = () => {
