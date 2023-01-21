@@ -78,8 +78,11 @@ function MyPage() {
   };
 
   const cancelEdit = () => {
-    resetInputs();
-    history.push(`${match.path}`);
+    const ok = confirm('수정을 취소할까요? 값이 저장되지 않습니다.');
+    if (ok) {
+      resetInputs();
+      history.push(`${match.path}`);
+    }
   };
 
   const goEditMode = () => {
