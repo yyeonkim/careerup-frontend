@@ -25,11 +25,16 @@ export const Wrapper = styled.div`
     margin: 0.3rem 3rem;
     padding: 1.5rem 0;
     border-radius: 0.3rem;
-
     background-color: white;
 
     :hover {
       background-color: white;
+    }
+  }
+
+  .exist {
+    :hover {
+      color: red;
     }
   }
 `;

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Wrapper,
   Line,
@@ -20,17 +20,20 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import {
   clickEtc,
   closeIsActivityTypeModal,
+  editMode,
   initData,
+  initRemoveFile,
   onChangeIsFile,
   onCloseAllType,
+  readMode,
   toggleIsModal,
 } from '../../../redux/reducers/RoadMapSlice';
 import ActivityInputHeader from '../ActivityInputBodys/ActivityInputHeader';
 import ActivityInputContent from '../ActivityInputBodys/ActivityInputInfo';
 import ActivityInputImages from '../ActivityInputBodys/ActivityInputImages';
 import ActivityInputUpload from '../ActivityInputBodys/ActivityInputUpload';
-import { makeItem } from '../../../redux/actions/RoadMapAPI';
-import { ImageListType, ImageType } from 'react-images-uploading';
+import { makeItem, removeFile, removeItem } from '../../../redux/actions/RoadMapAPI';
+import { ImageListType } from 'react-images-uploading';
 import { UploadFile } from 'antd';
 
 const ActivityInput = () => {
@@ -52,10 +55,15 @@ const ActivityInput = () => {
     items,
     isEditMode,
     itemInfo,
+    nowTypeKr,
+    nowItemIdx,
+    removeFiles,
+    nowFile,
   } = useAppSelector((state) => state.roadMap);
 
   const [images, setImages] = useState<ImageListType>([]);
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const [addFiles, setAddFiles] = useState<Array<{ fileName: string; file: File }>>([]);
 
   const [content, , setContent] = useInput('');
   const [realization, , setRealization] = useInput('');
@@ -68,6 +76,14 @@ const ActivityInput = () => {
   const onChangeRealization = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setRealization(e.target.value);
   }, []);
+
+  const onTypeActivityModalClose = useCallback(() => {
+    dispatch(closeIsActivityTypeModal());
+  }, []);
+
+  const toggleIsImg = useCallback(() => {
+    setIsImg((prev) => !prev);
+  }, [isImg]);
 
   const onClickClose = useCallback(() => {
     dispatch(toggleIsModal());
@@ -83,62 +99,80 @@ const ActivityInput = () => {
 
       dispatch(
         makeItem({
+          isModify: false,
           mapIdx: 37,
           nowType,
-          mainTitle: title,
+          title,
           each,
           period,
           realization,
-          title: projectName,
+          subtitle: projectName,
           acquisition: date,
           institution,
           content,
           sequence: items.length + 1,
           images,
-          files,
         })
       );
       dispatch(onCloseAllType());
       dispatch(clickEtc());
       dispatch(initData());
     },
-    [nowType, title, each, period, realization, projectName, date, institution, content, items, images, files]
+    [nowType, title, each, period, realization, projectName, date, institution, content, items, images, addFiles]
   );
 
-  const onTypeActivityModalClose = useCallback(() => {
-    dispatch(closeIsActivityTypeModal());
+  const onClickEdit = useCallback(() => {
+    dispatch(editMode());
   }, []);
 
-  const toggleIsImg = useCallback(() => {
-    setIsImg((prev) => !prev);
-  }, [isImg]);
-
-  useEffect(() => {
-    setContent('');
-    setRealization('');
-  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
-
-  useEffect(() => {
-    if (itemInfo) {
-      const image: any = [];
-      const file: UploadFile[] = [];
-
-      itemInfo.files.filter((img, index) => {
-        if (img.fileType === '활동사진') image.push(img.fileUrl);
-        else
-          file.push({
-            uid: index.toString(),
-            name: index.toString(),
-            status: 'done',
-            url: img.fileUrl,
-            thumbUrl: img.fileUrl,
-          });
+  const onEditSave = useCallback(() => {
+    dispatch(
+      makeItem({
+        isModify: true,
+        itemIdx: nowItemIdx,
+        nowType,
+        title,
+        each,
+        period,
+        realization,
+        subtitle: projectName,
+        acquisition: date,
+        institution,
+        content,
+        category: nowTypeKr,
+        // images,
+        // files,
+      })
+    );
+    dispatch(readMode());
+    if (removeFiles) {
+      removeFiles.forEach((num) => {
+        if (nowFile.indexOf(num) !== -1) dispatch(removeFile(num));
       });
-
-      setImages(image);
-      setFiles(file);
     }
-  }, [itemInfo]);
+    dispatch(initRemoveFile());
+  }, [
+    nowType,
+    title,
+    each,
+    period,
+    realization,
+    projectName,
+    date,
+    institution,
+    content,
+    nowTypeKr,
+    nowItemIdx,
+    items,
+    removeFiles,
+  ]);
+
+  const onRemoveItem = useCallback((itemIdx: number) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      dispatch(removeItem(itemIdx));
+      alert('삭제되었습니다.');
+    }
+  }, []);
 
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
   const realizationTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -164,6 +198,33 @@ const ActivityInput = () => {
     if (itemInfo) {
       setRealization(itemInfo.realization);
       setContent(itemInfo.content);
+    }
+  }, [itemInfo]);
+
+  useEffect(() => {
+    setContent('');
+    setRealization('');
+  }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
+
+  useLayoutEffect(() => {
+    if (itemInfo) {
+      const image: any = [];
+      const file: UploadFile[] = [];
+
+      itemInfo.files.filter((img, index) => {
+        if (img.fileType === '활동사진') {
+          image.push(img.fileUrl);
+        } else
+          file.push({
+            uid: img.fileIdx.toString(),
+            name: index.toString(),
+            status: 'done',
+            url: img.fileUrl,
+          });
+      });
+
+      setImages(image);
+      setFiles(file);
     }
   }, [itemInfo]);
 
@@ -195,7 +256,7 @@ const ActivityInput = () => {
           </div>
           <div>
             <ProjectImage isImg={isImg} onClick={toggleIsImg}>
-              <span>프로젝트 관련 사진을 넣어보세요.</span>
+              <span>{itemInfo ? '프로젝트 관련 사진' : '프로젝트 관련 사진을 넣어보세요.'}</span>
               <span>{isImg ? <FiChevronUp /> : <FiChevronDown />}</span>
             </ProjectImage>
             {isImg && (
@@ -225,11 +286,34 @@ const ActivityInput = () => {
         <Line>
           <div />
         </Line>
-        <ActivityInputUpload files={files} setFiles={setFiles} />
+        <ActivityInputUpload files={files} setFiles={setFiles} addFiles={addFiles} setAddFiles={setAddFiles} />
 
         <FinishBtns>
-          <button type={'submit'}>저장</button>
-          <button onClick={onClickClose}>삭제</button>
+          {!itemInfo && (
+            <div>
+              <button type={'submit'}>저장</button>
+              <button type={'button'} onClick={onClickClose}>
+                취소
+              </button>
+            </div>
+          )}
+          {itemInfo && (
+            <div>
+              {!isEditMode && (
+                <button type={'button'} onClick={onClickEdit}>
+                  수정
+                </button>
+              )}
+              {isEditMode && (
+                <button type={'button'} onClick={onEditSave}>
+                  저장
+                </button>
+              )}
+              <button type={'button'} onClick={() => onRemoveItem(nowItemIdx)}>
+                삭제
+              </button>
+            </div>
+          )}
         </FinishBtns>
 
         <CloseBtn onClick={onClickClose}>X</CloseBtn>

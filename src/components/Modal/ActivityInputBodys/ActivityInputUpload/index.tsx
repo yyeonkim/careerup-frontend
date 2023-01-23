@@ -1,8 +1,8 @@
-import React, { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Upload, UploadFile } from 'antd';
 import { RemoveBtn, UploadBtn, UploadedBtn, Wrapper } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { onChangeIsFile } from '../../../../redux/reducers/RoadMapSlice';
+import { addRemoveFile, onChangeIsFile } from '../../../../redux/reducers/RoadMapSlice';
 import { UploadChangeParam } from 'antd/es/upload';
 
 const plusIcon = (
@@ -16,12 +16,15 @@ const plusIcon = (
 interface Props {
   files: UploadFile[];
   setFiles: Dispatch<SetStateAction<UploadFile[]>>;
+  addFiles: Array<{ fileName: string; file: File }>;
+  setAddFiles: Dispatch<SetStateAction<{ fileName: string; file: File }[]>>;
 }
 
-const ActivityInputUpload: FC<Props> = ({ files, setFiles }) => {
+const ActivityInputUpload: FC<Props> = ({ files, setFiles, addFiles, setAddFiles }) => {
   const dispatch = useAppDispatch();
-  const { isFile, itemInfo } = useAppSelector((state) => state.roadMap);
-  // const fileList: UploadFile[] = [];
+  const { isFile, itemInfo, isEditMode } = useAppSelector((state) => state.roadMap);
+
+  const [addFileFlag, setAddFileFlag] = useState(false);
 
   const checkIsFile = useCallback(
     (e: any) => {
@@ -36,13 +39,28 @@ const ActivityInputUpload: FC<Props> = ({ files, setFiles }) => {
     setFiles(e.fileList);
   }, []);
 
+  const onAddFile = useCallback(
+    (fileName: string, file: any) => {
+      setAddFiles([...addFiles, { fileName, file }]);
+    },
+    [addFiles]
+  );
+
+  const onRemoveFile = useCallback((fileIdx: number) => {
+    dispatch(addRemoveFile(fileIdx));
+  }, []);
+
+  useLayoutEffect(() => {
+    if (files?.[0]) dispatch(onChangeIsFile(true));
+  }, [files]);
+
   return (
     <Wrapper>
       <Upload
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        defaultFileList={[...files]}
+        fileList={[...files]}
         showUploadList={{
-          showRemoveIcon: true,
+          showRemoveIcon: isEditMode,
           removeIcon: <RemoveBtn>X</RemoveBtn>,
         }}
         maxCount={3}
@@ -51,18 +69,26 @@ const ActivityInputUpload: FC<Props> = ({ files, setFiles }) => {
         onChange={(e) => {
           checkIsFile(e);
           onChangeFiles(e);
+          if (e.file.percent === 100) {
+            setAddFileFlag(!addFileFlag);
+            if (addFileFlag) onAddFile(e.file.name, e.file.originFileObj);
+          }
         }}
+        onRemove={(file) => {
+          onRemoveFile(parseInt(file.uid));
+        }}
+        disabled={!isEditMode}
       >
         {isFile ? (
           <UploadedBtn>
             <span />
-            <span>파일추가</span>
+            <span className={'exist'}>{itemInfo && !isEditMode ? '파일' : '파일추가'}</span>
             <span>{plusIcon}</span>
           </UploadedBtn>
         ) : (
           <UploadBtn>
             <span />
-            <span>파일추가</span>
+            <span>{itemInfo && !isEditMode ? '파일' : '파일추가'}</span>
             <span>{plusIcon}</span>
           </UploadBtn>
         )}

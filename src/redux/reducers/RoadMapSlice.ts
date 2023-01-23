@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { chageItems, getItemInfo, getItems, makeItem } from '../actions/RoadMapAPI';
-import { ImageListType } from 'react-images-uploading';
+import { changeItems, getItemInfo, getItems, makeItem, removeFile, removeItem } from '../actions/RoadMapAPI';
 
 export interface RoadMapState {
   orderEdit: boolean;
@@ -32,6 +31,7 @@ export interface RoadMapState {
   // get한 정보
   items: Array<{ itemIdx: number; title: string; sequence: number; category: string }>;
   itemInfo: {
+    subtitle: string;
     acquisition: string;
     category: string;
     content: string;
@@ -47,6 +47,10 @@ export interface RoadMapState {
     role: string;
     title: string;
   } | null;
+  nowItemIdx: number;
+  nowFile: Array<number>;
+
+  removeFiles: Array<number>;
 }
 
 const initialState: RoadMapState = {
@@ -76,6 +80,10 @@ const initialState: RoadMapState = {
 
   items: [],
   itemInfo: null,
+  nowItemIdx: -1,
+  nowFile: [],
+
+  removeFiles: [],
 };
 
 export const roadMapSlice = createSlice({
@@ -177,17 +185,24 @@ export const roadMapSlice = createSlice({
 
       state.itemInfo = null;
     },
+    addRemoveFile: (state, action) => {
+      state.removeFiles.push(action.payload);
+    },
+    initRemoveFile: (state) => {
+      state.removeFiles = [];
+    },
   },
   extraReducers: (builder) =>
     builder
-      //make item
+      //makeItem or modifyItem
       .addCase(makeItem.pending, (state) => {
         true;
       })
-      .addCase(makeItem.fulfilled, (state, action: any) => {
-        state.isModal = false;
-        state.reLender = !state.reLender;
-        true;
+      .addCase(makeItem.fulfilled, (state) => {
+        if (!state.itemInfo) {
+          state.isModal = false;
+          state.reLender = !state.reLender;
+        }
       })
       .addCase(makeItem.rejected, (state) => {
         alert('실패');
@@ -201,19 +216,19 @@ export const roadMapSlice = createSlice({
         state.roadLen = state.items.length + 1 <= 9 ? 0 : Math.ceil((state.items.length - 8) / 3);
         state.activity = 9 + state.roadLen * 3;
 
-        // console.log(state.items);
+        console.log(state.items);
       })
       .addCase(getItems.rejected, (state) => {
         true;
       })
       // change items
-      .addCase(chageItems.pending, (state) => {
+      .addCase(changeItems.pending, (state) => {
         true;
       })
-      .addCase(chageItems.fulfilled, (state) => {
+      .addCase(changeItems.fulfilled, (state) => {
         state.reLender = !state.reLender;
       })
-      .addCase(chageItems.rejected, (state) => {
+      .addCase(changeItems.rejected, (state) => {
         true;
       })
       // get item info
@@ -221,10 +236,34 @@ export const roadMapSlice = createSlice({
         true;
       })
       .addCase(getItemInfo.fulfilled, (state, action: any) => {
-        state.itemInfo = action.payload;
-        // console.log(action.payload);
+        state.itemInfo = action.payload[0];
+        console.log(action.payload[0]);
+
+        state.nowItemIdx = action.payload[1];
+        state.nowFile = action.payload[2];
       })
       .addCase(getItemInfo.rejected, (state) => {
+        true;
+      })
+      // remove item
+      .addCase(removeItem.pending, (state) => {
+        true;
+      })
+      .addCase(removeItem.fulfilled, (state) => {
+        state.isModal = false;
+        state.reLender = !state.reLender;
+      })
+      .addCase(removeItem.rejected, (state) => {
+        true;
+      })
+      // remove file
+      .addCase(removeFile.pending, (state) => {
+        true;
+      })
+      .addCase(removeFile.fulfilled, (state) => {
+        true;
+      })
+      .addCase(removeFile.rejected, (state) => {
         true;
       }),
 });
@@ -251,6 +290,8 @@ export const {
   editMode,
   readMode,
   initData,
+  addRemoveFile,
+  initRemoveFile,
 } = roadMapSlice.actions;
 export const roadMap = (state: RootState) => state.roadMap;
 

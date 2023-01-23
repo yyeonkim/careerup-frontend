@@ -46,8 +46,9 @@ const ActivityInputHeader = () => {
   return (
     <Header>
       <TypeBtn
+        itemInfo={!!itemInfo}
         onClick={(e) => {
-          if (isEditMode) {
+          if (isEditMode && !itemInfo) {
             stopPropagation(e);
             onClickTypeBtn();
           }
