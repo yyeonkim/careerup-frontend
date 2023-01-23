@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
 import { Img, Images, PlusBtn, RemoveBtn, ImgWrapper } from './styles';
-import { useAppSelector } from '../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { addImagesPush, removeImagesPush } from '../../../../redux/reducers/RoadMapSlice';
 
 interface Props {
   images: ImageListType;
@@ -9,66 +10,18 @@ interface Props {
 }
 
 const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
-  const { isEditMode, itemInfo } = useAppSelector((state) => state.roadMap);
+  const dispatch = useAppDispatch();
+  const { isEditMode, itemInfo, removeImages, addImages } = useAppSelector((state) => state.roadMap);
 
   const maxNumber = 4;
-
-  const [temp, setTemp] = useState<any>();
 
   const onChangeImages = useCallback((imageList: ImageListType) => {
     setImages(imageList);
   }, []);
 
-  const onChangeTemp = useCallback((imageList: ImageListType) => {
-    setTemp(imageList);
+  const onRemoveImage = useCallback((data: ImageType) => {
+    if (!data?.file) dispatch(removeImagesPush(data.fileIdx));
   }, []);
-
-  {
-    /* 조회하고 수정할 때 */
-  }
-  if (itemInfo && isEditMode)
-    return (
-      <div>
-        <Images>
-          {images.map((image: any, index) => (
-            <ImgWrapper key={index}>
-              <Img src={image} alt={image.dataURL} />
-              {/*<div>{<RemoveBtn onClick={() => onImageRemove(index)}>X</RemoveBtn>}</div>*/}
-            </ImgWrapper>
-          ))}
-        </Images>
-        <ImageUploading
-          multiple
-          value={temp}
-          onChange={onChangeTemp}
-          maxNumber={maxNumber - images.length}
-          maxFileSize={20 * 1024 * 1024}
-        >
-          {({ imageList, onImageUpload, onImageRemove, dragProps }) => (
-            <Images>
-              {imageList.map((image, index) => (
-                <ImgWrapper key={index}>
-                  <Img src={image.dataURL} alt={image.dataURL} />
-                  <div>
-                    <RemoveBtn onClick={() => onImageRemove(index)}>X</RemoveBtn>
-                  </div>
-                </ImgWrapper>
-              ))}
-              {maxNumber - images.length > 0 && imageList.length < maxNumber - images.length && (
-                <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
-                  +1
-                </PlusBtn>
-              )}
-              {images.length < 1 && imageList.length < 1 && (
-                <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
-                  +2
-                </PlusBtn>
-              )}
-            </Images>
-          )}
-        </ImageUploading>
-      </div>
-    );
 
   return (
     <div>
@@ -94,10 +47,21 @@ const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
               ))}
             {/* 조회할 때 */}
             {itemInfo &&
-              !isEditMode &&
-              images.map((image: any | ImageType, index) => (
+              images.map((image: ImageType, index) => (
                 <ImgWrapper key={index}>
-                  <Img src={image} alt={image.dataURL} />
+                  <Img src={image.dataURL} alt={image.dataURL} />
+                  {isEditMode && (
+                    <div>
+                      <RemoveBtn
+                        onClick={() => {
+                          onImageRemove(index);
+                          onRemoveImage(image);
+                        }}
+                      >
+                        X
+                      </RemoveBtn>
+                    </div>
+                  )}
                 </ImgWrapper>
               ))}
 

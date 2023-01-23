@@ -51,6 +51,8 @@ export interface RoadMapState {
   nowFile: Array<number>;
 
   removeFiles: Array<number>;
+  addImages: Array<File>;
+  removeImages: Array<number>;
 }
 
 const initialState: RoadMapState = {
@@ -84,6 +86,8 @@ const initialState: RoadMapState = {
   nowFile: [],
 
   removeFiles: [],
+  addImages: [],
+  removeImages: [],
 };
 
 export const roadMapSlice = createSlice({
@@ -191,6 +195,18 @@ export const roadMapSlice = createSlice({
     initRemoveFile: (state) => {
       state.removeFiles = [];
     },
+    addImagesPush: (state, action) => {
+      state.addImages.push(action.payload);
+    },
+    initAddImages: (state) => {
+      state.addImages = [];
+    },
+    removeImagesPush: (state, action) => {
+      state.removeImages.push(action.payload);
+    },
+    initRemoveImages: (state) => {
+      state.removeImages = [];
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -292,6 +308,10 @@ export const {
   initData,
   addRemoveFile,
   initRemoveFile,
+  addImagesPush,
+  initAddImages,
+  removeImagesPush,
+  initRemoveImages,
 } = roadMapSlice.actions;
 export const roadMap = (state: RootState) => state.roadMap;
 

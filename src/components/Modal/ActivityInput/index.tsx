@@ -23,6 +23,7 @@ import {
   editMode,
   initData,
   initRemoveFile,
+  initRemoveImages,
   onChangeIsFile,
   onCloseAllType,
   readMode,
@@ -32,7 +33,7 @@ import ActivityInputHeader from '../ActivityInputBodys/ActivityInputHeader';
 import ActivityInputContent from '../ActivityInputBodys/ActivityInputInfo';
 import ActivityInputImages from '../ActivityInputBodys/ActivityInputImages';
 import ActivityInputUpload from '../ActivityInputBodys/ActivityInputUpload';
-import { makeItem, removeFile, removeItem } from '../../../redux/actions/RoadMapAPI';
+import { addItemImage, makeItem, removeFile, removeItem } from '../../../redux/actions/RoadMapAPI';
 import { ImageListType } from 'react-images-uploading';
 import { UploadFile } from 'antd';
 
@@ -59,6 +60,7 @@ const ActivityInput = () => {
     nowItemIdx,
     removeFiles,
     nowFile,
+    removeImages,
   } = useAppSelector((state) => state.roadMap);
 
   const [images, setImages] = useState<ImageListType>([]);
@@ -145,12 +147,22 @@ const ActivityInput = () => {
       })
     );
     dispatch(readMode());
-    if (removeFiles) {
-      removeFiles.forEach((num) => {
-        if (nowFile.indexOf(num) !== -1) dispatch(removeFile(num));
-      });
-    }
+
+    removeFiles?.forEach((itemIdx) => {
+      if (nowFile.indexOf(itemIdx) !== -1) dispatch(removeFile(itemIdx));
+    });
     dispatch(initRemoveFile());
+
+    removeImages?.forEach((itemIdx) => {
+      dispatch(removeFile(itemIdx));
+    });
+    dispatch(initRemoveImages);
+
+    images?.forEach((image) => {
+      if (image?.file) {
+        dispatch(addItemImage({ file: image.file, itemIdx: nowItemIdx }));
+      }
+    });
   }, [
     nowType,
     title,
@@ -165,6 +177,8 @@ const ActivityInput = () => {
     nowItemIdx,
     items,
     removeFiles,
+    removeImages,
+    images,
   ]);
 
   const onRemoveItem = useCallback((itemIdx: number) => {
@@ -208,12 +222,12 @@ const ActivityInput = () => {
 
   useLayoutEffect(() => {
     if (itemInfo) {
-      const image: any = [];
+      const image: ImageListType = [];
       const file: UploadFile[] = [];
 
       itemInfo.files.filter((img, index) => {
         if (img.fileType === '활동사진') {
-          image.push(img.fileUrl);
+          image.push({ dataURL: img.fileUrl, fileIdx: img.fileIdx });
         } else
           file.push({
             uid: img.fileIdx.toString(),

@@ -107,6 +107,22 @@ export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer
   }
 });
 
+export const addItemImage = createAsyncThunk('roadMap/addItemImage', async (data: { file: File; itemIdx: number }) => {
+  try {
+    const formData = new FormData();
+    formData.append('images', data.file);
+
+    await axios.post(`/item/upload/${data.itemIdx}/picture`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+  } catch (err) {
+    alert('이미지 수정에 실패하였습니다.');
+  }
+});
+
 export const addItemFile = createAsyncThunk(
   'roadMap/addItemFile',
   async (data: {
@@ -170,26 +186,6 @@ export const getItemInfo = createAsyncThunk('roadMap/getItemInfo', async (itemId
     const fileNum: Array<number> = [];
     const files = res.data.result.files;
     files.forEach((file: { fileIdx: number }) => fileNum.push(file.fileIdx));
-
-    // const imgs: string[] = [];
-    // files.filter((v: { fileType: string; fileUrl: string }) => {
-    //   if (v.fileType === '활동사진') {
-    //     imgs.push(v.fileUrl);
-    //   }
-    // });
-    //
-    // console.log(imgs);
-    //
-    // const urlToFile = async (url: string) =>
-    //   await fetch(url)
-    //     .then((res) => res.blob())
-    //     .then((blob) => {
-    //       const file = new File([blob], 'image', { type: blob.type });
-    //
-    //       return file;
-    //     });
-    //
-    // console.log(urlToFile(imgs[0]));
 
     return [res.data.result, itemIdx, fileNum];
   } catch (err) {
