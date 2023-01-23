@@ -232,7 +232,7 @@ export const roadMapSlice = createSlice({
         state.roadLen = state.items.length + 1 <= 9 ? 0 : Math.ceil((state.items.length - 8) / 3);
         state.activity = 9 + state.roadLen * 3;
 
-        console.log(state.items);
+        // console.log(state.items);
       })
       .addCase(getItems.rejected, (state) => {
         true;
@@ -253,7 +253,7 @@ export const roadMapSlice = createSlice({
       })
       .addCase(getItemInfo.fulfilled, (state, action: any) => {
         state.itemInfo = action.payload[0];
-        console.log(action.payload[0]);
+        // console.log(action.payload[0]);
 
         state.nowItemIdx = action.payload[1];
         state.nowFile = action.payload[2];
