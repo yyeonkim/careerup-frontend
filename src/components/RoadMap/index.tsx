@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
-import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle, InfoCircle } from './styles';
+import { useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { RoadMapContainer, MapWrapper, SideBar, AddRoadBtn, Map, Road, AddCircle, InfoCircle } from './styles';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import RoadMapModal from '../Modal/RoadMapModal';
 import ActivityInput from '../Modal/ActivityInput';

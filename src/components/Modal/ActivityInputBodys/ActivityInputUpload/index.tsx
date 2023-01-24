@@ -1,9 +1,10 @@
-import React, { Dispatch, FC, SetStateAction, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useLayoutEffect, useState } from 'react';
 import { Upload, UploadFile } from 'antd';
+import { UploadChangeParam } from 'antd/es/upload';
+
 import { RemoveBtn, UploadBtn, UploadedBtn, Wrapper } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { addRemoveFile, onChangeIsFile } from '../../../../redux/reducers/RoadMapSlice';
-import { UploadChangeParam } from 'antd/es/upload';
 
 const plusIcon = (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

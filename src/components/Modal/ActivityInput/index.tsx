@@ -1,4 +1,10 @@
 import React, { ChangeEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import autosize from 'autosize';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ImageListType } from 'react-images-uploading';
+import { UploadFile } from 'antd';
+
 import {
   Wrapper,
   Line,
@@ -13,9 +19,6 @@ import {
   CloseBtn,
 } from './styles';
 import useInput from '../../../hooks/useInput';
-import autosize from 'autosize';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import {
   clickEtc,
@@ -34,8 +37,6 @@ import ActivityInputContent from '../ActivityInputBodys/ActivityInputInfo';
 import ActivityInputImages from '../ActivityInputBodys/ActivityInputImages';
 import ActivityInputUpload from '../ActivityInputBodys/ActivityInputUpload';
 import { addItemImage, makeItem, removeFile, removeItem } from '../../../redux/actions/RoadMapAPI';
-import { ImageListType } from 'react-images-uploading';
-import { UploadFile } from 'antd';
 
 const ActivityInput = () => {
   const dispatch = useAppDispatch();

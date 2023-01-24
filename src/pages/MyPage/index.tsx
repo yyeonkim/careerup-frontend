@@ -41,7 +41,8 @@ function MyPage() {
   } = useInputs<IMapInputs>({ title: '', career: '' });
 
   useGetData(getMyMap); // 커리어 맵 불러오기
-  const isLoading = useAppSelector((state) => state.user.loading);
+  // const isLoading = useAppSelector((state) => state.user.loading);
+  const isLoading = true;
   const userData = useAppSelector((state) => state.user.entities);
   const myMaps = useAppSelector((state) => state.myMap.entities);
   const dispatch = useAppDispatch();
@@ -57,8 +58,8 @@ function MyPage() {
     // 프로필 사진 미리보기
     if (files) {
       const file = files[0];
-      const filelink = URL.createObjectURL(file);
-      setInputs({ ...inputs, picture: filelink });
+      const fileLink = URL.createObjectURL(file);
+      setInputs({ ...inputs, picture: fileLink });
       setPicture(file);
     }
   };
