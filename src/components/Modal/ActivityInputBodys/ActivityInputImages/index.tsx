@@ -1,8 +1,8 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC, useCallback } from 'react';
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
 import { Img, Images, PlusBtn, RemoveBtn, ImgWrapper } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { addImagesPush, removeImagesPush } from '../../../../redux/reducers/RoadMapSlice';
+import { removeImagesPush } from '../../../../redux/reducers/RoadMapSlice';
 
 interface Props {
   images: ImageListType;
@@ -11,7 +11,7 @@ interface Props {
 
 const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
   const dispatch = useAppDispatch();
-  const { isEditMode, itemInfo, removeImages, addImages } = useAppSelector((state) => state.roadMap);
+  const { isEditMode, itemInfo } = useAppSelector((state) => state.roadMap);
 
   const maxNumber = 4;
 

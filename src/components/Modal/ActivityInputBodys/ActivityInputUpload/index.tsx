@@ -5,6 +5,7 @@ import { UploadChangeParam } from 'antd/es/upload';
 import { RemoveBtn, UploadBtn, UploadedBtn, Wrapper } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { addRemoveFile, onChangeIsFile } from '../../../../redux/reducers/RoadMapSlice';
+import { RcFile } from 'antd/lib/upload/interface';
 
 const plusIcon = (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,7 +29,7 @@ const ActivityInputUpload: FC<Props> = ({ files, setFiles, addFiles, setAddFiles
   const [addFileFlag, setAddFileFlag] = useState(false);
 
   const checkIsFile = useCallback(
-    (e: any) => {
+    (e: UploadChangeParam<UploadFile<unknown>>) => {
       const n = e.fileList.length;
       if (n === 0) dispatch(onChangeIsFile(false));
       else dispatch(onChangeIsFile(true));
@@ -41,7 +42,7 @@ const ActivityInputUpload: FC<Props> = ({ files, setFiles, addFiles, setAddFiles
   }, []);
 
   const onAddFile = useCallback(
-    (fileName: string, file: any) => {
+    (fileName: string, file: RcFile) => {
       setAddFiles([...addFiles, { fileName, file }]);
     },
     [addFiles]
@@ -72,7 +73,7 @@ const ActivityInputUpload: FC<Props> = ({ files, setFiles, addFiles, setAddFiles
           onChangeFiles(e);
           if (e.file.percent === 100) {
             setAddFileFlag(!addFileFlag);
-            if (addFileFlag) onAddFile(e.file.name, e.file.originFileObj);
+            if (addFileFlag) onAddFile(e.file.name, e.file.originFileObj as RcFile);
           }
         }}
         onRemove={(file) => {

@@ -1,11 +1,12 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { Info } from './styles';
-import { Title } from '../../ActivityInput/styles';
-import moment from 'moment';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import 'moment/locale/ko';
 import locale from 'antd/lib/locale/ko_KR';
 import { ConfigProvider, DatePicker, DatePickerProps, Space } from 'antd';
-const { RangePicker } = DatePicker;
+import moment from 'moment';
+import dayjs from 'dayjs';
+
+import { Info } from './styles';
+import { Title } from '../../ActivityInput/styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import {
   changeDate,
@@ -13,12 +14,11 @@ import {
   changeInstitution,
   changePeriod,
   changeProjectName,
-  changeTitle,
-  editMode,
 } from '../../../../redux/reducers/RoadMapSlice';
-import dayjs from 'dayjs';
+import { RangeValue } from '../../../../../node_modules/rc-picker/lib/interface';
 
 moment.locale('ko');
+const { RangePicker } = DatePicker;
 
 const ActivityInputInfo = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +36,6 @@ const ActivityInputInfo = () => {
     nowTypeKr,
     isEditMode,
     itemInfo,
-    date,
   } = useAppSelector((state) => state.roadMap);
 
   const [eachName, setEachName] = useState('');
@@ -62,13 +61,14 @@ const ActivityInputInfo = () => {
     else setEachName(eachList[3]);
   }, [isCertificate, isClub, isContest, isExternalActivity, isStudy, isEtc]);
 
-  const onChangeRange = useCallback((e: any) => {
-    if (e) {
-      const day = [e[0]['$M'] + 1, e[1]['$M'] + 1];
-      if (day[0] < 10) day[0] = '0' + day[0];
-      if (day[1] < 10) day[1] = '0' + day[1];
+  const onChangeRange = useCallback((e: RangeValue<dayjs.Dayjs>) => {
+    if (e && e[0] && e[1]) {
+      const day = [e[0].month() + 1, e[1].month() + 1];
+      const sDay = [];
+      if (day[0] < 10) sDay[0] = '0' + day[0];
+      if (day[1] < 10) sDay[1] = '0' + day[1];
 
-      dispatch(changePeriod(`${e[0]['$y']}.${day[0]}-${e[1]['$y']}.${day[1]}`));
+      dispatch(changePeriod(`${e[0].year()}.${sDay[0]}-${e[1].year()}.${sDay[1]}`));
     }
   }, []);
 

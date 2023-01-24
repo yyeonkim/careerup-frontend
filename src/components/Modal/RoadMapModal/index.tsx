@@ -1,15 +1,16 @@
-import React, { CSSProperties, FC, useCallback } from 'react';
+import React, { CSSProperties, FC, MouseEventHandler, useCallback } from 'react';
+
 import { CreateMenu } from './styles';
 
 interface Props {
   show: boolean;
-  onCloseModal: (e: any) => void;
+  onCloseModal: MouseEventHandler<HTMLDivElement>;
   style?: CSSProperties;
   children: React.ReactNode;
 }
 
 const RoadMapModal: FC<Props> = ({ children, style, show, onCloseModal }) => {
-  const stopPropagation = useCallback((e: any) => {
+  const stopPropagation = useCallback<MouseEventHandler<HTMLDivElement>>((e) => {
     e.stopPropagation();
   }, []);
 

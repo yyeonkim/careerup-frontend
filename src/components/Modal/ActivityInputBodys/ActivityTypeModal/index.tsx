@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { ActivityType, TypeImg, Types } from './styles';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { useAppDispatch } from '../../../../redux/hooks';
 import {
   clickActivity,
   clickCertificate,

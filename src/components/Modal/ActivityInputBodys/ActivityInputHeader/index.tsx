@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect } from 'react';
 import { Header, TypeBtn } from './styles';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { toggleIsActivityTypeModal, changeTitle } from '../../../../redux/reducers/RoadMapSlice';
 import ActivityTypeModal from '../ActivityTypeModal';
-import { UploadFile } from 'antd';
 
 const ActivityInputHeader = () => {
   const dispatch = useAppDispatch();
