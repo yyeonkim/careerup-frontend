@@ -34,7 +34,7 @@ export const Header = styled.div`
   }
 `;
 
-export const TypeBtn = styled.div`
+export const TypeBtn = styled.div<{ itemInfo: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,6 +44,7 @@ export const TypeBtn = styled.div`
 
   border: 5px solid #6ccea0;
   border-radius: 50%;
+  cursor: ${(props) => (props.itemInfo ? 'default' : 'pointer')};
 
   & > img {
     width: 50%;

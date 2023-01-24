@@ -126,7 +126,7 @@ export const FinishBtns = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
 
-  & > button {
+  & > div > button {
     width: 6rem;
     height: 3rem;
     border-radius: 2rem;

@@ -87,6 +87,7 @@ const ActivityInputInfo = () => {
 
   useEffect(() => {
     if (itemInfo) {
+      dispatch(changeProjectName(itemInfo.subtitle));
       dispatch(changeInstitution(itemInfo.institution));
       dispatch(changePeriod(itemInfo.period));
       dispatch(changeDate(itemInfo.acquisition));
@@ -95,7 +96,7 @@ const ActivityInputInfo = () => {
   }, [itemInfo]);
 
   return (
-    <Info>
+    <Info isEditMode={isEditMode}>
       <div>
         <div>
           <Title>{isEtc ? '활동' : nowTypeKr}명</Title>
@@ -146,6 +147,7 @@ const ActivityInputInfo = () => {
             )}
             {itemInfo && (
               <RangePicker
+                suffixIcon={null}
                 picker={'month'}
                 format={'YYYY년 MM월'}
                 separator={'~'}
@@ -153,12 +155,12 @@ const ActivityInputInfo = () => {
                 onChange={(e) => {
                   onChangeRange(e);
                 }}
-                className={'date'}
+                className={'date exist'}
                 defaultValue={[
                   dayjs(itemInfo.period.split('-')[0], 'YYYY년 MM월'),
                   dayjs(itemInfo.period.split('-')[1], 'YYYY년 MM월'),
                 ]}
-                disabled={true}
+                disabled={!isEditMode}
               />
             )}
           </ConfigProvider>
@@ -190,11 +192,12 @@ const ActivityInputInfo = () => {
               {!itemInfo && <DatePicker format={'YYYY년 MM월 DD일'} onChange={onChangeDate} bordered={false} />}
               {itemInfo && (
                 <DatePicker
+                  suffixIcon={isEditMode ? false : null}
                   format={'YYYY년 MM월 DD일'}
                   onChange={onChangeDate}
                   bordered={false}
                   defaultValue={dayjs(itemInfo.acquisition, 'YYYY년 MM월 DD일')}
-                  disabled={true}
+                  disabled={!isEditMode}
                 />
               )}
             </ConfigProvider>

@@ -1,7 +1,8 @@
-import React, { FC, useCallback } from 'react';
-import ImageUploading, { ImageListType } from 'react-images-uploading';
+import React, { FC, useCallback, useState } from 'react';
+import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading';
 import { Img, Images, PlusBtn, RemoveBtn, ImgWrapper } from './styles';
-import { useAppSelector } from '../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { addImagesPush, removeImagesPush } from '../../../../redux/reducers/RoadMapSlice';
 
 interface Props {
   images: ImageListType;
@@ -9,12 +10,17 @@ interface Props {
 }
 
 const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
-  const { itemInfo, isEditMode } = useAppSelector((state) => state.roadMap);
+  const dispatch = useAppDispatch();
+  const { isEditMode, itemInfo, removeImages, addImages } = useAppSelector((state) => state.roadMap);
 
   const maxNumber = 4;
 
   const onChangeImages = useCallback((imageList: ImageListType) => {
     setImages(imageList);
+  }, []);
+
+  const onRemoveImage = useCallback((data: ImageType) => {
+    if (!data?.file) dispatch(removeImagesPush(data.fileIdx));
   }, []);
 
   return (
@@ -28,7 +34,9 @@ const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
       >
         {({ imageList, onImageUpload, onImageRemove, dragProps }) => (
           <Images>
-            {isEditMode &&
+            {/* 처음 등록할 때 */}
+            {!itemInfo &&
+              isEditMode &&
               imageList.map((image, index) => (
                 <ImgWrapper key={index}>
                   <Img src={image.dataURL} alt={image.dataURL} />
@@ -37,13 +45,26 @@ const ActivityInputImages: FC<Props> = ({ images, setImages }) => {
                   </div>
                 </ImgWrapper>
               ))}
-            {!isEditMode &&
-              images.map((image: any, index) => (
+            {/* 조회할 때 */}
+            {itemInfo &&
+              images.map((image: ImageType, index) => (
                 <ImgWrapper key={index}>
-                  <Img src={image} alt={image.dataURL} />
-                  <div>{isEditMode && <RemoveBtn onClick={() => onImageRemove(index)}>X</RemoveBtn>}</div>
+                  <Img src={image.dataURL} alt={image.dataURL} />
+                  {isEditMode && (
+                    <div>
+                      <RemoveBtn
+                        onClick={() => {
+                          onImageRemove(index);
+                          onRemoveImage(image);
+                        }}
+                      >
+                        X
+                      </RemoveBtn>
+                    </div>
+                  )}
                 </ImgWrapper>
               ))}
+
             {maxNumber > images.length && isEditMode && (
               <PlusBtn type={'button'} onClick={onImageUpload} {...dragProps}>
                 +

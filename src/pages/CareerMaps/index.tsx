@@ -14,7 +14,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { VscThreeBars } from 'react-icons/vsc';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { roadMap, toggleOrderEdit } from '../../redux/reducers/RoadMapSlice';
-import { chageItems, getItems } from '../../redux/actions/RoadMapAPI';
+import { changeItems, getItems } from '../../redux/actions/RoadMapAPI';
 
 type Nullable<T> = T | null;
 
@@ -133,7 +133,7 @@ export default function CareerMaps() {
     }
 
     console.log(list);
-    dispatch(chageItems({ mapIdx: 37, list }));
+    dispatch(changeItems({ mapIdx: 37, list }));
     dispatch(toggleOrderEdit());
   }, [list]);
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Info = styled.div`
+export const Info = styled.div<{ isEditMode: boolean }>`
   & > div {
     margin: 0 4rem;
     margin-bottom: 1rem;
@@ -27,5 +27,13 @@ export const Info = styled.div`
 
   .date {
     width: 22rem;
+  }
+
+  .exist {
+    width: ${(props) => (props.isEditMode ? '22rem' : '20rem')};
+  }
+
+  .ant-picker .ant-picker-input > input[disabled] {
+    color: #4e4e4e;
   }
 `;
