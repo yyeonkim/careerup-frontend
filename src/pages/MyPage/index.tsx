@@ -40,7 +40,6 @@ function MyPage() {
     resetInputs: resetMapInputs,
   } = useInputs<IMapInputs>({ title: '', career: '' });
 
-  // useGetData(getUserData); // 사용자 정보 불러오기
   useGetData(getMyMap); // 커리어 맵 불러오기
   const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
@@ -275,6 +274,7 @@ function MyPage() {
         </div>
       </div>
 
+      {/* Nesting Route */}
       <Switch>
         <Route path={`${match.path}/:mapIdx`}>
           <MyMap />
@@ -286,6 +286,7 @@ function MyPage() {
 
 export default MyPage;
 
+// mapIdx로 커리어 맵 제목, 희망 커리어 불러오기
 interface Params {
   mapIdx: string;
 }
