@@ -41,8 +41,7 @@ function MyPage() {
   } = useInputs<IMapInputs>({ title: '', career: '' });
 
   useGetData(getMyMap); // 커리어 맵 불러오기
-  // const isLoading = useAppSelector((state) => state.user.loading);
-  const isLoading = true;
+  const isLoading = useAppSelector((state) => state.user.loading);
   const userData = useAppSelector((state) => state.user.entities);
   const myMaps = useAppSelector((state) => state.myMap.entities);
   const dispatch = useAppDispatch();
