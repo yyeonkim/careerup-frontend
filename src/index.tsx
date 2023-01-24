@@ -7,12 +7,6 @@ import { store } from './redux/store';
 import App from './App';
 import { theme } from './style/theme';
 
-declare global {
-  interface Window {
-    naver_id_login: any;
-  }
-}
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>

@@ -1,13 +1,16 @@
+import { Dispatch } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
-// 네이버 로그인에서 사용
-export interface IUserLoginInfo {
-  token: string;
-  email: string;
-  name: string;
-  profileImg: string;
-  nickname?: string;
-}
+export declare type AsyncThunkConfig = {
+  state?: unknown;
+  dispatch?: Dispatch;
+  extra?: unknown;
+  rejectValue?: unknown;
+  serializedErrorType?: unknown;
+  pendingMeta?: unknown;
+  fulfilledMeta?: unknown;
+  rejectedMeta?: unknown;
+};
 
 // 사용자 정보
 export interface IUserData {
