@@ -23,9 +23,9 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/career-maps">{accessToken ? <CareerMaps /> : <Redirect to="/#login" />}</Route>
-          <Route path="/mypage">{accessToken ? <MyPage /> : <Redirect to="/#login" />}</Route>
-          <Route path="/changepassword">{accessToken ? <ChangePassword /> : <Redirect to="/#login" />}</Route>
+          <Route path="/career-maps">{accessToken ? <CareerMaps /> : <Redirect to={{ hash: 'login' }} />}</Route>
+          <Route path="/mypage">{accessToken ? <MyPage /> : <Redirect to={{ hash: 'login' }} />}</Route>
+          <Route path="/changepassword">{accessToken ? <ChangePassword /> : <Redirect to={{ hash: 'login' }} />}</Route>
           <Route path="/forgottenpassword">
             <ForgottenPassword />
           </Route>
