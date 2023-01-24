@@ -1,3 +1,6 @@
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { VscThreeBars } from 'react-icons/vsc';
+
 import {
   Menu,
   CareerMapsWrapper,
@@ -10,8 +13,6 @@ import {
   EditBtn,
 } from './style';
 import RoadMap from '../../components/RoadMap';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { VscThreeBars } from 'react-icons/vsc';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { roadMap, toggleOrderEdit } from '../../redux/reducers/RoadMapSlice';
 import { changeItems, getItems } from '../../redux/actions/RoadMapAPI';
@@ -35,6 +36,7 @@ interface item {
 
 export default function CareerMaps() {
   const { reLender, items } = useAppSelector((state) => state.roadMap);
+  const { name, age, job } = useAppSelector((state) => state.user.entities);
 
   const [list, setList] = useState<any>([]);
 
@@ -132,7 +134,7 @@ export default function CareerMaps() {
       list[i] = { ...list[i], sequence: i + 1 };
     }
 
-    console.log(list);
+    //console.log(list);
     dispatch(changeItems({ mapIdx: 37, list }));
     dispatch(toggleOrderEdit());
   }, [list]);
@@ -157,9 +159,9 @@ export default function CareerMaps() {
                 <span>직업</span>
               </div>
               <div>
-                <span>신짱구</span>
-                <span>23세</span>
-                <span>대학생</span>
+                <span>{name}</span>
+                <span>{age}</span>
+                <span>{job}</span>
               </div>
             </ProfileTop>
             <ProfileBottom>
