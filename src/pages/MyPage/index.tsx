@@ -138,6 +138,7 @@ function MyPage() {
             />
             <div className="profile__info">
               <ProfileContent
+                key="name"
                 label="이름"
                 value={userData.name}
                 inputName="name"
@@ -145,6 +146,7 @@ function MyPage() {
                 onChange={onChange}
               />
               <ProfileContent
+                key="age"
                 label="나이"
                 value={userData.age}
                 inputName="age"
@@ -152,6 +154,7 @@ function MyPage() {
                 onChange={onChange}
               />
               <ProfileContent
+                key="gender"
                 label="성별"
                 value={userData.gender}
                 inputName="gender"
@@ -159,6 +162,7 @@ function MyPage() {
                 onChange={onChange}
               />
               <ProfileContent
+                key="job"
                 label="직업"
                 value={userData.job}
                 inputName="job"
@@ -166,6 +170,7 @@ function MyPage() {
                 onChange={onChange}
               />
               <ProfileContent
+                key="address"
                 label="주소"
                 value={userData.address}
                 inputName="address"
@@ -179,6 +184,7 @@ function MyPage() {
             <div className="content__info">
               <InfoBox>
                 <InfoContent
+                  key="univ"
                   label="🏫"
                   value={userData.univ}
                   inputName="univ"
@@ -187,6 +193,7 @@ function MyPage() {
                   onChange={onChange}
                 />
                 <InfoContent
+                  key="major1"
                   label="📚"
                   value={userData.major1}
                   inputName="major1"
@@ -195,6 +202,7 @@ function MyPage() {
                   onChange={onChange}
                 />
                 <InfoContent
+                  key="interestField1"
                   label="💚"
                   value={userData.interestField1}
                   inputName="interestField1"
@@ -205,6 +213,7 @@ function MyPage() {
               </InfoBox>
               <InfoBox>
                 <InfoContent
+                  key="phone"
                   label="📞"
                   value={userData.phone}
                   inputName="phone"
@@ -213,6 +222,7 @@ function MyPage() {
                   onChange={onChange}
                 />
                 <InfoContent
+                  key="username"
                   label="✉️"
                   value={userData.username}
                   inputName="username"
@@ -221,6 +231,7 @@ function MyPage() {
                   onChange={onChange}
                 />
                 <InfoContent
+                  key="link"
                   label="🔗"
                   value={userData.link}
                   inputName="link"
