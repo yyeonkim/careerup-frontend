@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getNewPassword } from '../../api/user';
 
-import HomeLogo from '../../components/HomeLogo';
+import { getNewPassword } from '../../api/user';
 import Background from '../../components/Modal/Background';
 import useInput from '../../hooks/useInput';
-import { Button, Container, Header, StyledForm, Message, Modal, Title, StyledInput } from './style';
+import { Button, Container, StyledForm, Message, Modal, Title, StyledInput } from './style';
 
 export default function ForgottenPassword() {
   const [value, handler] = useInput('');
