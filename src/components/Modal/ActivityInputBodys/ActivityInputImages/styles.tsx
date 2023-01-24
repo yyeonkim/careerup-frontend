@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { Upload } from 'antd';
-import ImgCrop from 'antd-img-crop';
 
 export const Images = styled.div`
   display: grid;
