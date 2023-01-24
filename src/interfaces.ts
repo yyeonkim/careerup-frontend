@@ -50,3 +50,14 @@ export interface IMapInputs {
   title: string;
   career: string;
 }
+
+// 커리어 맵 아이템
+interface IItem {
+  itemIdx: number;
+  sequence: number;
+}
+
+export interface IItemSequence {
+  mapIdx: number;
+  list: IItem[];
+}

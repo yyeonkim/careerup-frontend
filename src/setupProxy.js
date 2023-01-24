@@ -1,6 +1,6 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-module.exports = (app: any) => {
+module.exports = (app) => {
   app.use(
     '/proxy',
     createProxyMiddleware({

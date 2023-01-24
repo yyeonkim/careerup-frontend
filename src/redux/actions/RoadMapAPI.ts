@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ImageListType } from 'react-images-uploading';
-import { UploadFile } from 'antd';
 
 import { getAccessToken } from '../../api/user';
-import { useAppDispatch } from '../hooks';
-import { blob } from 'stream/consumers';
+import { IItemSequence } from '../../interfaces';
+
 axios.defaults.withCredentials = true;
 
 interface Carrer {
@@ -98,7 +97,7 @@ export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer
             Authorization: `Bearer ${jwt}`,
           },
         })
-        .catch((err) => {
+        .catch(() => {
           alert('이미지 등록에 실패하였습니다.');
         });
     }
@@ -163,7 +162,7 @@ export const getItems = createAsyncThunk('roadMap/getItems', async (mapIdx: numb
   }
 });
 
-export const changeItems = createAsyncThunk('roadMap/changeItems', async (data: any) => {
+export const changeItems = createAsyncThunk('roadMap/changeItems', async (data: IItemSequence) => {
   try {
     await axios.patch(`/item/${data.mapIdx}`, data.list, {
       headers: {

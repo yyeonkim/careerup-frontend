@@ -211,7 +211,7 @@ export const roadMapSlice = createSlice({
   extraReducers: (builder) =>
     builder
       //makeItem or modifyItem
-      .addCase(makeItem.pending, (state) => {
+      .addCase(makeItem.pending, () => {
         true;
       })
       .addCase(makeItem.fulfilled, (state) => {
@@ -220,66 +220,68 @@ export const roadMapSlice = createSlice({
           state.reLender = !state.reLender;
         }
       })
-      .addCase(makeItem.rejected, (state) => {
+      .addCase(makeItem.rejected, () => {
         alert('실패');
       })
       // get itemlist
-      .addCase(getItems.pending, (state) => {
+      .addCase(getItems.pending, () => {
         true;
       })
-      .addCase(getItems.fulfilled, (state, action: any) => {
+      .addCase(getItems.fulfilled, (state, action) => {
         state.items = action.payload;
         state.roadLen = state.items.length + 1 <= 9 ? 0 : Math.ceil((state.items.length - 8) / 3);
         state.activity = 9 + state.roadLen * 3;
 
         // console.log(state.items);
       })
-      .addCase(getItems.rejected, (state) => {
+      .addCase(getItems.rejected, () => {
         true;
       })
       // change items
-      .addCase(changeItems.pending, (state) => {
+      .addCase(changeItems.pending, () => {
         true;
       })
       .addCase(changeItems.fulfilled, (state) => {
         state.reLender = !state.reLender;
       })
-      .addCase(changeItems.rejected, (state) => {
+      .addCase(changeItems.rejected, () => {
         true;
       })
       // get item info
-      .addCase(getItemInfo.pending, (state) => {
+      .addCase(getItemInfo.pending, () => {
         true;
       })
-      .addCase(getItemInfo.fulfilled, (state, action: any) => {
-        state.itemInfo = action.payload[0];
-        // console.log(action.payload[0]);
+      .addCase(getItemInfo.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.itemInfo = action.payload[0];
+          // console.log(action.payload[0]);
 
-        state.nowItemIdx = action.payload[1];
-        state.nowFile = action.payload[2];
+          state.nowItemIdx = action.payload[1];
+          state.nowFile = action.payload[2];
+        }
       })
-      .addCase(getItemInfo.rejected, (state) => {
+      .addCase(getItemInfo.rejected, () => {
         true;
       })
       // remove item
-      .addCase(removeItem.pending, (state) => {
+      .addCase(removeItem.pending, () => {
         true;
       })
       .addCase(removeItem.fulfilled, (state) => {
         state.isModal = false;
         state.reLender = !state.reLender;
       })
-      .addCase(removeItem.rejected, (state) => {
+      .addCase(removeItem.rejected, () => {
         true;
       })
       // remove file
-      .addCase(removeFile.pending, (state) => {
+      .addCase(removeFile.pending, () => {
         true;
       })
-      .addCase(removeFile.fulfilled, (state) => {
+      .addCase(removeFile.fulfilled, () => {
         true;
       })
-      .addCase(removeFile.rejected, (state) => {
+      .addCase(removeFile.rejected, () => {
         true;
       }),
 });

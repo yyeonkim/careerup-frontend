@@ -19,26 +19,26 @@ import { changeItems, getItems } from '../../redux/actions/RoadMapAPI';
 
 type Nullable<T> = T | null;
 
-interface DragAndDrop {
-  draggedFrom: Nullable<number>;
-  draggedTo: Nullable<number>;
-  isDragging: boolean;
-  originalOrder: Array<string>;
-  updatedOrder: Array<string>;
-}
-
-interface item {
+interface Item {
   itemIdx: number;
   title: string;
   category: string;
   sequence: number;
 }
 
+interface DragAndDrop {
+  draggedFrom: Nullable<number>;
+  draggedTo: Nullable<number>;
+  isDragging: boolean;
+  originalOrder: Item[];
+  updatedOrder: Item[];
+}
+
 export default function CareerMaps() {
   const { reLender, items } = useAppSelector((state) => state.roadMap);
   const { name, age, job } = useAppSelector((state) => state.user.entities);
 
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<Item[]>([]);
 
   useEffect(() => {
     setList(items.slice());
@@ -65,7 +65,7 @@ export default function CareerMaps() {
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     event.currentTarget.style.opacity = '0.4';
-    const initialPosition = parseInt(event.currentTarget.dataset.position!);
+    const initialPosition = parseInt(event.currentTarget.dataset.position as string);
     setDragAndDrop({
       ...dragAndDrop,
       draggedFrom: initialPosition,
@@ -77,11 +77,11 @@ export default function CareerMaps() {
     event.preventDefault();
     let newList = dragAndDrop.originalOrder;
     const draggedFrom = dragAndDrop.draggedFrom; // 드래그 되는 항목의 인덱스(시작)
-    const draggedTo = parseInt(event.currentTarget.dataset.position!); // 놓을 수 있는 영역의 인덱스(끝)
+    const draggedTo = parseInt(event.currentTarget.dataset.position as string); // 놓을 수 있는 영역의 인덱스(끝)
     const itemDragged = newList[draggedFrom ?? 0];
     const remainingItems = newList.filter(
       // draggedFrom(시작) 항목 제외한 배열 목록
-      (item: any, index: any) => index !== draggedFrom
+      (item, index) => index !== draggedFrom
     );
     newList = [
       // 드래그 시작, 끝 인덱스를 활용해 새로운 배열로 반환해줌
@@ -176,7 +176,7 @@ export default function CareerMaps() {
             <span>활동</span>
           </div>
           <ActivityContent orderEdit={orderEdit}>
-            {list.map((item: any, idx: number) => {
+            {list.map((item, idx: number) => {
               return (
                 <div
                   className="draggable"
