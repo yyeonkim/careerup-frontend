@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const BASEURL = 'http://3.36.230.165:8080';
+export const BASEURL = 'https://careerup.life';
 
 export const instance = axios.create({
   baseURL: BASEURL,
