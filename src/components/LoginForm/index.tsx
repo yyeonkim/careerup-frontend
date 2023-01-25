@@ -26,7 +26,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     dispatch(setMessage(isSignIn)); // 로그인, 회원가입 메시지가 다름
 
     if (isValid()) {
-      const url = isSignIn ? `${BASEURL}/user/login` : `${BASEURL}/user/signup`;
+      const url = isSignIn ? `user/login` : `user/signup`;
       const { username, password, name, emailCertification } = loginValue;
       const data = isSignIn ? { username, password } : { name, username, password, emailCertification };
 
