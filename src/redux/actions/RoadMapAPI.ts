@@ -5,8 +5,6 @@ import { ImageListType } from 'react-images-uploading';
 import { getAccessToken } from '../../api/user';
 import { IItemSequence } from '../../interfaces';
 
-axios.defaults.withCredentials = true;
-
 interface Carrer {
   isModify?: boolean;
   mapIdx?: number;
