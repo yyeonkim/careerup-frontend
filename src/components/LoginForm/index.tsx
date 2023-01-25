@@ -1,11 +1,11 @@
 import { ChangeEvent, FormEvent, Dispatch, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 
 import { StyledForm, Message } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setMessage, resetForm, setValue, completeCertification } from '../../redux/reducers/LoginSlice';
 import { getAuthorization, postUserLogin } from '../../api/user';
+import { instance } from '../../lib/defaults';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -93,8 +93,8 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
 
   const onClickSend = async () => {
     try {
-      const response = await axios.post(
-        '/user/signup/mailconfirm',
+      const response = await instance.post(
+        'user/signup/mailconfirm',
         { email: loginValue.username },
         { headers: getAuthorization() }
       );

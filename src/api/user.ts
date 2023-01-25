@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import { ILoginData, IUserData, PostUserLoginFn } from '../interfaces';
 import { instance } from '../lib/defaults';
 
@@ -21,15 +19,15 @@ export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginDa
 };
 
 export const modifyUserData = async (data: IUserData) => {
-  const response = await axios.patch('/user/modify', data, { headers: getAuthorization() });
+  const response = await instance.patch('user/modify', data, { headers: getAuthorization() });
 
   return response;
 };
 
 export const deleteUser = async () => {
-  const response = await axios({
+  const response = await instance({
     method: 'patch',
-    url: '/user/withdrawal',
+    url: 'user/withdrawal',
     headers: getAuthorization(),
   });
 
@@ -37,14 +35,14 @@ export const deleteUser = async () => {
 };
 
 export const getNewPassword = async (email: string) => {
-  const response = await axios.get('/user/password', { params: { email } });
+  const response = await instance.get('user/password', { params: { email } });
   return response;
 };
 
 export const patchNewPassword = async (newPassword: string) => {
-  const response = await axios({
+  const response = await instance({
     method: 'patch',
-    url: '/user/password',
+    url: 'user/password',
     params: { newPassword },
     headers: getAuthorization(),
   });

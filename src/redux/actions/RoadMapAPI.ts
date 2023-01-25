@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ImageListType } from 'react-images-uploading';
 
 import { getAccessToken } from '../../api/user';
 import { IItemSequence } from '../../interfaces';
+import { instance } from '../../lib/defaults';
 
 interface Carrer {
   isModify?: boolean;
@@ -62,7 +62,7 @@ export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer
 
     //활동 수정
     if (isModify) {
-      await axios.patch(`/item/${info.itemIdx}/modify`, info, {
+      await instance.patch(`item/${info.itemIdx}/modify`, info, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -73,8 +73,8 @@ export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer
 
     // 활동 등록
     // 내용
-    const url = `/item/${type}?mapIdx=${idx}`;
-    const res: { data: { result: { itemIdx: number } } } = await axios.post(url, info, {
+    const url = `item/${type}?mapIdx=${idx}`;
+    const res: { data: { result: { itemIdx: number } } } = await instance.post(url, info, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -88,8 +88,8 @@ export const makeItem = createAsyncThunk('roadMap/makeItem', async (info: Carrer
         imageFormData.append('images', image.file as File);
       });
 
-      await axios
-        .post(`/item/upload/${itemIdx}/picture`, imageFormData, {
+      await instance
+        .post(`item/upload/${itemIdx}/picture`, imageFormData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${jwt}`,
@@ -109,7 +109,7 @@ export const addItemImage = createAsyncThunk('roadMap/addItemImage', async (data
     const formData = new FormData();
     formData.append('images', data.file);
 
-    await axios.post(`/item/upload/${data.itemIdx}/picture`, formData, {
+    await instance.post(`item/upload/${data.itemIdx}/picture`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${jwt}`,
@@ -134,7 +134,7 @@ export const addItemFile = createAsyncThunk(
       fileFormData.append('files', data.files.file);
       fileFormData.append('title', data.files.fileName);
 
-      await axios.post(`/item/upload/${data.itemIdx}/files`, fileFormData, {
+      await instance.post(`item/upload/${data.itemIdx}/files`, fileFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${jwt}`,
@@ -148,7 +148,7 @@ export const addItemFile = createAsyncThunk(
 
 export const getItems = createAsyncThunk('roadMap/getItems', async (mapIdx: number) => {
   try {
-    const res = await axios.get(`/map/${mapIdx}`, {
+    const res = await instance.get(`map/${mapIdx}`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -162,7 +162,7 @@ export const getItems = createAsyncThunk('roadMap/getItems', async (mapIdx: numb
 
 export const changeItems = createAsyncThunk('roadMap/changeItems', async (data: IItemSequence) => {
   try {
-    await axios.patch(`/item/${data.mapIdx}`, data.list, {
+    await instance.patch(`item/${data.mapIdx}`, data.list, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -174,7 +174,7 @@ export const changeItems = createAsyncThunk('roadMap/changeItems', async (data: 
 
 export const getItemInfo = createAsyncThunk('roadMap/getItemInfo', async (itemIdx: number) => {
   try {
-    const res = await axios.get(`/item/${itemIdx}/detail`, {
+    const res = await instance.get(`item/${itemIdx}/detail`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -192,7 +192,7 @@ export const getItemInfo = createAsyncThunk('roadMap/getItemInfo', async (itemId
 
 export const removeItem = createAsyncThunk('roadMap/removeItem', async (itemIdx: number) => {
   try {
-    await axios.delete(`/item/${itemIdx}`, {
+    await instance.delete(`item/${itemIdx}`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -204,7 +204,7 @@ export const removeItem = createAsyncThunk('roadMap/removeItem', async (itemIdx:
 
 export const removeFile = createAsyncThunk('/roadMap/removeFile', async (fileIdx: number) => {
   try {
-    await axios.delete(`/file/${fileIdx}`, {
+    await instance.delete(`file/${fileIdx}`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
