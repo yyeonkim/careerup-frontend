@@ -6,6 +6,7 @@ import { StyledForm, Message } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setMessage, resetForm, setValue, completeCertification } from '../../redux/reducers/LoginSlice';
 import { getAuthorization, postUserLogin } from '../../api/user';
+import { BASEURL } from '../../lib/defaults';
 
 interface LoginFormProps {
   isSignIn: boolean;
@@ -25,7 +26,7 @@ export default function LoginForm({ isSignIn, setIsSignIn }: LoginFormProps) {
     dispatch(setMessage(isSignIn)); // 로그인, 회원가입 메시지가 다름
 
     if (isValid()) {
-      const url = isSignIn ? '/user/login' : '/user/signup';
+      const url = isSignIn ? `${BASEURL}/user/login` : `${BASEURL}/user/signup`;
       const { username, password, name, emailCertification } = loginValue;
       const data = isSignIn ? { username, password } : { name, username, password, emailCertification };
 

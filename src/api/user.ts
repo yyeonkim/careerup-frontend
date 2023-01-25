@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { ILoginData, IUserData, PostUserLoginFn } from '../interfaces';
+import { instance } from '../lib/defaults';
 
 export const getAccessToken = () => {
   const accessToken = JSON.parse(localStorage.getItem('accessToken') as string);
@@ -15,7 +16,7 @@ export const getAuthorization = () => {
 };
 
 export const postUserLogin: PostUserLoginFn = async (url: string, data: ILoginData) => {
-  const response = await axios.post(url, data);
+  const response = await instance.post(url, data);
   return response;
 };
 
