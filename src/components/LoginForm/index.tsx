@@ -6,7 +6,6 @@ import { StyledForm, Message } from './style';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setMessage, resetForm, setValue, completeCertification } from '../../redux/reducers/LoginSlice';
 import { getAuthorization, postUserLogin } from '../../api/user';
-import { BASEURL } from '../../lib/defaults';
 
 interface LoginFormProps {
   isSignIn: boolean;
