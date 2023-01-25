@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { getAuthorization } from '../api/user';
+import { getAccessToken } from '../api/user';
 
 export const BASEURL = 'http://3.36.230.165:8080';
 
@@ -11,5 +11,6 @@ axios.defaults.withCredentials = true;
 export const instance = axios.create({
   baseURL: BASEURL,
   withCredentials: true,
-  headers: getAuthorization(),
 });
+
+instance.defaults.headers.common['Authorization'] = getAccessToken();
