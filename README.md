@@ -1,4 +1,4 @@
-## 커리업CareerUP ☘️
+## ☘️ 커리업CareerUP
 대학생이 진로 성장에 필요한 로드맵을 작성할 수 있는 웹사이트입니다. 
 #### 시연영상
 https://www.youtube.com/watch?v=ead_VwdktLk
