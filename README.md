@@ -10,3 +10,8 @@ https://www.youtube.com/watch?v=ead_VwdktLk
 3️⃣ 동아리, 공모전 등의 활동을 등록하여 커리어 맵을 채워가세요.
 
 4️⃣ 마이페이지에서는 생성한 커리어 맵을 확인하고, 사용자 정보를 등록할 수 있습니다.
+#### 기술 스택
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)
+![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=flat&logo=redux&logoColor=white)
+
